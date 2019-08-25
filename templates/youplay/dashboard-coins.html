@@ -1,0 +1,49 @@
+{% extends "layoutdashboard.html" %}
+{% block dashboard %}
+<div class="col-md-9">
+  <h3 class="mt-40 mb-20">Comprar Moedas</h3>
+  <div class="row vertical-gutter">
+    {% for item in coins %}
+    <div class="col-md-4">
+      <ul class="pricing-table">
+        <li class="plan-name">{{item.name}}</li>
+        <li class="plan-price">
+          1 Crédito é o que vale a {{item.price}} {{item.name}}</a>
+        </li>
+        <li class="plan-action">
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#ModalVip{{item.ID}}">Comprar
+            {{item.name}}</button>
+        </li>
+      </ul>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ModalVip{{item.ID}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Comprar {{item.name}}</h4>
+          </div>
+          <form action='{{link_dir}}dashboard/coins/buys/{{item.ID}}' method='post'>
+            <div class="modal-body">
+              Seu saldo é de: <strong>{{userdata.mwo_credits}}</strong> Créditos<br />
+              <strong>Qual valor em créditos você deseja gastar?</strong><br /><br />
+              <div class="youplay-input">
+                <input name='credits' type='number' id='credits' />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

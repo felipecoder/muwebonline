@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>MuWebOnline - Install</title>
+	<base href="/install/views/">
+	<!-- Bootstrap CSS -->
+	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom CSS -->
+	<link href="assets/css/style.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<div class="container">
+		{% for item in return %}
+		<div
+			class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			<h4><i
+					class="icon glyphicon {% if item.error %}glyphicon-ban-circle{% endif %}{% if item.success %}glyphicon-ok{% endif %}"></i>
+				Alerta!</h4>
+			{{ item.message|raw }}
+		</div>
+		{% endfor %}
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="text-center">
+					<a href="https://muwebonline.com/" target="_blank">
+						<img src="assets/images/logo.png" alt="MuWebOnline - CMS" title="MuWebOnline - CMS">
+					</a>
+				</div>
+
+				{% block content %}
+				{% endblock %}
+				<br><br>
+				<div class="text-center">
+					<h3>Precisa de Uma Web Compatível?</h3>
+					<a href="https://www.atshost.com.br/" target="_blank">
+						<img src="assets/images/logo-ats.png" alt="ATS - Host" title="ATS - Host" width="331">
+					</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Bootstrap JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

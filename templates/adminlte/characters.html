@@ -1,0 +1,319 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>Personagens</h1>
+    <ol class="breadcrumb">
+      <li><a href="{{link_admin}}/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Personagens</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Main row -->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'edit' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Editar Personagem</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/characters/edit/{{ character_data.Name }}"
+            method="post" enctype="multipart/form-data">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="AccountID" class="col-sm-2 control-label">Login</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="AccountID" class="form-control" id="AccountID" placeholder="Login"
+                    value="{{ character_data.AccountID }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="Name" class="form-control" id="Name" placeholder="Nome"
+                    value="{{ character_data.Name }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cLevel" class="col-sm-2 control-label">Level</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="cLevel" class="form-control" id="cLevel" placeholder="Level"
+                    value="{{ character_data.cLevel }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mail_addr" class="col-sm-2 control-label">Classe</label>
+
+                <div class="col-sm-10">
+                  <select name="Class" id="Class" class="form-control select2">
+                    {{ listclass| raw }}
+                  </select>
+                  <p class="help-block">Classe Atual: {{ character_data.ClassName }}.</p>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Resets" class="col-sm-2 control-label">Resets</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Resets" class="form-control" id="Resets" placeholder="Resets"
+                    value="{{ character_data.Resets }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="LevelUpPoint" class="col-sm-2 control-label">Pontos a distribuir</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="LevelUpPoint" class="form-control" id="LevelUpPoint"
+                    placeholder="Pontos a distribuir" value="{{ character_data.LevelUpPoint }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Experience" class="col-sm-2 control-label">Experiência</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Experience" class="form-control" id="Experience" placeholder="Experiência"
+                    value="{{ character_data.Experience }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Strength" class="col-sm-2 control-label">Força</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Strength" class="form-control" id="Strength" placeholder="Força"
+                    value="{{ character_data.Strength }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Dexterity" class="col-sm-2 control-label">Agilidade</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Dexterity" class="form-control" id="Dexterity" placeholder="Agilidade"
+                    value="{{ character_data.Dexterity }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Vitality" class="col-sm-2 control-label">Vitalidade</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Vitality" class="form-control" id="Vitality" placeholder="Vitalidade"
+                    value="{{ character_data.Vitality }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Energy" class="col-sm-2 control-label">Energia</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Energy" class="form-control" id="Energy" placeholder="Energia"
+                    value="{{ character_data.Energy }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Leadership" class="col-sm-2 control-label">Comando</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Leadership" class="form-control" id="Leadership" placeholder="Comando"
+                    value="{{ character_data.Leadership }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Money" class="col-sm-2 control-label">Zen</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="Money" class="form-control" id="Money" placeholder="Zen"
+                    value="{{ character_data.Money }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="MapNumber" class="col-sm-2 control-label">Numero do Mapa</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="MapNumber" class="form-control" id="MapNumber" placeholder="Numero do Mapa"
+                    value="{{ character_data.MapNumber }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="MapPosX" class="col-sm-2 control-label">Cordenada X</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="MapPosX" class="form-control" id="MapPosX" placeholder="Cordenada X"
+                    value="{{ character_data.MapPosX }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="MapPosY" class="col-sm-2 control-label">Cordenada Y</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="MapPosY" class="form-control" id="MapPosY" placeholder="Cordenada Y"
+                    value="{{ character_data.MapPosY }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="PkCount" class="col-sm-2 control-label">PKCount</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="PkCount" class="form-control" id="PkCount" placeholder="PKCount"
+                    value="{{ character_data.PkCount }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="PkLevel" class="col-sm-2 control-label">PkLevel</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="PkLevel" class="form-control" id="PkLevel" placeholder="PkLevel"
+                    value="{{ character_data.PkLevel }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="PkTime" class="col-sm-2 control-label">PkTime</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="PkTime" class="form-control" id="PkTime" placeholder="PkTime"
+                    value="{{ character_data.PkTime }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="CtlCode" class="col-sm-2 control-label">CtlCode</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="CtlCode" class="form-control" id="CtlCode" placeholder="CtlCode"
+                    value="{{ character_data.CtlCode }}" required>
+                  <p class="help-block">[0: Normal] [1: Banido] [8: GM] [32: GM]</p>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="reset" class="btn btn-default">Cancelar</button>
+              <button type="submit" class="btn btn-info pull-right">Editar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+        {%elseif page_type == 'delete' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Deletar Personagem</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/characters/delete/{{ character_data.Name }}"
+            method="post">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="AccountID" class="col-sm-2 control-label">Login</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="AccountID" class="form-control" id="AccountID" placeholder="Login"
+                    value="{{ character_data.AccountID }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="Name" class="form-control" id="Name" placeholder="Nome"
+                    value="{{ character_data.Name }}" disabled>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <a href="/{{link_admin}}/menus/list" class="btn btn-default">Cancelar</a>
+              <button type="submit" class="btn btn-info pull-right">Deletar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+
+        {%elseif page_type == 'list' %}
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Todos os Personagens</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table id="datatable" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Login</th>
+                  <th>Nome</th>
+                  <th>Level</th>
+                  <th>Classe</th>
+                  <th>Resets</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in characters_data %}
+                <tr>
+                  <td>{{ item.AccountID }}</td>
+                  <td>{{ item.Name }}</td>
+                  <td>{{ item.cLevel }}</td>
+                  <td>{{ item.Class }}</td>
+                  <td>{{ item.Resets }}</td>
+                  <td>
+                    <a href="/{{link_admin}}/characters/edit/{{ item.Name }}"
+                      class="btn btn-sm btn-info btn-flat">Editar</a>
+                    <a href="/{{link_admin}}/characters/delete/{{ item.Name }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Login</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Classe</th>
+                  <th>Resets</th>
+                  <th>Ação</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+        {% endif %}
+
+
+
+      </div>
+    </div>
+    <!-- /.row (main row) -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

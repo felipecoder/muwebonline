@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="install-container">
+  <h3 class="screen-reader-text">Succeso!</h3>
+  <p>A MuWebOnline foir instalada com sucesso, orbigado por usar nossa CMS.</p>
+
+  <p class="alert alert-danger">
+    Antes de acessar o painel não esquecer de deletar a pasta <strong>install</strong>!
+  </p>
+  <a href="{{ base }}{{ admin }}" class="btn btn-block btn-success">Acessar Painel</a>
+</div>
+{% endblock %}

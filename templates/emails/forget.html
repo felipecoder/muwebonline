@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td>
+      <p>Olá, {{ name }}.</p>
+      <p>Alguém solicitou que a senha fosse redefinida</p>
+      <p>Se isso foi um erro, ignore este e-mail e nada acontecerá.</p>
+      <p>Para redefinir sua senha clique no botão abaixo.</p>
+      <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td> <a href="{{ link_action }}" target="_blank">Resetar Senha</a> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Qualquer dúvida ou problema entre em contato conosco.</p>
+      <div class="align-center">
+        <p>A equipe <a href="{{ site_link }}">{{ server_name }}</a> agradece sua atenção.</p>
+      </div>
+    </td>
+  </tr>
+</table>
+{% endblock %}

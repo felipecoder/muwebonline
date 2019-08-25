@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="iFreeHP Server" />
+  <meta name="keywords" content="MuOnline, Mu, MuSite, Site, Mu Site, RPG, MMORPG" />
+  <meta name="Author" content="MuWebOnline" />
+  <base href="/templates/youplay/">
+  <title>{{title_site}} - {{title_page}}</title>
+  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/bower_components/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/bower_components/owl.carousel/dist/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/youplay/css/youplay.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/custom.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/WebShop.css" />
+  <script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/ajax.js"></script>
+  <script>var onReady = []; </script>
+</head>
+
+<body>
+
+  <!-- Preloader -->
+  <div class="page-preloader preloader-wrapp">
+    <img src="assets/images/logo.png" alt="">
+    <div class="preloader"></div>
+  </div>
+  <!-- /Preloader -->
+
+  <!-- Navbar -->
+  <nav class="navbar-youplay navbar navbar-default navbar-fixed-top ">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="off-canvas" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+          <img src="assets/images/logo.png" alt="">
+        </a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          {% for item in menus %}
+          <li class="dropdown dropdown-hover">
+            <a href="{{ item.link }}" {% if item.children %}class="dropdown-toggle" data-toggle="dropdown" role="button"
+              aria-expanded="false" {% endif %}>
+              {{ item.name }} {% if item.children %}<span class="caret"></span>{% endif %} <span
+                class="label">{{ item.label }}</span>
+            </a>
+            {% if item.children %}
+            <div class="dropdown-menu">
+              <ul role="menu">
+                {% for child in item.children %}
+                <li><a href="{{ child.link }}">{{ child.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+
+        {%if user_logged_in %}
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown dropdown-hover">
+
+            <a href="#!" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <div class="pull-left mr-10 angled-img">
+                <img style="height: 35px;" class="img"
+                  src="{{ link_images }}users/{{ userdata.image is empty ? 'default.png' : userdata.image}}">
+              </div>
+              {{ userdata.memb_name }}<span class="caret"></span> <span class="label">{{ userdata.memb___id }}</span>
+            </a>
+            <div class="dropdown-menu">
+              <ul role="menu">
+                <li><a href="/dashboard/home">Minha Conta</a></li>
+                <li><a href="/dashboard/settings">Configurações</a></li>
+                <li class="divider"></li>
+
+                <li><a href="/dashboard/tickets">Meus Tickets</a></li>
+                <li class="divider"></li>
+
+                <li><a href="/dashboard/vips">Seja VIP</a></li>
+                <li><a href="/dashboard/coins">Coins</a></li>
+                <li class="divider"></li>
+
+                <li><a href="/logout">Sair</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        {%else%}
+
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a style="font-weight: bold;" href="/register" role="button" aria-expanded="false">
+              Criar Conta <span class="label"></span>
+            </a>
+          </li>
+          <li class="dropdown dropdown-hover dropdown-cart">
+            <a href="#login1" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              Login
+            </a>
+            <div class="dropdown-menu" style="width: 300px;">
+              <div class="row header-login">
+                <form role="form" id="form_login" method="post" action="{{link_dir}}login">
+                  <div class="youplay-input">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Login"
+                      onclick="$('.dropdown-cart').addClass('open');">
+                  </div>
+
+                  <div class="youplay-input">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Senha"
+                      onclick="$('.dropdown-cart').addClass('open');">
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <button type="submit" class="btn btn-default pull-right" id="login_button">Entrar</button>
+                    </div>
+                  </div>
+                  <div id="error_login" style="margin-left: 2px; color: #CFB988;"></div>
+                  <div class="mt-5 small" style="text-align: center; color: #999">
+                    <a href="/forget">Esqueceu sua senha?</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+        </ul>
+        {%endif%}
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <section class="content-wrap">
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="youplay-footer-parallax">
+      <div class="wrapper" style="background-image: url('assets/images/footer-bg.jpg')">
+
+        <!-- Social Buttons -->
+        <div class="social">
+          <div class="container">
+            <h3>Colabore com o Mu</h3>
+
+            <div class="social-icons">
+              <div class="social-icon">
+                <a href="/asd">
+                  <i class="fa fa-facebook-square"></i>
+                  <span>Curta nossa página</span>
+                </a>
+              </div>
+              <div class="social-icon">
+                <a href="forum">
+                  <i class="fa fa-group"></i>
+                  <span>Participe do Forum</span>
+                </a>
+              </div>
+              <div class="social-icon">
+                <a href="panel.php?panel=buy_vips">
+                  <i class="fa fa-diamond"></i>
+                  <span>Seja um player VIP</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Social Buttons -->
+
+        <!-- Copyright -->
+        <div class="copyright">
+          <div class="container">
+            <small>Equipe Mu &copy; 2019. Todos direitos reservados <br> MuWebOnline - Felipe Bruno e F-Team
+              Developers</small>
+          </div>
+        </div>
+        <!-- /Copyright -->
+
+      </div>
+    </footer>
+    <!-- /Footer -->
+  </section>
+  <!-- jQuery -->
+  <script type="text/javascript" src="assets/bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- Hexagon Progress -->
+  <script type="text/javascript" src="assets/bower_components/HexagonProgress/jquery.hexagonprogress.min.js"></script>
+  <!-- Bootstrap -->
+  <script type="text/javascript" src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- Jarallax -->
+  <script type="text/javascript" src="assets/bower_components/jarallax/dist/jarallax.min.js"></script>
+  <!-- Smooth Scroll -->
+  <script type="text/javascript" src="assets/bower_components/smoothscroll-for-websites/SmoothScroll.js"></script>
+  <!-- Owl Carousel -->
+  <script type="text/javascript" src="assets/bower_components/owl.carousel/dist/owl.carousel.min.js"></script>
+  <!-- Countdown -->
+  <script type="text/javascript" src="assets/bower_components/jquery.countdown/dist/jquery.countdown.min.js"></script>
+  <script type="text/javascript" src="assets/bower_components/moment/min/moment.min.js"></script>
+  <script type="text/javascript"
+    src="assets/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+  <!-- Youplay -->
+  <script type="text/javascript" src="assets/youplay/js/youplay.min.js"></script>
+
+  <script>
+    if (typeof youplay !== 'undefined') {
+      youplay.init({
+        parallax: true,
+        navbarSmall: false,
+        fadeBetweenPages: true,
+      });
+    }
+  </script>
+  <script>
+    for (var i in onReady) onReady[i]();
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,270 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>Menus</h1>
+    <ol class="breadcrumb">
+      <li><a href="{{link_admin}}/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Menus</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Main row -->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'create' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Criar Menu</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/menus/create" method="post"
+            enctype="multipart/form-data">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nome" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="label" class="col-sm-2 control-label">Texto</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="label" class="form-control" id="label" placeholder="Texto">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="link" class="col-sm-2 control-label">Link</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="link" class="form-control" id="link" placeholder="Link" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Parente</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control select2" id="parentid" name="parentid" required>
+                    <option value="0">Nenhum</option>
+                    {% for item in menus_data %}
+                    <option value="{{ item.ID }}">{{ item.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control" id="status" name="status" required>
+                    <option value="1">Ativado</option>
+                    <option value="0">Desativado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="reset" class="btn btn-default">Cancelar</button>
+              <button type="submit" class="btn btn-info pull-right">Criar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+
+        {%elseif page_type == 'edit' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Editar Menu</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/menus/edit/{{ menu_data.ID }}" method="post"
+            enctype="multipart/form-data">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nome"
+                    value="{{ menu_data.name }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="label" class="col-sm-2 control-label">Texto</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="label" class="form-control" id="label" placeholder="Texto"
+                    value="{{ menu_data.label }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="link" class="col-sm-2 control-label">Link</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="link" class="form-control" id="link" placeholder="Link"
+                    value="{{ menu_data.link }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Parente</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control select2" id="parentid" name="parentid" required>
+                    <option value="0" {%if menu_data.parentid == 0%}selected{%endif%}>Nenhum</option>
+                    {% for item in menus_data %}
+                    <option value="{{ item.ID }}" {%if menu_data.parentid == item.ID%}selected{%endif%}>{{ item.name }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control" id="status" name="status" required>
+                    <option value="1" {%if menu_data.status == 1%}selected{%endif%}>Ativado</option>
+                    <option value="0" {%if menu_data.status == 0%}selected{%endif%}>Desativado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="reset" class="btn btn-default">Cancelar</button>
+              <button type="submit" class="btn btn-info pull-right">Editar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+        {%elseif page_type == 'delete' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Deletar Menu</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/menus/delete/{{ menu_data.ID }}"
+            method="post">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nome"
+                    value="{{ menu_data.name }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="link" class="col-sm-2 control-label">Link</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="link" class="form-control" id="link" placeholder="Link"
+                    value="{{ menu_data.link }}" disabled>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <a href="/{{link_admin}}/menus/list" class="btn btn-default">Cancelar</a>
+              <button type="submit" class="btn btn-info pull-right">Deletar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+
+        {%elseif page_type == 'list' %}
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Todos os Menus</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table id="datatable" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Texto</th>
+                  <th>Link</th>
+                  <th>Parente</th>
+                  <th>Status</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in menus_data %}
+                <tr>
+                  <td>{{ item.ID }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.label }}</td>
+                  <td>{{ item.link }}</td>
+                  <td>{{ item.parentid}}</td>
+                  <td>{{ item.status }}</td>
+                  <td>
+                    <a href="/{{link_admin}}/menus/edit/{{ item.ID }}" class="btn btn-sm btn-info btn-flat">Editar</a>
+                    <a href="/{{link_admin}}/menus/delete/{{ item.ID }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Texto</th>
+                  <th>Link</th>
+                  <th>Parente</th>
+                  <th>Status</th>
+                  <th>Ação</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+        {% endif %}
+
+
+
+      </div>
+    </div>
+    <!-- /.row (main row) -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

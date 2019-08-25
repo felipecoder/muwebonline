@@ -1,0 +1,67 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="table-responsive install-container">
+  <h3>Requisitos</h3>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td>Versão PHP</td>
+        <td style="text-align:right">
+          {% if phpversion %}
+          <span class="text-success">OK</span>
+          {% else %}
+          <span class="text-danger">Necessário 5.6 ou maior</span>
+          {% endif %}
+        </td>
+      </tr>
+
+      <tr>
+        <td>CURL</td>
+        <td style="text-align:right">
+          {% if curl %}
+          <span class="text-success">OK</span>
+          {% else %}
+          <span class="text-danger">Não instalado</span>
+          {% endif %}
+        </td>
+      </tr>
+
+      <tr>
+        <td>ZIP extension</td>
+        <td style="text-align:right">
+          {% if zip %}
+          <span class="text-success">OK</span>
+          {% else %}
+          <span class="text-danger">Não instalado</span>
+          {% endif %}
+        </td>
+      </tr>
+
+      <tr>
+        <td>allow_url_fopen is ON</td>
+        <td style="text-align:right">
+          {% if allow %}
+          <span class="text-success">OK</span>
+          {% else %}
+          <span class="text-danger">Não instalado</span>
+          {% endif %}
+        </td>
+      </tr>
+
+      <tr>
+        <td>PDO</td>
+        <td style="text-align:right">
+          {% if pdo %}
+          <span class="text-success">{{list_drivers}}</span>
+          {% else %}
+          <span class="text-danger">Não instalado</span>
+          {% endif %}
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <a href="{{ base }}index.php/config" class="btn btn-block btn-success">Configurar</a>
+</div>
+{% endblock %}

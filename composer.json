@@ -1,0 +1,32 @@
+{
+    "name": "felipecoder/muwebonline",
+    "description": "MuWebOnline is a CMS for MuOnline",
+    "keywords": [
+        "muwebonline",
+        "muonline"
+    ],
+    "homepage": "https://muwebonline.com",
+    "authors": [
+        {
+            "name": "Felipe Bruno",
+            "email": "felipexgyn619@gmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "^3.12",
+        "slim/twig-view": "^2.5",
+        "slim/http-cache": "^0.4.0",
+        "monolog/monolog": "^1.24",
+        "phpmailer/phpmailer": "^6.0",
+        "google/recaptcha": "^1.2",
+        "slim/flash": "^0.4.0",
+        "hybridauth/hybridauth": "^3.0",
+        "kitchenu/slim-debugbar": "^1.1",
+        "zeuxisoo/slim-whoops": "0.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    }
+}

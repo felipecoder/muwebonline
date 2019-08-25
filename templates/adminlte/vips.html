@@ -1,0 +1,322 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>Vips</h1>
+    <ol class="breadcrumb">
+      <li><a href="{{link_admin}}/"><i class="fa fa-dashboard"></i> Home</a></li>
+      <li class="active">Vips</li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Main row -->
+    <div class="row">
+      <!-- Left col -->
+      <div class="col-md-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'create' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Criar Vip</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/vips/create" method="post"
+            enctype="multipart/form-data">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nome" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="database" class="col-sm-2 control-label">Database</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="database" class="form-control" id="database" placeholder="Database" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="table" class="col-sm-2 control-label">Tabela</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="table" class="form-control" id="table" placeholder="Tabela" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="column_level" class="col-sm-2 control-label">Coluna Nível</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="column_level" class="form-control" id="column_level"
+                    placeholder="Coluna Nível" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="column_days" class="col-sm-2 control-label">Coluna Dias</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="column_days" class="form-control" id="column_days" placeholder="Coluna Dias"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="level" class="col-sm-2 control-label">Nível</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="level" class="form-control" id="level" placeholder="Nível">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="prices" class="col-sm-2 control-label">Preços de Venda</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="prices" class="form-control" id="prices" placeholder="Coluna Nível"
+                    data-role="tagsinput" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="days" class="col-sm-2 control-label">Dias de Venda</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="days" class="form-control" id="days" placeholder="Coluna Nível"
+                    data-role="tagsinput" required>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="reset" class="btn btn-default">Cancelar</button>
+              <button type="submit" class="btn btn-info pull-right">Criar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+
+        {%elseif page_type == 'edit' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Editar Vip</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/vips/edit/{{ vip_data.ID }}" method="post"
+            enctype="multipart/form-data">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nome"
+                    value="{{ vip_data.name }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="database" class="col-sm-2 control-label">Database</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="database" class="form-control" id="database" placeholder="Database"
+                    value="{{ vip_data.database }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="table" class="col-sm-2 control-label">Tabela</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="table" class="form-control" id="table" placeholder="Tabela"
+                    value="{{ vip_data.table }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="column_level" class="col-sm-2 control-label">Coluna Nível</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="column_level" class="form-control" id="column_level"
+                    placeholder="Coluna Nível" value="{{ vip_data.column_level }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="column_days" class="col-sm-2 control-label">Coluna Dias</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="column_days" class="form-control" id="column_days" placeholder="Coluna Dias"
+                    value="{{ vip_data.column_days }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="level" class="col-sm-2 control-label">Nível</label>
+
+                <div class="col-sm-10">
+                  <input type="number" name="level" class="form-control" id="level" placeholder="Nível"
+                    value="{{ vip_data.level }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="prices" class="col-sm-2 control-label">Preços de Venda</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="prices" class="form-control" id="prices" placeholder="Coluna Nível"
+                    value="{{ vip_data.prices }}" data-role="tagsinput" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="days" class="col-sm-2 control-label">Dias de Venda</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="days" class="form-control" id="days" placeholder="Coluna Nível"
+                    value="{{ vip_data.days }}" data-role="tagsinput" required>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="reset" class="btn btn-default">Cancelar</button>
+              <button type="submit" class="btn btn-info pull-right">Editar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+        {%elseif page_type == 'delete' %}
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Deletar Vip</h3>
+          </div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" action="{{link_dir}}{{link_admin}}/vips/delete/{{ vip_data.ID }}" method="post">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nome</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nome"
+                    value="{{ vip_data.name }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="database" class="col-sm-2 control-label">Database</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="database" class="form-control" id="database" placeholder="Database"
+                    value="{{ vip_data.database }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="table" class="col-sm-2 control-label">Tabela</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="table" class="form-control" id="table" placeholder="Tabela"
+                    value="{{ vip_data.table }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="column" class="col-sm-2 control-label">Coluna Nível</label>
+
+                <div class="col-sm-10">
+                  <input type="text" name="column_level" class="form-control" id="column_level" placeholder="Coluna"
+                    value="{{ vip_data.column_level }}" data-role="tagsinput" disabled>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <a href="/{{link_admin}}/vips/list" class="btn btn-default">Cancelar</a>
+              <button type="submit" class="btn btn-info pull-right">Deletar</button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+
+        {%elseif page_type == 'list' %}
+
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Todos os Vips</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table id="datatable" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Database</th>
+                  <th>Tabela</th>
+                  <th>Coluna Nível</th>
+                  <th>Coluna Dias</th>
+                  <th>Nível</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in vips_data %}
+                <tr>
+                  <td>{{ item.ID }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.database }}</td>
+                  <td>{{ item.table }}</td>
+                  <td>{{ item.column_level}}</td>
+                  <td>{{ item.column_days}}</td>
+                  <td>{{ item.level}}</td>
+                  <td>
+                    <a href="/{{link_admin}}/vips/edit/{{ item.ID }}" class="btn btn-sm btn-info btn-flat">Editar</a>
+                    <a href="/{{link_admin}}/vips/delete/{{ item.ID }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Database</th>
+                  <th>Tabela</th>
+                  <th>Coluna Nível</th>
+                  <th>Coluna Dias</th>
+                  <th>Nível</th>
+                  <th>Ação</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+
+        {% endif %}
+
+
+
+      </div>
+    </div>
+    <!-- /.row (main row) -->
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

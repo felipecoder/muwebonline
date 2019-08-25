@@ -1,0 +1,308 @@
+
+/* CSS Document */
+
+.custom {
+    width: 130px !important;
+}
+.WebShopCategoriesTable {
+    width:100%;
+    background-color:#FFFFFF;
+    border: 1px #333 solid;
+    position: relative;
+    left:30px;
+    font-family: tahoma;
+}
+
+.WebShopSubCategoriesTable {
+    width:100%;
+    background-color:#EEE;
+    border: 1px #333 solid;
+}
+
+.WebShopSelectedCategory a {
+    color: #0188CC;
+    padding: 4px;
+}
+
+.WebShopItemsTable {
+    width:100%;
+    margin-top: 3px;
+}
+
+.WebShopItemsTable td {
+    padding: 10px;
+}
+
+.WebShopItemName {
+    font-size: 14px;
+    color:#fff;
+    font-family: tahoma;
+    font-weight:bold;
+}
+
+.WebShopItemListImage {
+    max-width: 81px;
+    min-width: 81px;
+    height: 120px;
+    border: 1px solid #333;
+}
+
+.WebShopItemListDescription {
+    min-width:200px;
+     border: 1px solid #333
+}
+
+.WebShopItemClassesTitle
+{
+    font-size: 11px;
+    font-family: tahoma;
+}
+.WebShopItemListBuy {
+    font-size: 12px;
+    font-weight: bold;
+    font-family: verdana;
+     border: 1px solid #333
+}
+.WebShopItemListBuy a {
+    top:50px;
+    height: 220px;
+    }
+.WebShopItemListBuy a
+{
+    border:none;
+}
+.WebShopItemConfigTable {
+    width:100%;
+    margin: 1%;
+}
+.WebShopItemConfigTable td {
+    padding: 5px;
+}
+
+.WebShopItemLevelSelect {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:10px;
+}
+
+.WebShopItemAddOptSelect {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:10px;
+}
+
+.WebShopItemAncientSelect {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:10px;
+}
+
+.WebShopItemQuantSelect {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:10px;	
+}
+
+.WebShopItemHarmonyOptSelect {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:10px;
+}
+
+.WebShopItemSocketSelect {
+    font-family:Verdana, Geneva, sans-serif;
+    font-size:10px;
+}
+
+.WebShopExcellentTitle {
+    
+    color:#0C9;
+    font-weight:bold;
+}
+
+.WebShopAncientTitle {
+    color:#9F0;
+    background-color:#06F;
+    font-weight:bold;
+}
+
+
+
+.WebShopItemSocketTitle {
+    background-color:#000;
+    color:#C3C;
+    font-weight:bold;
+}
+
+.WebShop380OptTitle {
+    background-color:#000;
+    color:#B58FB6;
+    font-weight:bold;
+}
+
+.WebShopBuyItemButton {
+    background-color:#FF9;
+    color:#903;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.WebShopItemFinalPrice {
+    font-size:13px;
+    font-weight:bold;
+    color:#900;
+    background-color:#FF0;
+    text-align:center;
+
+}
+
+.WebShopFullHistoryTable {
+    width:98%;
+    margin: 1%;
+}
+
+.ItemCancelConfirmMessage {
+    color:#F00;
+}
+
+.WebShopItemPaymentChoose {
+    font-size:13px;
+    font-weight:bold;
+    color:#FFF;
+    background-color:#000;
+    text-align:center;
+    vertical-align:middle;
+}
+a:hover
+{
+    cursor: pointer;
+}
+
+.WebShopDetailName
+{
+    width: 100px;
+}
+.WebShopHarmonyTitle {
+    /*background-color:#000;*/
+    color:#FC3;
+    font-weight:bold;
+}
+.WebShopPayment
+{
+    margin-left: -200px;
+
+}
+
+.center
+{
+    /* position:relative; */
+    /* left:5px; */
+}
+.WebShopRefine
+{
+    left:20%;
+    font-size:12px;
+}
+
+.WebShopItemDetail
+{
+background: rgba(0, 0, 0, 0.3); 
+padding-bottom: 10px;
+width: 300px;
+
+/*position: absolute;*/
+text-align: center;
+
+}
+
+.uppercase
+{
+    text-transform: uppercase;
+}
+
+.td-space
+{
+    padding:0 10px 0 10px!important;
+}
+.WebShopMainOpts
+{
+    text-align: center;
+}
+#WebShopSlider
+{
+    position: relative;
+    left:30px;
+}
+
+#WebShopItemListPrice,#WebShopItemListSold
+{
+    font-size: 12px;
+    font-family: tahoma;
+}
+.WebShopHarmony, .WebShopSockets .quadros
+{
+    font-size: 12px;
+}
+.WebShopHarmony table, .WebShopSockets table, .WebShopRefine table
+{
+    width:auto;
+    margin:0 auto;
+    text-align:center;
+}
+
+.listNone
+{
+    list-style:none;
+}
+
+.WebShopCupom
+{
+    font-size: 12px;
+    left:20px;
+    margin-bottom: 40px;
+}
+.WebShopButtons
+{
+    position: relative;
+	width:auto;
+	margin:0 auto;
+	margin-top:20px;
+}
+#CouponCodeDIV
+{
+    position: absolute;
+    left:-20px;
+    margin-bottom: 20px;
+}
+.WebShopRefine
+{
+   min-width: 300px !important;
+}
+.btnNormal {
+    cursor: pointer;
+    background: linear-gradient(to bottom, #1c1b18 30%, #1c1b18 100%);
+    background-color: #171717;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    display: inline-block;
+    color: #FFFFFF;
+    font-family: tahoma;
+    font-size: 11px;
+    margin: 0px 0 0 0;
+    width: 150px;
+    height: 25px;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 1px 1px 0px #050005;
+    color: #D1D1D1;
+}
+.qdestaques
+{
+	letter-spacing:0.1em;
+	font-size:10px;
+	font-family: Tahoma, Helvetica, sans-serif;
+    margin:8px 0 0 0;
+    padding-left:5px
+}
+
+.WebShopItemDiv
+{
+    width: 200px;
+    height: 300px;
+}

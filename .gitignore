@@ -1,0 +1,4 @@
+# App Ignore
+*.log
+src/app.php
+src/database.php

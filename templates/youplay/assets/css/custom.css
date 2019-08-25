@@ -1,0 +1,84 @@
+.navbar-youplay .navbar-brand {
+    width: 180px;
+}
+.label-custom:before{
+    background-color: #235782;
+}
+.header-login{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+.submenu-col .angled-bg{
+    margin-bottom: 1rem;
+}
+.submenu-col .angled-bg:after{
+    background: rgba(255,255,255,.03);
+    border: solid 1px rgba(255,255,255,.08);
+}
+.submenu-col .angled-bg:hover:after, .submenu-col .angled-bg.active {
+    background: rgba(255,255,255,.1);
+}
+
+
+.register-form .youplay-input{
+    margin-bottom: 0px;
+}
+.register-form .youplay-input.error:after{
+    border: solid 2px #8b121e;
+    outline: solid 1px #8b121e;
+}
+.register-form .error-label{
+    color: #b41524;
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 20px;
+    margin-top: 3px;
+}
+.navbar-small .img{
+    height: 20px !important;
+}
+.navbar .img {
+    -webkit-transition: width 300ms ease-in-out, height 300ms ease-in-out;
+    -moz-transition: width 300ms ease-in-out, height 300ms ease-in-out;
+    -o-transition: width 300ms ease-in-out, height 300ms ease-in-out;
+    transition: width 300ms ease-in-out, height 300ms ease-in-out;
+}
+.badge-float{
+    position: absolute;
+    text-align: center;
+    font-size: 10px;
+    min-width: 17px;
+    height: 17px;
+    line-height: 17px;
+    padding: 0 6px;
+    margin-top: -4px;
+    margin-left: -4px;
+    letter-spacing: 0;
+}
+h2 .badge-float{
+    margin-left: -8px;
+}
+
+.skew:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    -webkit-transform: skew(-7deg);
+    -ms-transform: skew(-7deg);
+    -o-transform: skew(-7deg);
+    transform: skew(-7deg);
+    background: rgba(255,255,255,.1);
+}
+.skew {
+    position: relative;
+    background: 0 0;
+    z-index: 1;
+}
+.bg-blue{
+    background-color: #235782
+}
