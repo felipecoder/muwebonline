@@ -33,6 +33,63 @@
         "homepage": "https://github.com/container-interop/container-interop"
     },
     {
+        "name": "desarrolla2/cache",
+        "version": "v2.1.1",
+        "version_normalized": "2.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/desarrolla2/Cache.git",
+            "reference": "ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/desarrolla2/Cache/zipball/ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963",
+            "reference": "ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "predis/predis": "~1.0.0"
+        },
+        "suggest": {
+            "predis/predis": "Predis support"
+        },
+        "time": "2017-01-18T12:58:33+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Desarrolla2\\Cache\\": "src/",
+                "Desarrolla2\\Test\\Cache\\": "test/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Daniel González",
+                "homepage": "http://desarrolla2.com/"
+            }
+        ],
+        "description": "Provides an cache interface for several adapters Apc, Apcu, File, Mongo, Memcache, Memcached, Mysql, Mongo, Redis is supported. New adapters is comming!",
+        "homepage": "https://github.com/desarrolla2/Cache/",
+        "keywords": [
+            "apc",
+            "apcu",
+            "cache",
+            "file",
+            "memcache",
+            "memcached",
+            "mongo",
+            "mysql",
+            "redis"
+        ]
+    },
+    {
         "name": "filp/whoops",
         "version": "2.3.2",
         "version_normalized": "2.3.2.0",
@@ -317,17 +374,17 @@
     },
     {
         "name": "monolog/monolog",
-        "version": "1.24.0",
-        "version_normalized": "1.24.0.0",
+        "version": "1.23.0",
+        "version_normalized": "1.23.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266"
+            "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
-            "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+            "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
             "shasum": ""
         },
         "require": {
@@ -363,7 +420,7 @@
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
             "sentry/sentry": "Allow sending log messages to a Sentry server"
         },
-        "time": "2018-11-05T09:00:11+00:00",
+        "time": "2017-06-19T01:22:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1201,6 +1258,104 @@
         "keywords": [
             "templating"
         ]
+    },
+    {
+        "name": "vierbergenlars/php-semver",
+        "version": "3.0.2",
+        "version_normalized": "3.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/vierbergenlars/php-semver.git",
+            "reference": "be22b86be4c1133acc42fd1685276792024af5f9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/vierbergenlars/php-semver/zipball/be22b86be4c1133acc42fd1685276792024af5f9",
+            "reference": "be22b86be4c1133acc42fd1685276792024af5f9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4"
+        },
+        "time": "2017-07-11T09:53:59+00:00",
+        "bin": [
+            "bin/semver",
+            "bin/update-versions"
+        ],
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "vierbergenlars\\SemVer\\": "src/",
+                "vierbergenlars\\LibJs\\": "src/"
+            },
+            "classmap": [
+                "src/vierbergenlars/SemVer/internal.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Lars Vierbergen",
+                "email": "vierbergenlars@gmail.com"
+            }
+        ],
+        "description": "The Semantic Versioner for PHP",
+        "keywords": [
+            "semantic",
+            "semver",
+            "versioning"
+        ]
+    },
+    {
+        "name": "visualappeal/php-auto-update",
+        "version": "0.9.6",
+        "version_normalized": "0.9.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/VisualAppeal/PHP-Auto-Update.git",
+            "reference": "4cb49e2d273a895df743a639004acf3325be884e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/VisualAppeal/PHP-Auto-Update/zipball/4cb49e2d273a895df743a639004acf3325be884e",
+            "reference": "4cb49e2d273a895df743a639004acf3325be884e",
+            "shasum": ""
+        },
+        "require": {
+            "desarrolla2/cache": "2.1.*",
+            "monolog/monolog": "~1.21",
+            "php": ">= 5.5.9",
+            "vierbergenlars/php-semver": "3.0.*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.8.*"
+        },
+        "time": "2017-04-18T14:56:58+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "VisualAppeal\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Tim Helfensdörfer",
+                "email": "tim@visualappeal.de"
+            }
+        ],
+        "description": "Autoupdater for PHP"
     },
     {
         "name": "zeuxisoo/slim-whoops",

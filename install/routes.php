@@ -293,15 +293,17 @@ $app->map(['GET', 'POST'], "/admin", function ($request, $response, $args) {
           break;
       }
 
-      $data = $pdo->prepare("INSERT INTO mwo_accesspanel ([username],[password],[access], [ipaddress]) VALUES ( ':username', ':password', 1, ':ipaddress')");
-      $data->execute(array(
-        ':username'  => $username,
-        ':password'  => password_hash($password, PASSWORD_DEFAULT),
-        ':ipaddress' => $ipaddress,
-      ));
-
-      return $response->withRedirect(base_path() . 'index.php/success', 301);
-      exit();
+      $data = $pdo->prepare("INSERT INTO mwo_accesspanel (username,password,access, ipaddress) VALUES ( :username, :password, '1', :ipaddress)");
+      $data->bindParam(':username', $username);
+      $data->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+      $data->bindParam(':ipaddress', $ipaddress);
+      if ($data->execute()) {
+        return $response->withRedirect(base_path() . 'index.php/success', 301);
+        exit();
+      } else {
+        echo "Erro ao cadastrar";
+        print_r($data->errorInfo());
+      }
     } catch (PDOException $e) {
       $return = array(
         'error' => true,

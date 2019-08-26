@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Whoops\\' => array($vendorDir . '/filp/whoops/src/Whoops'),
+    'VisualAppeal\\' => array($vendorDir . '/visualappeal/php-auto-update/src'),
     'Twig\\' => array($vendorDir . '/twig/twig/src'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
@@ -25,6 +26,8 @@ return array(
     'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),
     'Hybridauth\\' => array($vendorDir . '/hybridauth/hybridauth/src'),
     'FastRoute\\' => array($vendorDir . '/nikic/fast-route/src'),
+    'Desarrolla2\\Test\\Cache\\' => array($vendorDir . '/desarrolla2/cache/test'),
+    'Desarrolla2\\Cache\\' => array($vendorDir . '/desarrolla2/cache/src'),
     'DebugBar\\' => array($vendorDir . '/maximebf/debugbar/src/DebugBar'),
     'App\\' => array($baseDir . '/App'),
 );

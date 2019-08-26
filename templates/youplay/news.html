@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-wrap">
+  <section class="youplay-banner banner-top youplay-banner-parallax xsmall">
+    <div class="image" data-speed="0.4">
+      <img src="https://cdn-html.nkdev.info/youplay/assets/images/dark/banner-blog-bg.jpg" alt="" class="jarallax-img">
+    </div>
+
+    <div class="info">
+      <div>
+        <div class="container">
+          <h1 class="h1">{{new_data.title}}</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /Banner -->
+
+
+  <div class="container youplay-news youplay-post">
+
+    <div class="col-md-12">
+      <!-- Post Info -->
+      <article class="news-one">
+
+        <!-- Post Text -->
+        <div class="description">
+          <a href="#" class="angled-img pull-left video-popup">
+            <div class="img">
+              <img src="{{new_data.image}}" alt="{{new_data.title}}">
+            </div>
+          </a>
+          {{new_data.content| raw}}
+        </div>
+        <!-- /Post Text -->
+
+        <!-- Post Tags -->
+        <div class="tags">
+          <i class="fa fa-tags"></i> {{new_data.tag}}
+        </div>
+        <!-- /Post Tags -->
+
+        <!-- Post Share -->
+        <div class="btn-group social-list social-likes" data-counters="no">
+          <span class="btn btn-default facebook" title="Share link on Facebook"></span>
+          <span class="btn btn-default twitter" title="Share link on Twitter"></span>
+          <span class="btn btn-default plusone" title="Share link on Google+"></span>
+          <span class="btn btn-default pinterest" title="Share image on Pinterest" data-media=""></span>
+          <span class="btn btn-default vkontakte" title="Share link on VK"></span>
+        </div>
+        <!-- /Post Share -->
+      </article>
+      <!-- /Post Info -->
+    </div>
+
+  </div>
+
+  {% endblock %}

@@ -8,7 +8,7 @@ use App\Views\ViewAdmin;
 use App\Views\ViewLogger;
 use App\Views\ViewMessages;
 use Slim\Http\Response;
-use DateTime;
+use VisualAppeal\AutoUpdate;
 
 class AdminController
 {
@@ -2659,5 +2659,78 @@ class AdminController
 			return $response->withRedirect("/{$patch_admin}/");
 			exit();
 		}
+	}
+
+	public function getUpdate(AdminModel $model, ViewAdmin $view, Response $response, $page = NULL)
+	{
+		//Classes
+		$data = new AdminDatabase();
+		//Variables
+		$update = new AutoUpdate(getenv('DIRECTORY_ROOT').getenv('DIRECTORY_SEPARATOR').'temp', getenv('DIRECTORY_ROOT').getenv('DIRECTORY_SEPARATOR'), 60);
+		$update->setCurrentVersion(getenv('VERSIO_MWO'));
+		$update->setUpdateUrl(getenv('SERVER_UPDATE'));
+		$update->setUpdateFile("update.ini");
+		$update->addLogHandler(new \Monolog\Handler\StreamHandler(getenv('DIRLOGS') . 'update.log'));
+		$update->setCache(new \Desarrolla2\Cache\Adapter\File(getenv('DIRECTORY_ROOT').getenv('DIRECTORY_SEPARATOR').'cache/update'), 3600);
+
+		if ($page == 'install') {
+			$update->onEachUpdateFinish(function ($version) {
+				$instal = __DIR__ ."../../execute.php";
+				if (file_exists($instal)) {
+						try {
+								include $instal;
+						} catch (Exception $ex) {
+						}
+						unlink($instal);
+				}
+			});
+			
+			$result = $update->update();
+
+			if ($result === true) {
+				$return = array(
+					'error' => false,
+					'success' => true,
+					'message' => 'Atualização realizada com sucesso'
+				);
+			}else{
+				$return = array(
+					'error' => true,
+					'success' => false,
+					'message' => 'Error atualização: '.$result.''
+				);
+			}
+
+		}
+		
+		$return = (!isset($return)) ? NULL : $return ;
+		
+		if ($update->checkUpdate() === false){
+			$status   = 0;
+			$version  = NULL;
+			$versions = NULL;
+		}elseif ($update->newVersionAvailable()){
+			$status   = 2;
+			$version  = $update->getLatestVersion();
+			$versions = array_map(function ($version) {
+				return (string) $version;
+			}, $update->getVersionsToUpdate());
+		}else{
+			$status   = 1;
+			$version  = NULL;
+			$versions = NULL;				
+		}
+
+		$array = array(
+			'title_page'    => 'Atualizações',
+			'status'        => $status,
+			'version'       => $version,
+			'versions'      => $versions,
+			'atuacl_verion' => getenv('VERSIO_MWO'),
+			'return'        => $return,
+		);
+
+		return $view->getRender($array, 'update', $response);
+		
 	}
 }

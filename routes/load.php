@@ -42,6 +42,7 @@ include 'home.php';
 include 'login.php';
 include 'logout.php';
 include 'newpassword.php';
+include 'news.php';
 include 'pages.php';
 include 'register.php';
 

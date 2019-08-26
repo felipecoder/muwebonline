@@ -335,6 +335,20 @@ $app->group("/{$patch_admin}", function ($app) {
 		}
 	})->setName('vips');
 
+	$app->get("/update[/{page}]", function ($request, $response, $args) {
+		//Classes
+		$crontroller = new AdminController();
+		$model       = new AdminModel();
+		$view        = new ViewAdmin();
+
+		//Variables
+		$ipaddress = $request->getServerParam('REMOTE_ADDR');
+		$page = (isset($args['page'])) ? $args['page'] : NULL;
+		$model->setIpaddress($ipaddress);
+
+		return $crontroller->getUpdate($model, $view, $response, $page);
+	})->setName('update');
+
 	$app->get("/logout", function ($request, $response, $args) {
 		$crontroller = new AdminController();
 		return $crontroller->getLogout($response);

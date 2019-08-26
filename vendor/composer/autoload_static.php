@@ -18,6 +18,10 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         array (
             'Whoops\\' => 7,
         ),
+        'V' => 
+        array (
+            'VisualAppeal\\' => 13,
+        ),
         'T' => 
         array (
             'Twig\\' => 5,
@@ -65,6 +69,8 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         ),
         'D' => 
         array (
+            'Desarrolla2\\Test\\Cache\\' => 23,
+            'Desarrolla2\\Cache\\' => 18,
             'DebugBar\\' => 9,
         ),
         'A' => 
@@ -77,6 +83,10 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         'Whoops\\' => 
         array (
             0 => __DIR__ . '/..' . '/filp/whoops/src/Whoops',
+        ),
+        'VisualAppeal\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/visualappeal/php-auto-update/src',
         ),
         'Twig\\' => 
         array (
@@ -150,6 +160,14 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
+        'Desarrolla2\\Test\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/desarrolla2/cache/test',
+        ),
+        'Desarrolla2\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/desarrolla2/cache/src',
+        ),
         'DebugBar\\' => 
         array (
             0 => __DIR__ . '/..' . '/maximebf/debugbar/src/DebugBar',
@@ -161,6 +179,17 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
     );
 
     public static $prefixesPsr0 = array (
+        'v' => 
+        array (
+            'vierbergenlars\\SemVer\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/vierbergenlars/php-semver/src',
+            ),
+            'vierbergenlars\\LibJs\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/vierbergenlars/php-semver/src',
+            ),
+        ),
         'Z' => 
         array (
             'Zeuxisoo\\Whoops\\Provider\\Slim' => 
@@ -184,12 +213,21 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         ),
     );
 
+    public static $classMap = array (
+        'vierbergenlars\\SemVer\\Internal\\Comparator' => __DIR__ . '/..' . '/vierbergenlars/php-semver/src/vierbergenlars/SemVer/internal.php',
+        'vierbergenlars\\SemVer\\Internal\\Exports' => __DIR__ . '/..' . '/vierbergenlars/php-semver/src/vierbergenlars/SemVer/internal.php',
+        'vierbergenlars\\SemVer\\Internal\\G' => __DIR__ . '/..' . '/vierbergenlars/php-semver/src/vierbergenlars/SemVer/internal.php',
+        'vierbergenlars\\SemVer\\Internal\\Range' => __DIR__ . '/..' . '/vierbergenlars/php-semver/src/vierbergenlars/SemVer/internal.php',
+        'vierbergenlars\\SemVer\\Internal\\SemVer' => __DIR__ . '/..' . '/vierbergenlars/php-semver/src/vierbergenlars/SemVer/internal.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1::$classMap;
 
         }, null, ClassLoader::class);
     }
