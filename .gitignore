@@ -1,4 +1,7 @@
 # App Ignore
 *.log
+cache/
+temp/
+logs/
 src/app.php
 src/database.php

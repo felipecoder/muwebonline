@@ -579,4 +579,32 @@ class DashboardDatabase extends Connection
       return $e->getMessage();
     }
   }
+
+  public function getUserDefault($username)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM MEMB_INFO WHERE memb___id = :memb___id");
+      $data->execute(array(':memb___id' => $username));
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+	public function getAccessPageInfo($name)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_accesspages WHERE name = :name");
+			$data->execute(array(':name' => $name));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
 }

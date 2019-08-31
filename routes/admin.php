@@ -349,6 +349,35 @@ $app->group("/{$patch_admin}", function ($app) {
 		return $crontroller->getUpdate($model, $view, $response, $page);
 	})->setName('update');
 
+	$app->map(['GET', 'POST'], "/accesspages/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postAccessPages($model, $view, $response, $args['page'], $data, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getAccessPages($model, $view, $response, $args['page'], $id);
+		}
+	})->setName('accesspages');
+
 	$app->get("/logout", function ($request, $response, $args) {
 		$crontroller = new AdminController();
 		return $crontroller->getLogout($response);

@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\DashboardController;
+use App\Middlewares\AccesPageMiddeware;
 use App\Middlewares\UserMiddleware;
 use App\Models\DashboardModel;
 use App\Views\View;
@@ -219,4 +220,4 @@ $app->group("/dashboard", function ($app) {
       }
     })->setName('characterschangeclass');
   });
-})->add(new UserMiddleware());
+})->add(new AccesPageMiddeware())->add(new UserMiddleware());

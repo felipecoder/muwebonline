@@ -27,7 +27,7 @@ abstract class Connection
 				$pdo = new PDO($dsn, $user, $pass);
 				break;
 			case 'dblib':
-				$dsn = "{$driver}:host={$host},{$port};dbname={$dbname}";
+				$dsn = "{$driver}:host={$host}:{$port};dbname={$dbname}";
 				$pdo = new PDO($dsn, $user, $pass);
 				break;
 

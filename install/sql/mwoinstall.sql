@@ -21,6 +21,15 @@ CREATE TABLE [dbo].[mwo_accesspanel]
 	[ipaddress] [varchar](MAX) NOT NULL,
 );
 
+IF OBJECT_ID('dbo.mwo_accesspages', 'U') IS NOT NULL DROP TABLE dbo.mwo_accessmwo_accesspagespanel;
+CREATE TABLE [dbo].[mwo_accesspages]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[access] [int] DEFAULT ((0)) NOT NULL,
+	[blocked] [varchar](MAX) DEFAULT NULL,
+);
+
 IF OBJECT_ID('dbo.mwo_menus', 'U') IS NOT NULL DROP TABLE dbo.mwo_menus;
 CREATE TABLE [dbo].[mwo_menus]
 (

@@ -2733,4 +2733,239 @@ class AdminController
 		return $view->getRender($array, 'update', $response);
 		
 	}
+
+	public function getAccessPages(AdminModel $model, ViewAdmin $view, Response $response, $page, $id = NULL)
+	{
+		//Classes
+		$data = new AdminDatabase();
+
+		if ($page == 'list') {
+			//Variables
+			$accesspages = $data->getAccessPages();
+
+			$array = array(
+				'title_page'       => 'Acesso Páginas',
+				'accesspages_data' => $accesspages,
+				'page_type'        => 'list',
+			);
+
+			return $view->getRender($array, 'accesspages', $response);
+		} elseif ($page == 'create') {
+			$array = array(
+				'title_page' => 'Criar Acesso',
+				'page_type'  => 'create',
+			);
+
+			return $view->getRender($array, 'accesspages', $response);
+		} elseif ($page == 'edit') {
+			//Variables
+			$patch_admin     = getenv('DIRADMIN');
+			$accesspage_data = $data->getAccessPageInfo($id);
+
+			if (empty($accesspage_data)) {
+				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				exit();
+			}
+
+			$array = array(
+				'title_page'      => 'Editar Acesso',
+				'accesspage_data' => $accesspage_data,
+				'page_type'       => 'edit',
+			);
+
+			return $view->getRender($array, 'accesspages', $response);
+		} elseif ($page == 'delete') {
+			//Variables
+			$patch_admin     = getenv('DIRADMIN');
+			$accesspage_data = $data->getAccessPageInfo($id);
+
+			if (empty($accesspage_data)) {
+				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				exit();
+			}
+
+			$array = array(
+				'title_page'      => 'Deletar Vip',
+				'accesspage_data' => $accesspage_data,
+				'page_type'       => 'delete',
+			);
+
+			return $view->getRender($array, 'accesspages', $response);
+		} else {
+			//Variables
+			$patch_admin = getenv('DIRADMIN');
+			return $response->withRedirect("/{$patch_admin}/");
+			exit();
+		}
+	}
+
+	public function postAccessPages(AdminModel $model, ViewAdmin $view, Response $response, $page, $post, $id = NULL)
+	{
+		//Classes
+		$data     = new AdminDatabase();
+		$logger   = new ViewLogger('admin');
+		$messages = new ViewMessages();
+
+		//Variables
+		$patch_admin = getenv('DIRADMIN');
+
+		if ($page != 'delete') {
+			if (empty($post['name'])) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Preencha todos os campos'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/accesspages/" . $page);
+				exit();
+			}
+		}
+
+		if ($page == 'create') {
+			$register = $data->insertAccessPage($post);
+			if ($register == 'OK') {
+				$return = array(
+					'error'   => false,
+					'success' => true,
+					'message' => 'Cadastrado com sucesso'
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => 'Cadastrou um novo acesso'
+				);
+
+				$logger->addLoggerInfo("AccessPages", $values);
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => $register
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => $register
+				);
+
+				$logger->addLoggerWarning("AccessPages", $values);
+			}
+
+			$messages->addMessage('response', $return);
+
+			return $response->withRedirect("/{$patch_admin}/accesspages/list");
+		} elseif ($page == 'edit') {
+			$accesspage_data = $data->getAccessPageInfo($id);
+
+			if (empty($accesspage_data)) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Esse acesso não existe'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				exit();
+			}
+
+			$edit = $data->editAccessPage($post, $id);
+			if ($edit == 'OK') {
+				$return = array(
+					'error'   => false,
+					'success' => true,
+					'message' => 'Editado com sucesso'
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => 'Editou um acesso'
+				);
+
+				$logger->addLoggerInfo("AccessPages", $values);
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => $edit
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => $edit
+				);
+
+				$logger->addLoggerWarning("AccessPages", $values);
+			}
+
+			$messages->addMessage('response', $return);
+
+			return $response->withRedirect("/{$patch_admin}/accesspages/edit/" . $id);
+		} elseif ($page == 'delete') {
+			$accesspage_data = $data->getAccessPageInfo($id);
+
+			if (empty($accesspage_data)) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Esse acesso não existe'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				exit();
+			}
+
+			$delete = $data->deleteAccessPage($id);
+			if ($delete == 'OK') {
+				$return = array(
+					'error'   => false,
+					'success' => true,
+					'message' => 'Deletado com sucesso'
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => 'Deletou um acesso'
+				);
+
+				$logger->addLoggerInfo("AccessPages", $values);
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => $delete
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => $delete
+				);
+
+				$logger->addLoggerWarning("AccessPages", $values);
+			}
+
+			$messages->addMessage('response', $return);
+
+			return $response->withRedirect("/{$patch_admin}/accesspages/list");
+		} else {
+			$return = array(
+				'error'   => true,
+				'success' => false,
+				'message' => 'Função não encontrada'
+			);
+
+			$messages->addMessage('response', $return);
+			return $response->withRedirect("/{$patch_admin}/");
+			exit();
+		}
+	}
 }

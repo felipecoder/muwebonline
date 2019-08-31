@@ -283,7 +283,7 @@ $app->map(['GET', 'POST'], "/admin", function ($request, $response, $args) {
           $pdo = new PDO($dsn, $user, $pass);
           break;
         case 'dblib':
-          $dsn = "{$driver}:host={$host},{$port};dbname={$dbname}";
+          $dsn = "{$driver}:host={$host}:{$port};dbname={$dbname}";
           $pdo = new PDO($dsn, $user, $pass);
           break;
 

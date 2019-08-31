@@ -883,4 +883,77 @@ class AdminDatabase extends Connection
 			return $e->getMessage();
 		}
 	}
+
+	public function getAccessPages()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_accesspages");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getAccessPageInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_accesspages WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertAccessPage($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_accesspages ([name], [access], [blocked]) VALUES (:name, :access, :blocked)");
+			$data->execute(array(
+				':name'    => $post['name'],
+				':access'  => $post['access'],
+				':blocked' => $post['blocked'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editAccessPage($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_accesspages SET [name] = :name, [access] = :access, [blocked] = :blocked WHERE ID = :ID");
+			$data->execute(array(
+				':name'    => $post['name'],
+				':access'  => $post['access'],
+				':blocked' => $post['blocked'],
+				':ID'      => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteAccessPage($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_accesspages WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
 }

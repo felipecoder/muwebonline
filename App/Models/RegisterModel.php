@@ -200,7 +200,7 @@ class RegisterModel
    *
    * @return  self
    */
-  public function setIpaddress(string $ipaddress)
+  public function setIpaddress($ipaddress)
   {
     $this->ipaddress = $ipaddress;
 
