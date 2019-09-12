@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="main_site_box">
+  <div class="main_site_box_title">
+    <center>
+      <h1>Comprar Moedas</h1>
+    </center>
+  </div>
+  <div class="main_site_box_content">
+
+    <div class="vips">
+      {% for item in coins %}
+      <div class="price-vip">
+        <h3>{{item.name}}</h3>
+        <p>1 Crédito é o que vale a {{item.price}} {{item.name}}</p>
+        <a href="javascript:void(0)" class="btn" id='j_modal' div-open='ModalCoin{{item.ID}}'>Comprar {{item.name}}</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="main_modal">
+      {% for item in coins %}
+      <div id="ModalCoin{{item.ID}}">
+        <div class="main_modal_content">
+          <a href="#" class="close" id="j_modal_close" div-close='ModalCoin{{item.ID}}'>x</a>
+          <div class="main_modal_content_body">
+            <p align="center">
+              <h2>Comprar {{item.name}}</h2><br>
+              Seu saldo é de: <strong>{{userdata.mwo_credits}}</strong> Créditos<br />
+              <strong>Qual valor em créditos você deseja gastar?</strong><br /><br />
+              <form action='{{link_dir}}dashboard/coins/buys/{{item.ID}}' method='post'>
+                <input name='credits' type='number' id='credits' />
+                <input type="submit" name="Submit" id="button" value="Comprar" />
+              </form>
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+
+  </div>
+</div>
+{% endblock %}

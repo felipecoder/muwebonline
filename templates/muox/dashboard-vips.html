@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="main_site_box">
+  <div class="main_site_box_title">
+    <center>
+      <h1>Comprar Vip</h1>
+    </center>
+  </div>
+  <div class="main_site_box_content">
+
+    <div class="vips">
+      {% for item in vips%}
+      <div class="price-vip">
+        <h3>{{item.name}}</h3>
+        <p> Ajude-nos a crescer!</p>
+        <a href="javascript:void(0)" class="btn" id='j_modal' div-open='ModalVip{{item.ID}}'>Comprar {{item.name}}</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="main_modal">
+      {% for item in vips%}
+      <div id="ModalVip{{item.ID}}">
+        <div class="main_modal_content">
+          <a href="#" class="close" id="j_modal_close" div-close='ModalVip{{item.ID}}'>x</a>
+          <div class="main_modal_content_body">
+            <p align="center">
+              <h2>Comprar {{item.name}}</h2><br>
+              Seu saldo é de: <strong>{{userdata.mwo_credits}}</strong> Créditos<br />
+              <strong>Por quanto tempo você deseja ser {{item.name}}?</strong><br /><br />
+              <form action='{{link_dir}}dashboard/vips/buys/{{item.ID}}' method='post'>
+                {% set i= 0 %}
+                {% for prices in item.prices%}
+                <div>
+                  <input name='days' type='radio' id='vip{{item.ID}}{{i}}' value='{{item.days[i]}}' />
+                  <label for='vip{{item.ID}}{{i}}' class="mt-10"> {{item.name}} {{item.days[i]}} dias:
+                    <strong>{{item.prices[i]}}</strong>
+                    Créditos</label>
+                </div>
+                {% set i= i+1 %}
+                {% endfor %}
+                <br>
+                <input type="submit" name="Submit" id="button" value="Comprar" />
+              </form>
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+
+  </div>
+</div>
+{% endblock %}

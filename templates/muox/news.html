@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="main_site_box">
+  <div class="main_site_box_title">
+    <h1>Notícias</h1>
+  </div>
+  <div class="main_site_box_content">
+    <p>
+      <div class="main_site_box">
+        <div class="main_site_box_title">
+          <h1><strong><span style="font-family: verdana, geneva; font-size: medium;">[{{new_data.tag}}]
+                {{new_data.title}}</span></strong>
+          </h1>
+        </div>
+        <div class="main_site_box_content">
+          <img src="{{new_data.image}}" alt="{{new_data.title}}">
+          {{new_data.content| raw}}
+        </div>
+      </div>
+    </p>
+  </div>
+</div>
+
+{% endblock %}

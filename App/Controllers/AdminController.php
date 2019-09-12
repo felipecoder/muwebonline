@@ -2666,25 +2666,24 @@ class AdminController
 		//Classes
 		$data = new AdminDatabase();
 		//Variables
-		$update = new AutoUpdate(getenv('DIRECTORY_ROOT').getenv('DIRECTORY_SEPARATOR').'temp', getenv('DIRECTORY_ROOT').getenv('DIRECTORY_SEPARATOR'), 60);
+		$update = new AutoUpdate(getenv('DIRECTORY_ROOT') . getenv('DIRECTORY_SEPARATOR') . 'temp', getenv('DIRECTORY_ROOT') . getenv('DIRECTORY_SEPARATOR'), 60);
 		$update->setCurrentVersion(getenv('VERSIO_MWO'));
 		$update->setUpdateUrl(getenv('SERVER_UPDATE'));
 		$update->setUpdateFile("update.ini");
 		$update->addLogHandler(new \Monolog\Handler\StreamHandler(getenv('DIRLOGS') . 'update.log'));
-		$update->setCache(new \Desarrolla2\Cache\Adapter\File(getenv('DIRECTORY_ROOT').getenv('DIRECTORY_SEPARATOR').'cache/update'), 3600);
+		$update->setCache(new \Desarrolla2\Cache\Adapter\File(getenv('DIRECTORY_ROOT') . getenv('DIRECTORY_SEPARATOR') . 'cache/update'), 3600);
 
 		if ($page == 'install') {
 			$update->onEachUpdateFinish(function ($version) {
-				$instal = __DIR__ ."../../execute.php";
+				$instal = __DIR__ . "../../execute.php";
 				if (file_exists($instal)) {
-						try {
-								include $instal;
-						} catch (Exception $ex) {
-						}
-						unlink($instal);
+					try {
+						include $instal;
+					} catch (Exception $ex) { }
+					unlink($instal);
 				}
 			});
-			
+
 			$result = $update->update();
 
 			if ($result === true) {
@@ -2693,45 +2692,43 @@ class AdminController
 					'success' => true,
 					'message' => 'Atualização realizada com sucesso'
 				);
-			}else{
+			} else {
 				$return = array(
 					'error' => true,
 					'success' => false,
-					'message' => 'Error atualização: '.$result.''
+					'message' => 'Error atualização: ' . $result . ''
 				);
 			}
-
 		}
-		
-		$return = (!isset($return)) ? NULL : $return ;
-		
-		if ($update->checkUpdate() === false){
+
+		$return = (!isset($return)) ? NULL : $return;
+
+		if ($update->checkUpdate() === false) {
 			$status   = 0;
 			$version  = NULL;
 			$versions = NULL;
-		}elseif ($update->newVersionAvailable()){
+		} elseif ($update->newVersionAvailable()) {
 			$status   = 2;
 			$version  = $update->getLatestVersion();
 			$versions = array_map(function ($version) {
 				return (string) $version;
 			}, $update->getVersionsToUpdate());
-		}else{
+		} else {
 			$status   = 1;
 			$version  = NULL;
-			$versions = NULL;				
+			$versions = NULL;
 		}
 
 		$array = array(
-			'title_page'    => 'Atualizações',
-			'status'        => $status,
-			'version'       => $version,
-			'versions'      => $versions,
-			'atuacl_verion' => getenv('VERSIO_MWO'),
-			'return'        => $return,
+			'title_page'     => 'Atualizações',
+			'status'         => $status,
+			'version'        => $version,
+			'versions'       => $versions,
+			'current_verion' => getenv('VERSIO_MWO'),
+			'return'         => $return,
 		);
 
 		return $view->getRender($array, 'update', $response);
-		
 	}
 
 	public function getAccessPages(AdminModel $model, ViewAdmin $view, Response $response, $page, $id = NULL)
@@ -2967,5 +2964,328 @@ class AdminController
 			return $response->withRedirect("/{$patch_admin}/");
 			exit();
 		}
+	}
+
+	public function getSlides(AdminModel $model, ViewAdmin $view, Response $response, $page, $id = NULL)
+	{
+		//Classes
+		$data = new AdminDatabase();
+
+		if ($page == 'list') {
+			//Variables
+			$slides = $data->getSlides();
+
+			$array = array(
+				'title_page'  => 'Slides',
+				'slides_data' => $slides,
+				'page_type'   => 'list',
+			);
+
+			return $view->getRender($array, 'slides', $response);
+		} elseif ($page == 'create') {
+			$array = array(
+				'title_page' => 'Criar Slide',
+				'page_type'  => 'create',
+			);
+
+			return $view->getRender($array, 'slides', $response);
+		} elseif ($page == 'edit') {
+			//Variables
+			$patch_admin = getenv('DIRADMIN');
+			$slide_data   = $data->getSlideInfo($id);
+
+			if (empty($slide_data)) {
+				return $response->withRedirect("/{$patch_admin}/slides/list");
+				exit();
+			}
+
+			$array = array(
+				'title_page' => 'Editar Slide',
+				'slide_data'  => $slide_data,
+				'page_type'  => 'edit',
+			);
+
+			return $view->getRender($array, 'slides', $response);
+		} elseif ($page == 'delete') {
+			//Variables
+			$patch_admin = getenv('DIRADMIN');
+			$slide_data   = $data->getSlideInfo($id);
+
+			if (empty($slide_data)) {
+				return $response->withRedirect("/{$patch_admin}/slides/list");
+				exit();
+			}
+
+			$array = array(
+				'title_page' => 'Deletar Slide',
+				'slide_data' => $slide_data,
+				'page_type'  => 'delete',
+			);
+
+			return $view->getRender($array, 'slides', $response);
+		} else {
+			//Variables
+			$patch_admin = getenv('DIRADMIN');
+			return $response->withRedirect("/{$patch_admin}/");
+			exit();
+		}
+	}
+
+	public function postSlides(AdminModel $model, ViewAdmin $view, Response $response, $page, $post, $id = NULL)
+	{
+		//Classes
+		$data     = new AdminDatabase();
+		$logger   = new ViewLogger('admin');
+		$messages = new ViewMessages();
+
+		//Variables
+		$patch_admin = getenv('DIRADMIN');
+
+		if ($page != 'delete') {
+			if (empty($post['name']) or empty($post['link']) or empty($post['image'])) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Preencha todos os campos'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/slides/create");
+				exit();
+			}
+		}
+
+		if ($page == 'create') {
+			$register = $data->insertSlide($post);
+			if ($register == 'OK') {
+				$return = array(
+					'error'   => false,
+					'success' => true,
+					'message' => 'Cadastrado com sucesso'
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => 'Cadastrou um novo slide'
+				);
+
+				$logger->addLoggerInfo("Slides", $values);
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => $register
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => $register
+				);
+
+				$logger->addLoggerWarning("Slides", $values);
+			}
+
+			$messages->addMessage('response', $return);
+
+			return $response->withRedirect("/{$patch_admin}/slides/list");
+		} elseif ($page == 'edit') {
+			$slide_data = $data->getSlideInfo($id);
+
+			if (empty($slide_data)) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Esse slide não existe'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/slides/edit/" . $id);
+				exit();
+			}
+
+			$edit = $data->editSlide($post, $id);
+			if ($edit == 'OK') {
+				$return = array(
+					'error'   => false,
+					'success' => true,
+					'message' => 'Editado com sucesso'
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => 'Editou um slide'
+				);
+
+				$logger->addLoggerInfo("Slides", $values);
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => $register
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => $register
+				);
+
+				$logger->addLoggerWarning("Slides", $values);
+			}
+
+			$messages->addMessage('response', $return);
+
+			return $response->withRedirect("/{$patch_admin}/slides/edit/" . $id);
+		} elseif ($page == 'delete') {
+			$slide_data = $data->getSlideInfo($id);
+
+			if (empty($slide_data)) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Esse slide não existe'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/slides/edit/" . $id);
+				exit();
+			}
+
+			$delete = $data->deleteSlide($id);
+			if ($delete == 'OK') {
+				$return = array(
+					'error'   => false,
+					'success' => true,
+					'message' => 'Deletado com sucesso'
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => 'Deletou um slide'
+				);
+
+				$logger->addLoggerInfo("Slides", $values);
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => $register
+				);
+
+				$values = array(
+					'username'  => $_SESSION['usernameadmin'],
+					'ipaddress' => $model->getIpaddress(),
+					'message'   => $register
+				);
+
+				$logger->addLoggerWarning("Slides", $values);
+			}
+
+			$messages->addMessage('response', $return);
+
+			return $response->withRedirect("/{$patch_admin}/slides/list");
+		} else {
+			$return = array(
+				'error'   => true,
+				'success' => false,
+				'message' => 'Função não encontrada'
+			);
+
+			$messages->addMessage('response', $return);
+			return $response->withRedirect("/{$patch_admin}/");
+			exit();
+		}
+	}
+
+	public function getKingOfMu(AdminModel $model, ViewAdmin $view, Response $response)
+	{
+		//Classes
+		$data = new AdminDatabase();
+
+		//Variables
+		$kingofmu_data = $data->getKingOfMu();
+
+		$array = array(
+			'title_page'   => 'Editar Rei do Mu',
+			'kingofmu_data' => $kingofmu_data,
+		);
+
+		return $view->getRender($array, 'kingofmu', $response);
+	}
+
+	public function postKingOfMu(AdminModel $model, ViewAdmin $view, Response $response, $post)
+	{
+		//Classes
+		$data     = new AdminDatabase();
+		$logger   = new ViewLogger('admin');
+		$messages = new ViewMessages();
+
+		//Variables
+		$patch_admin = getenv('DIRADMIN');
+
+		if ($post['mode'] == 'manual') {
+			if (empty($post['database']) or empty($post['table']) or empty($post['character'])) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Preencha todos os campos'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/kingofmu");
+				exit();
+			}
+		} else {
+			if (empty($post['database']) or empty($post['table']) or empty($post['column']) or empty($post['custom']) or empty($post['orderby'])) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Preencha todos os campos'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("/{$patch_admin}/kingofmu");
+				exit();
+			}
+		}
+
+		$edit = $data->editKingOfMu($post);
+		if ($edit == 'OK') {
+			$return = array(
+				'error'   => false,
+				'success' => true,
+				'message' => 'Editado com sucesso'
+			);
+
+			$values = array(
+				'username'  => $_SESSION['usernameadmin'],
+				'ipaddress' => $model->getIpaddress(),
+				'message'   => 'Editou o rei do mu'
+			);
+
+			$logger->addLoggerInfo("KingOfMu", $values);
+		} else {
+			$return = array(
+				'error'   => true,
+				'success' => false,
+				'message' => $edit
+			);
+
+			$values = array(
+				'username'  => $_SESSION['usernameadmin'],
+				'ipaddress' => $model->getIpaddress(),
+				'message'   => $edit
+			);
+
+			$logger->addLoggerWarning("KingOfMu", $values);
+		}
+
+		$messages->addMessage('response', $return);
+
+		return $response->withRedirect("/{$patch_admin}/kingofmu");
 	}
 }

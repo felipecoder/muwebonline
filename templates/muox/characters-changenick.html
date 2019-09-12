@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="main_site_box">
+  <div class="main_site_box_title">
+    <h1>Alterar Nome</h1>
+  </div>
+  <div class="main_site_box_content">
+    {% for item in return %}
+    {% if item.error %}
+    <div id="feedback"
+      style="background:#FF6; color:#F00; font-size:12px; width:100%; font-weight:bold; margin:0 auto 15px auto; line-height:1.5;">
+      {{ item.message }}
+    </div>
+    {%elseif item.success%}
+    <div id="feedback"
+      style="background:#fff; color:rgb(0, 255, 0); font-size:12px; width:100%; font-weight:bold; margin:0 auto 15px auto; line-height:1.5;">
+      {{ item.message }}
+    </div>
+    {%endif%}
+    {% endfor %}
+    <form action="{{link_dir}}dashboard/characters/changenick" method="post" name="reg" id="reg">
+      <table width="100%" border="0" align="center" cellpadding="3" cellspacing="5">
+        <tbody>
+          <tr>
+            <td align="right">Personagem:</td>
+            <td align="left">
+              <select name="character" id="character">
+                {% for item in characters_list %}
+                <option value="{{ item.Name }}">{{ item.Name }}</option>
+                {% endfor %}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right">Novo Nome:</td>
+            <td align="left">
+              <input type="text" id="nick" name="nick" placeholder="Nome">
+            </td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td align="left">
+              <input type="submit" name="button" id="button" value="Alterar">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <p align="center"><a href="/dashboard/home">Voltar ao Painel de Usuário</a></p>
+  </div>
+</div>
+
+{% endblock %}

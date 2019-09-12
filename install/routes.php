@@ -294,9 +294,9 @@ $app->map(['GET', 'POST'], "/admin", function ($request, $response, $args) {
       }
 
       $data = $pdo->prepare("INSERT INTO mwo_accesspanel (username,password,access, ipaddress) VALUES ( :username, :password, '1', :ipaddress)");
-      $data->bindParam(':username', $username);
-      $data->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
-      $data->bindParam(':ipaddress', $ipaddress);
+      $data->bindValue(':username', $username);
+      $data->bindValue(':password', password_hash($password, PASSWORD_DEFAULT));
+      $data->bindValue(':ipaddress', $ipaddress);
       if ($data->execute()) {
         return $response->withRedirect(base_path() . 'index.php/success', 301);
         exit();

@@ -1,0 +1,245 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Menus</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'create' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Criar Menu</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/menus/create" method="post">
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="label" class="control-label col-md-3 col-sm-2 col-xs-12">Texto</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="label" class="form-control col-md-7 col-xs-12" id="label" placeholder="Texto">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="link" class="control-label col-md-3 col-sm-2 col-xs-12">Link</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="link" class="form-control col-md-7 col-xs-12" id="link" placeholder="Link" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="control-label col-md-3 col-sm-2 col-xs-12">Parente</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control select2" id="parentid" name="parentid" required>
+                    <option value="0">Nenhum</option>
+                    {% for item in menus_data %}
+                    <option value="{{ item.ID }}">{{ item.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="control-label col-md-3 col-sm-2 col-xs-12">Status</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="status" name="status" required>
+                    <option value="1">Ativado</option>
+                    <option value="0">Desativado</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'edit' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Editar Menu</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+            action="{{link_dir}}{{link_admin}}/menus/edit/{{ menu_data.ID }}" method="post">
+            <div class="form-group">
+              <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                  value="{{ menu_data.name }}" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="label" class="control-label col-md-3 col-sm-2 col-xs-12">Texto</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="label" class="form-control col-md-7 col-xs-12" id="label" placeholder="Texto"
+                  value="{{ menu_data.label }}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="link" class="control-label col-md-3 col-sm-2 col-xs-12">Link</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="link" class="form-control col-md-7 col-xs-12" id="link" placeholder="Link"
+                  value="{{ menu_data.link }}" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="control-label col-md-3 col-sm-2 col-xs-12">Parente</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <select class="form-control select2" id="parentid" name="parentid" required>
+                  <option value="0" {%if menu_data.parentid == 0%}selected{%endif%}>Nenhum</option>
+                  {% for item in menus_data %}
+                  <option value="{{ item.ID }}" {%if menu_data.parentid == item.ID%}selected{%endif%}>{{ item.name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputEmail3" class="control-label col-md-3 col-sm-2 col-xs-12">Status</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <select class="form-control col-md-7 col-xs-12" id="status" name="status" required>
+                  <option value="1" {%if menu_data.status == 1%}selected{%endif%}>Ativado</option>
+                  <option value="0" {%if menu_data.status == 0%}selected{%endif%}>Desativado</option>
+                </select>
+              </div>
+            </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Editar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'delete' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Deletar Menu</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+            action="{{link_dir}}{{link_admin}}/menus/delete/{{ menu_data.ID }}" method="post">
+            <div class="form-group">
+              <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                  value="{{ menu_data.name }}" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="link" class="control-label col-md-3 col-sm-2 col-xs-12">Link</label>
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="link" class="form-control col-md-7 col-xs-12" id="link" placeholder="Link"
+                  value="{{ menu_data.link }}" disabled>
+              </div>
+            </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <a href="/{{link_admin}}/menus/list" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-primary pull-right">Deletar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'list' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Todos os Menus</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap"
+              cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Texto</th>
+                    <th>Link</th>
+                    <th>Parente</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for item in menus_data %}
+                  <tr>
+                    <td>{{ item.ID }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.label }}</td>
+                    <td>{{ item.link }}</td>
+                    <td>{{ item.parentid}}</td>
+                    <td>{{ item.status }}</td>
+                    <td>
+                      <a href="/{{link_admin}}/menus/edit/{{ item.ID }}" class="btn btn-sm btn-primary btn-flat">Editar</a>
+                      <a href="/{{link_admin}}/menus/delete/{{ item.ID }}"
+                        class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {%endif%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /page content -->
+
+{% endblock %}

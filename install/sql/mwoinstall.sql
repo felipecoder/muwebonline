@@ -134,6 +134,39 @@ CREATE TABLE [dbo].[mwo_tickets_answers]
 	[date] DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 );
 
+IF OBJECT_ID('dbo.mwo_slides', 'U') IS NOT NULL DROP TABLE dbo.mwo_slides;
+CREATE TABLE [dbo].[mwo_slides]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[label] [varchar](MAX) DEFAULT NULL,
+	[link] [varchar](MAX) NOT NULL,
+	[image] [varchar](MAX) NOT NULL,
+	[status] [int] DEFAULT ((1)) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_kingofmu', 'U') IS NOT NULL DROP TABLE dbo.mwo_kingofmu;
+CREATE TABLE [dbo].[mwo_kingofmu]
+(
+	[database] [varchar](MAX) NOT NULL,
+	[table] [varchar](MAX) NOT NULL,
+	[mode] [varchar](MAX) NOT NULL,
+	[custom] [varchar](MAX) DEFAULT NULL,
+	[orderby] [varchar](MAX) DEFAULT NULL,
+	[character] [varchar](MAX) DEFAULT NULL,
+	[wins] [int] DEFAULT ((0)) NOT NULL,
+);
+
+-- Insert rows into table 'mwo_kingofmu'
+INSERT INTO mwo_kingofmu
+	( -- columns to insert data into
+	[database], [table], [mode], [character], [wins]
+	)
+VALUES
+	( -- first row: values for the columns in the list above
+		'MuOnline', 'Character', 'manual', 'MuWebOnline', 1
+);
+
 ALTER TABLE dbo.MEMB_INFO ADD [mwo_credits] [int] NOT NULL DEFAULT 0;
 ALTER TABLE dbo.MEMB_INFO ADD [mwo_token] [varchar](MAX)  DEFAULT NULL;
 
@@ -147,7 +180,7 @@ VALUES
 		'Detalhes', 'details', '[{"name":"SITE_TITLE","label":"T\u00edtulo do site","value":"MuWebOnline"},{"name":"SITE_SIGLA","label":"Sigla do servidor","value":"MWO"},{"name":"SERVER_NAME","label":"Nome do servidor","value":"MuWebOnline"},{"name":"SERVER_SLOGAN","label":"Slogan do servidor","value":"Fazendo a diferen\u00e7a"},{"name":"SERVER_VERSION","label":"Vers\u00e3o do servidor","value":"1.05D Season 6"},{"name":"SERVER_DROP","label":"Drop do servidor","value":"35%"},{"name":"SERVER_XP","label":"XP do servidor","value":"50x~150x"},{"name":"SERVER_BUGBLESS","label":"Bugbless status","value":"Offline"}]'
 ),
 	( -- first row: values for the columns in the list above
-		'Templates', 'templates', '[{"name":"TEMPLATE_SITE","label":"Template do site","value":"youplay"},{"name":"TEMPLATE_ADMIN","label":"Template do painel admin","value":"adminlte"},{"name":"TEMPLATE_EMAILS","label":"Template dos emails","value":"emails"},{"name":"TEMPLATE_CACHE","label":"Ativar cache dos templates","value":"false"},{"name":"TEMPLATE_DEBUG","label":"Ativar errors dos templates","value":"true"}]'
+		'Templates', 'templates', '[{"name":"TEMPLATE_SITE","label":"Template do site","value":"youplay"},{"name":"TEMPLATE_ADMIN","label":"Template do painel admin","value":"gentelella"},{"name":"TEMPLATE_EMAILS","label":"Template dos emails","value":"emails"},{"name":"TEMPLATE_CACHE","label":"Ativar cache dos templates","value":"false"},{"name":"TEMPLATE_DEBUG","label":"Ativar errors dos templates","value":"true"}]'
 ),
 	( -- first row: values for the columns in the list above
 		'reCaptcha', 'captcha', '[{"name":"CAPTCHA_SECRET","label":"Chave Secreta do Captcha","value":"6LcZ9a8UAAAAAHIXoLjkZbQJV8Z8WccjgxP2WKgz"},{"name":"CAPTCHA_SITEKEY","label":"Chave Site do Captcha","value":"6LcZ9a8UAAAAAOZaYkSorl0jJ2P7YckwLMP_eaFx"}]'
@@ -181,4 +214,7 @@ VALUES
 ),
 	( -- first row: values for the columns in the list above
 		'Alterar Classe', 'changeclass', '[{"name":"PRICEZEN","label":"Pre\u00e7o zen por vip","value":"2000000, 1500000, 1000000, 1000000"},{"name":"RESET_QUESTS","label":"Resetar Quest ao trocar de classe","value":"true"},{"name":"RESET_SKILLS","label":"Resetar Skills ao trocar de classe","value":"true"}]'
+),
+	( -- first row: values for the columns in the list above
+		'Social Links', 'sociallinks', '[{"name":"FACEBOOK","label":"Facebook","value":"Meu Facebook"},{"name":"TWITTER","label":"Twitter","value":"Meu Twitter"},{"name":"INSTAGRAM","label":"Instagram","value":"Meu Instagram"},{"name":"DISCORD","label":"Discord","value":"Meu Discord"},{"name":"YOUTUBE","label":"YouTube","value":"Meu YouTube"},{"name":"WHATSAPP","label":"WhastApp","value":"Meu WhastApp"},{"name":"TEAMSPEAK","label":"TeamSpeak","value":"Meu TeamSpeak"}]'
 );

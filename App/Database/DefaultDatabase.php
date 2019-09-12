@@ -154,4 +154,60 @@ class DefaultDatabase extends Connection
       return $e->getMessage();
     }
   }
+
+  public function getSlides()
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM mwo_slides");
+      $data->execute();
+
+      $rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+      return $rows;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getKingOfMu()
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM mwo_kingofmu");
+      $data->execute();
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getCharacterKingManual($database, $table, $name)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM $database.dbo.$table WHERE Name = :name");
+      $data->execute(array(':name' => $name));
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getCharacterKingAuto($database, $table, $custom, $orderby)
+  {
+    try {
+      $data = $this->db->prepare("SELECT TOP 1 $custom FROM $database.dbo.$table ORDER BY $orderby");
+      $data->execute();
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
 }

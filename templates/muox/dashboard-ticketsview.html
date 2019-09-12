@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="main_site_box">
+  <div class="main_site_box_title">
+    <h1>Ver Ticket</h1>
+  </div>
+  <div class="main_site_box_content">
+    <table width="100%" border="0" align="center" cellpadding="3" cellspacing="5">
+      <tbody>
+        <tr>
+          <td align="right">Assunto:</td>
+          <td align="left">
+            {{ ticket_data.subject }}
+          </td>
+        </tr>
+        <tr>
+          <td align="right">Mensagem:</td>
+          <td align="left">
+            {{ ticket_data.message }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p align="center"><a href="/dashboard/home">Voltar ao Painel de Usuário</a></p>
+  </div>
+</div>
+
+{% endblock %}

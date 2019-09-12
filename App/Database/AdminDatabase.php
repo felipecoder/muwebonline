@@ -956,4 +956,115 @@ class AdminDatabase extends Connection
 			return $e->getMessage();
 		}
 	}
+
+	public function getSlides()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_slides");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getSlideInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_slides WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertSlide($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_slides (name, label, link, image, status) VALUES (:name, :label, :link, :image, :status)");
+			$data->execute(array(
+				':name'   => $post['name'],
+				':label'  => (empty($post['label'])) ? NULL : $post['label'],
+				':link'   => $post['link'],
+				':image'  => $post['image'],
+				':status' => $post['status'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editSlide($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_slides SET name = :name, label = :label, link = :link, image = :image, status = :status WHERE ID = :ID");
+			$data->execute(array(
+				':name'   => $post['name'],
+				':label'  => (empty($post['label'])) ? NULL : $post['label'],
+				':link'   => $post['link'],
+				':image'  => $post['image'],
+				':status' => $post['status'],
+				':ID'     => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteSlide($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_slides WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getKingOfMu()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_kingofmu");
+			$data->execute();
+
+			$row = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $row;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editKingOfMu($post)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_kingofmu SET [database] = :database, [table] = :table, [mode] = :mode, [custom] = :custom, [orderby] = :orderby, [character] = :character, [wins] = :wins");
+			$data->execute(array(
+				':database'  => $post['database'],
+				':table'     => $post['table'],
+				':mode'      => (empty($post['mode'])) ? 'auto' : $post['mode'],
+				':custom'    => (empty($post['custom'])) ? NULL : $post['custom'],
+				':orderby'   => (empty($post['orderby'])) ? NULL : $post['orderby'],
+				':character' => (empty($post['character'])) ? NULL : $post['character'],
+				':wins'      => (empty($post['wins'])) ? NULL : $post['wins'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
 }

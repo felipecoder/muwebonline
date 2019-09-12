@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="main_site_box">
+  <div class="main_site_box_title">
+    <h1>{{page_data.title}}</h1>
+  </div>
+  <div class="main_site_box_content">
+    {{page_data.content| raw}}
+  </div>
+</div>
+
+{% endblock %}

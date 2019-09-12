@@ -67,9 +67,13 @@ class View
 		$config_details = json_decode($config_details, true);
 		$config_captcha = $data->getConfig('captcha');
 		$config_captcha = json_decode($config_captcha, true);
+		$social_link    = $data->getConfig('sociallinks');
+		$social_link    = json_decode($social_link, true);
 		$rankings       = $data->getRankings();
 		$events         = $data->getEvents();
 		$coins          = $data->getCoinsConfigs();
+		$slides         = $data->getSlides();
+		$getkingofmu    = $data->getKingOfMu();
 
 		if (isset($messages['response'])) {
 			$return = $messages['response'];
@@ -134,6 +138,16 @@ class View
 			$coins_return = NULL;
 		}
 
+		if ($getkingofmu['mode'] == 'manual') {
+			$kingofmu = $data->getCharacterKingManual($getkingofmu['database'], $getkingofmu['table'], $getkingofmu['character']);
+			$wins = array('wins' => $getkingofmu['wins']);
+			$kingofmu = array_merge($kingofmu, $wins);
+		} else {
+			$kingofmu = $data->getCharacterKingAuto($getkingofmu['database'], $getkingofmu['table'], $getkingofmu['custom'], $getkingofmu['orderby']);
+			$wins = array('wins' => $getkingofmu['wins']);
+			$kingofmu = array_merge($kingofmu, $wins);
+		}
+
 		$values_default = array(
 			'link_site'       => getenv('SITE_LINK'),
 			'link_dir'        => getenv('DIR'),
@@ -155,6 +169,15 @@ class View
 			'coins_user'      => $coins_return,
 			'events_json'     => json_encode($events_return),
 			'events_array'    => $events_return,
+			'facebook_link'   => $social_link[0]['value'],
+			'twitter_link'    => $social_link[1]['value'],
+			'instagram_link'  => $social_link[2]['value'],
+			'discord_link'    => $social_link[3]['value'],
+			'youtube_link'    => $social_link[4]['value'],
+			'whatsapp_link'   => $social_link[5]['value'],
+			'teamspeak_link'  => $social_link[6]['value'],
+			'slides'          => $slides,
+			'kingofmu'        => $kingofmu,
 			'return'          => $return,
 		);
 

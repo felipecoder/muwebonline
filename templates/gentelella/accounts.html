@@ -1,0 +1,214 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Contas</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'edit' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Editar Conta</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/accounts/edit/{{ account_data.memb_guid }}" method="post">
+              <div class="form-group">
+                <label for="login" class="control-label col-md-3 col-sm-2 col-xs-12">Login</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="login" class="form-control col-md-7 col-xs-12" id="login" placeholder="Login"
+                    value="{{ account_data.memb___id }}" disabeld>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="memb_name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="memb_name" class="form-control col-md-7 col-xs-12" id="memb_name"
+                    placeholder="Nome" value="{{ account_data.memb_name }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="memb__pwd" class="control-label col-md-3 col-sm-2 col-xs-12">Senha</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="memb__pwd" class="form-control col-md-7 col-xs-12" id="memb__pwd"
+                    placeholder="Senha" value="{{ account_data.memb__pwd }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mail_addr" class="control-label col-md-3 col-sm-2 col-xs-12">Email</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="email" name="mail_addr" class="form-control col-md-7 col-xs-12" id="mail_addr"
+                    placeholder="Email" value="{{ account_data.mail_addr }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="tel__numb" class="control-label col-md-3 col-sm-2 col-xs-12">Telefone</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="tel__numb" class="form-control col-md-7 col-xs-12" id="tel__numb"
+                    placeholder="Telefone" value="{{ account_data.tel__numb }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mwo_credits" class="control-label col-md-3 col-sm-2 col-xs-12">Créditos</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="mwo_credits" class="form-control col-md-7 col-xs-12" id="mwo_credits"
+                    placeholder="Créditos" value="{{ account_data.mwo_credits }}" required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Editar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'delete' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Deletar Conta</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/accounts/delete/{{ account_data.memb_guid }}" method="post">
+              <div class="form-group">
+                <label for="login" class="control-label col-md-3 col-sm-2 col-xs-12">Login</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="login" class="form-control col-md-7 col-xs-12" id="login" placeholder="Login"
+                    value="{{ account_data.memb___id }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="memb_name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="memb_name" class="form-control col-md-7 col-xs-12" id="memb_name"
+                    placeholder="Nome" value="{{ account_data.memb_name }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="memb__pwd" class="control-label col-md-3 col-sm-2 col-xs-12">Senha</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="memb__pwd" class="form-control col-md-7 col-xs-12" id="memb__pwd"
+                    placeholder="Senha" value="{{ account_data.memb__pwd }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mail_addr" class="control-label col-md-3 col-sm-2 col-xs-12">Email</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="email" name="mail_addr" class="form-control col-md-7 col-xs-12" id="mail_addr"
+                    placeholder="Email" value="{{ account_data.mail_addr }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="tel__numb" class="control-label col-md-3 col-sm-2 col-xs-12">Telefone</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="tel__numb" class="form-control col-md-7 col-xs-12" id="tel__numb"
+                    placeholder="Telefone" value="{{ account_data.tel__numb }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="mwo_credits" class="control-label col-md-3 col-sm-2 col-xs-12">Créditos</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="mwo_credits" class="form-control col-md-7 col-xs-12" id="mwo_credits"
+                    placeholder="Créditos" value="{{ account_data.mwo_credits }}" disabled>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <a href="/{{link_admin}}/accounts/list" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-primary pull-right">Deletar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'list' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Todas as Contas</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap"
+              cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Login</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Créditos</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in accounts_data %}
+                <tr>
+                  <td>{{ item.memb_guid }}</td>
+                  <td>{{ item.memb___id }}</td>
+                  <td>{{ item.memb_name }}</td>
+                  <td>{{ item.mail_addr }}</td>
+                  <td>{{ item.tel__numb }}</td>
+                  <td>{{ item.mwo_credits }}</td>
+                  <td>
+                    <a href="/{{link_admin}}/accounts/edit/{{ item.memb_guid }}"
+                      class="btn btn-sm btn-primary btn-flat">Editar</a>
+                    <a href="/{{link_admin}}/accounts/delete/{{ item.memb_guid }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {%endif%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /page content -->
+
+{% endblock %}

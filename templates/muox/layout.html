@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <base href="/templates/muox/">
+  <title>{{title_site}} - {{title_page}}</title>
+  <meta name="description" content="{{ server_slogan }}" />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="author" href="https://muwebonline.com/" />
+  <link rel="canonical" href="{{link_site}}" />
+
+  <meta itemprop="name" content="{{ server_name }}" />
+  <meta itemprop="description" content="{{ server_slogan }}" />
+  <meta itemprop="url" content="{{link_site}}" />
+
+  <!-- FACEBOOK TAGS SEO -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ server_name }}" />
+  <meta property="og:description" content="{{ server_slogan }}" />
+  <meta property="og:url" content="{{ link_site }}" />
+  <meta property="og:site_name" content="{{ server_name }}" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="fb:app_id" content="" />
+  <meta property="article:author" content="https://muwebonline.com" />
+  <meta property="article:publisher" content="{{ facebook_link }}" />
+
+  <!-- Styles CSS -->
+  <link rel="stylesheet" href="assets/stylesheets/muox.css">
+  <link rel="stylesheet" href="assets/shadowbox/shadowbox.css">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+
+  <!-- Scripts JS -->
+  <script src="assets/javascripts/jquery.min.js"></script>
+  <script src="assets/javascripts/muox.js?v=new"></script>
+  <script src="assets/shadowbox/shadowbox.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+  <script src="assets/javascripts/muwebonline.js"></script>
+  <script>
+    Shadowbox.init();
+  </script>
+</head>
+
+<body>
+  <!-- social fixo lateral -->
+  <div class="main_social">
+    <ul>
+      <li>
+        <a class='cliente' href="/downloads" rel="nofollow"></a>
+        <p>Download</p>
+      </li>
+      <li>
+        <a class='facebook' href="{{facebook_link}}" target="_blank" rel="nofollow"></a>
+        <p>Facebook</p>
+      </li>
+      <li>
+        <a class='youtube' href="{{youtube_link}}" target="_blank" rel="nofollow"></a>
+        <p>Youtube</p>
+      </li>
+      <li>
+        <a class='service' href="{{whatsapp_link}}" target="_blank" rel="nofollow"></a>
+        <p>WhatsApp</p>
+      </li>
+      <li>
+        <a class='forum' href="{{discord_link}}" target="_blank" rel="nofollow"></a>
+        <p>Discord</p>
+      </li>
+      <li>
+        <a class='twitter' href="{{twitter_link}}" rel="nofollow"></a>
+        <p>Twitter</p>
+      </li>
+    </ul>
+  </div>
+  <!---->
+
+  <div class="bg_bottom">
+    <div class="bg_top">
+      <div class="container main_header">
+        <div class="content">
+          <div class="flexbox">
+            <div class="main_header_logo">
+              <a href="" target="_blank">
+              </a>
+            </div><!-- /logo marca -->
+            <ul class="main_header_nav">
+              {% for item in menus %}
+              {% if item.status == 1 %}
+              <li><a href="{{ item.link }}">{{ item.name }}</a></li>
+              {% endif %}
+              {% endfor %}
+            </ul><!-- /main_header_nav Principal -->
+          </div><!-- /flexbox -->
+        </div><!-- /content -->
+      </div><!-- /main_header -->
+
+      <div class="main_site">
+        <div class="container">
+          <div class="content main_site_flex">
+            <div class="main_site_left">
+              <div class="main_playgame">
+                <a href="/register"></a>
+              </div><!-- /main_playgame -->
+
+              <div class="content">
+                <div class="main_login">
+                  {%if user_logged_in %}
+                  <p style="margin-top:0px; padding-top:0px;">
+                    &nbsp;<strong>Olá, {{ userdata.memb_name }}!</strong><br>
+                    <br>&nbsp;<a href="/dashboard/home">Minha Conta</a><br>
+                    <br>&nbsp;<a href="/dashboard/settings">Configurações</a><br>
+                    <br>&nbsp;<a href="/dashboard/tickets">Meus Tickets</a><br>
+                    <br>&nbsp;<a href="/dashboard/vips">Seja VIP</a><br>
+                    <br>&nbsp;<a href="/dashboard/coins">Coins</a><br>
+                  </p>
+                  <div align="center"><a href="/logout" class="btn">Deslogar do Painel</a></div>
+                  {%else%}
+                  <form action="{{link_dir}}login" method="post">
+                    <div class="input">
+                      <input name="username" type="text" id="username" maxlength="10" placeholder='Login' />
+                      <input name="password" type="password" id="password" placeholder='Senha' />
+                    </div>
+                    <button type="submit">Efetuar Login</button>
+                  </form>
+                  <a href="/forget" class='recover'> Esqueceu sua senha? </a>
+                  <a href="/register" class='register'>Criar conta?</a>
+                  {%endif%}
+                </div><!-- /main_login -->
+
+                <div class="line"></div><!-- line -->
+
+                <div class="main_btnl">
+                  <a href="/downloads" class="client">Downloads</a>
+                  <div class="line"></div><!-- line -->
+                  <a href="/info" class="new" target="_blank">Guia
+                    de Jogo</a>
+                </div><!-- /main_btnl -->
+
+                <div class="line"></div><!-- line -->
+
+                <div class="main_info">
+                  <div class="title">
+                    <h1>Configurações</h1>
+                  </div><!-- /title -->
+                  <div>
+                    <ul>
+                      <li><b>Versão:</b> <span>{{server_version}}</span></li>
+                      <li><b>Experiência:</b> <span>{{server_xp}}</span></li>
+                      <li><b>Drop:</b> <span>{{server_drop}}</span></li>
+                      <li><b>Bug Bless:</b>{{server_bugbless}}</li>
+                      <li><b>Total de Online: </b><strong style="color: #00ff00">{{total_onlines}}</strong></li>
+                    </ul><!-- /ul -->
+                  </div>
+                </div><!-- /main_info -->
+
+                <div class="line"></div><!-- line -->
+
+                <div class="main_info">
+                  <div class="title">
+                    <h1>Próximos Eventos</h1>
+                    <a href="#" class="btn" id='j_control' id-div='eventos'>Mostrar</a>
+                  </div><!-- /title -->
+                  <div id="eventos" style='display: none;'>
+                    <ul id='side_event'>
+                      <script>
+                        var events = {{ events_json | raw }};
+                        var icon = '{{link_site}}{{link_dir}}icon.png';
+                        var title = '{{ server_name }}';
+                        var link = '{{ link_site }}';
+                        getEvents('#side_event', events, icon, title, link);
+                      </script>
+                    </ul><!-- /ul -->
+                  </div>
+                </div><!-- /main_info -->
+
+                <div class="line"></div><!-- line -->
+
+                <div class="main_info">
+                  <div class="title">
+                    <h1>Equipe</h1>
+                    <a href="#" class="btn" id='j_control' id-div='equipe'>Mostrar</a>
+                  </div><!-- /title -->
+                  <div id="equipe" style='display: none;'>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <td>Nome</td>
+                          <td>Status</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in staff%}
+                        <tr>
+                          <td>{{item.Name}}</td>
+                          <td align='center'>
+                            {%if item.ConnectStat == 0%}
+                            <span class='off' style="color:rgb(255, 0, 0)">Offline</span>
+                            {%else%}
+                            <span class='on'></span>
+                            {%endif%}
+                          </td>
+                        </tr>
+                        {%endfor%}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div><!-- /main_info -->
+
+              </div><!-- /content -->
+            </div><!-- /main_site_left -->
+            <div class="main_site_right">
+              {% block content %}
+              {% endblock %}
+            </div><!-- /main_site_right -->
+          </div><!-- /content /main_site_flex -->
+        </div><!-- /container -->
+
+      </div><!-- /main_site conteúdo do site fica tudo dentro dessa div -->
+    </div><!-- /bg_top imagem complemento de fundo -->
+  </div><!-- /bg_bottom imagem de fundo -->
+
+  <div class="container main_footer">
+    <div class="content">
+      <div class="main_footer_copy">
+        <p>&copy; 2019 {{ server_name }} - {{ server_version }}, todos direitos reservados!</p>
+        <p>{{ server_name }} - {{ server_slogan }}</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

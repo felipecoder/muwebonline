@@ -378,6 +378,60 @@ $app->group("/{$patch_admin}", function ($app) {
 		}
 	})->setName('accesspages');
 
+	$app->map(['GET', 'POST'], "/slides/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postSlides($model, $view, $response, $args['page'], $data, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getSlides($model, $view, $response, $args['page'], $id);
+		}
+	})->setName('slides');
+
+	$app->map(['GET', 'POST'], "/kingofmu", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postKingOfMu($model, $view, $response, $data);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			return $crontroller->getKingOfMu($model, $view, $response);
+		}
+	})->setName('kingofmu');
+
 	$app->get("/logout", function ($request, $response, $args) {
 		$crontroller = new AdminController();
 		return $crontroller->getLogout($response);

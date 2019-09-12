@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Rei do Mu</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Editar</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/kingofmu" method="post">
+              <div class="form-group">
+                <label for="database" class="control-label col-md-3 col-sm-2 col-xs-12">Database</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="database" class="form-control col-md-7 col-xs-12" id="database"
+                    placeholder="Database" value="{{ kingofmu_data.database }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="table" class="control-label col-md-3 col-sm-2 col-xs-12">Tabela</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="table" class="form-control col-md-7 col-xs-12" id="table"
+                    placeholder="Tabela" value="{{ kingofmu_data.table }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="control-label col-md-3 col-sm-2 col-xs-12">Modo</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="mode" name="mode" required>
+                    <option value="manual" {%if kingofmu_data.mode == 'manual'%}selected{%endif%}>Manual</option>
+                    <option value="auto" {%if kingofmu_data.mode == 'auto'%}selected{%endif%}>Automático</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="custom" class="control-label col-md-3 col-sm-2 col-xs-12">Adicionais</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="custom" class="form-control col-md-7 col-xs-12" id="custom"
+                    placeholder="Adicionais" value="{{ kingofmu_data.custom }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="orderby" class="control-label col-md-3 col-sm-2 col-xs-12">Ordem</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="orderby" class="form-control col-md-7 col-xs-12" id="orderby"
+                    placeholder="Ordem" value="{{ kingofmu_data.orderby }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="character" class="control-label col-md-3 col-sm-2 col-xs-12">Nick Personagem</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="character" class="form-control col-md-7 col-xs-12" id="character"
+                    placeholder="Nick Personagem" value="{{ kingofmu_data.character }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="wins" class="control-label col-md-3 col-sm-2 col-xs-12">Vitórias</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="wins" class="form-control col-md-7 col-xs-12" id="wins"
+                    placeholder="Vitórias" value="{{ kingofmu_data.wins }}">
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Editar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /page content -->
+
+{% endblock %}
