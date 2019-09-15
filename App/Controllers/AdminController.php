@@ -86,7 +86,7 @@ class AdminController
 
 			return $response->withRedirect("/{$patch_admin}/login");
 			exit();
-		} elseif ($ipaddress != $login['ipaddress']) {
+		} elseif ($ipaddress != $login['ipaddress'] && getenv('USE_IP_LOGIN') == 'true') {
 			$return = array(
 				'error'   => true,
 				'success' => false,

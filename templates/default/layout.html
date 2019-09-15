@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <base href="/templates/default/">
+  <title>{{title_site}} - {{title_page}}</title>
+  <meta name="description" content="{{ server_slogan }}" />
+  <meta name="robots" content="index, follow" />
+  <link rel="author" href="https://muwebonline.com/" />
+  <link rel="canonical" href="{{link_site}}" />
+  <meta itemprop="name" content="{{ server_name }}" />
+  <meta itemprop="description" content="{{ server_slogan }}" />
+  <meta itemprop="url" content="{{link_site}}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ server_name }}" />
+  <meta property="og:description" content="{{ server_slogan }}" />
+  <meta property="og:url" content="{{ link_site }}" />
+  <meta property="og:site_name" content="{{ server_name }}" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="fb:app_id" content="" />
+  <meta property="article:author" content="https://muwebonline.com" />
+  <meta property="article:publisher" content="{{ facebook_link }}" />
+  <!--Bootstrap-->
+  <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+  <!--Font Awesome-->
+  <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.min.css">
+  <!--Custom CSS-->
+  <link rel="stylesheet" href="assets/css/default.min.css">
+  <!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <!--Icon-->
+  <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <!-- Nav tabs -->
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              {% for item in menus %}
+              <li><a href="{{ item.link }}">{{ item.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+    </header>
+
+    <div class="row">
+      <div class="col-md-4">
+
+        <!--Login-->
+        <div class="box">
+          <div class="box-header">
+            <i class="fa fa-user"></i>
+            <h3>Login</h3>
+          </div>
+          <div class="box-content">
+            {%if user_logged_in %}
+            <h4>Olá, {{ userdata.memb_name }}</h4>
+            <ul>
+              <li><a href="/dashboard/home">Minha Conta</a></li>
+              <li><a href="/dashboard/settings">Configurações</a></li>
+              <li><a href="/dashboard/tickets">Meus Tickets</a></li>
+              <li><a href="/dashboard/tickets/create">Abrir novo Ticket</a></li>
+              <li><a href="/dashboard/vips">Seja VIP</a></li>
+              <li><a href="/dashboard/coins">Coins</a></li>
+              <li><a href="/logout">Sair</a></li>
+            </ul>
+            {%else%}
+            <form action="{{link_dir}}login" method="post">
+              <div class="form-group col-md-12">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Login">
+              </div>
+              <div class="form-group col-md-12">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Senha">
+              </div>
+              <div class="form-group col-md-12">
+                <button type="submit" class="btn btn-primary col-md-12">Entrar</button>
+              </div>
+            </form>
+            <div class="col-md-12">
+              <a href="/forget">Esqueceu sua senha?</a><br>
+              <a href="/register">Nova conta</a>
+            </div>
+            {%endif%}
+
+          </div>
+        </div>
+
+        <!--Info-->
+        <div class="box">
+          <div class="box-header">
+            <i class="fa fa-info"></i>
+            <h3>Informações</h3>
+          </div>
+          <div class="box-content">
+            <ul>
+              <li>
+                Versão: <span class="label label-primary">{{server_version}}</span>
+              </li>
+              <li>
+                Experiência: <span class="label label-primary">{{server_xp}}</span>
+              </li>
+              <li>
+                Drop: <span class="label label-primary">{{server_drop}}</span>
+              </li>
+              <li>
+                Bugbless: <span class="label label-primary">{{server_bugbless}}</span>
+              </li>
+              <li>
+                Total Online: <span class="label label-success">{{total_onlines}}</span>
+              </li>
+              <li>
+                <a href="/info" class="btn btn-primary col-md-12">+ Informações</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!--Events-->
+        <div class="box">
+          <div class="box-header">
+            <i class="fa fa-hourglass-half"></i>
+            <h3>Eventos</h3>
+          </div>
+          <div class="box-content">
+            <ul class="events"></ul>
+          </div>
+        </div>
+
+        <!--Staff-->
+        <div class="box">
+          <div class="box-header">
+            <i class="fa fa-users"></i>
+            <h3>Equipe</h3>
+          </div>
+          <div class="box-content">
+            <ul>
+              {% for item in staff%}
+              <li>
+                {{item.Name}}:
+                {%if item.ConnectStat == 0%}
+                <span class="label label-danger">Offline</span>
+                {%else%}
+                <span class="label label-success">Online</span>
+                {%endif%}
+              </li>
+              {%endfor%}
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-8">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    <footer>
+      <ul>
+        <li><a href="{{facebook_link}}" target="_blank"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="{{twitter_link}}" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+        </li>
+        <li><a href="{{instagram_link}}" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+        <li><a href="{{youtube_link}}" target="_blank"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+        <li><a href="{{whatsapp_link}}" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
+      </ul>
+      <p>{{server_name}} - {{server_slogan}}</p>
+      <p>&copy; 2019 {{server_name}} - Todos os Direitos Reservados</p>
+      <p>Criado com <a href="https://muwebonline.com/" target="_blank">MuWebOnline</a></p>
+      <a href="https://muwebonline.com/" target="_blank">
+        <img src="assets/images/muwebonline.png" alt="MuWebOnline" width="180">
+      </a>
+    </footer>
+  </div>
+  <!--Bootstrap-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <!--Google Recaptcha-->
+  <script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
+  <!--MuWebOnline-->
+  <script src="assets/js/muwebonline.min.js"></script>
+  <!--Custom JS-->
+  <script src="assets/js/default.min.js"></script>
+  <script>
+    var events = {{ events_json | raw }};
+    var icon = '{{link_site}}{{link_dir}}icon.png';
+    var title = '{{ server_name }}';
+    var link = '{{ link_site }}';
+    getEvents('.events', events, icon, title, link);
+  </script>
+</body>
+
+</html>

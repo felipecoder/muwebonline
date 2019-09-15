@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="box">
+  <div class="box-header">
+    <h3>{{new_data.title}}</h3>
+  </div>
+  <div class="box-content">
+    <div class="col-md-12">
+      <img src="{{new_data.image}}" alt="{{new_data.title}}">
+      {{new_data.content| raw}}
+    </div>
+    <div class="col-md-12">
+      <p class="info"><i class="fa fa-calendar"></i> {{ new_data.date|date('d/m/Y H:i') }}</p>
+      {% if new_data.tag is not empty %}
+      <p class="info"><i class="fa fa-tags"></i> {{new_data.tag}}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

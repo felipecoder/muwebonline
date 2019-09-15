@@ -12,21 +12,12 @@ class AccesPageMiddeware
   {
     //Classes
     $data     = new DashboardDatabase();
-    $messages = new ViewMessages();
 
     //Varaiables
     $username = (!isset($_SESSION['usernameuser'])) ? NULL : $_SESSION['usernameuser'];
     $get_user = (empty($username)) ? NULL : $data->getUserDefault($username);
 
     if (empty($get_user)) {
-      $return = array(
-        'error'   => true,
-        'success' => false,
-        'message' => 'Você não está logado'
-      );
-
-      $messages->addMessage('response', $return);
-
       $response = $response->withRedirect("/login");
     } else {
       $vips       = $data->getVipsConfigs();
@@ -69,25 +60,9 @@ class AccesPageMiddeware
       }
 
       if ($blocked == 1) {
-        $return = array(
-          'error'   => true,
-          'success' => false,
-          'message' => 'Você não tem nível vip necessário para acessar essa página'
-        );
-
-        $messages->addMessage('response', $return);
-
-        $response = $response->withRedirect("/dashboard/home");
+        $response = $response->withRedirect("/dashboard/no-vip");
       } elseif ($blocked == 2) {
-        $return = array(
-          'error'   => true,
-          'success' => false,
-          'message' => 'Você está bloqueado para acessar essa página'
-        );
-
-        $messages->addMessage('response', $return);
-
-        $response = $response->withRedirect("/dashboard/home");
+        $response = $response->withRedirect("/dashboard/blocked");
       } else {
         $response = $next($request, $response);
       }

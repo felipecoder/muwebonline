@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[mwo_accesspanel]
 	[ipaddress] [varchar](MAX) NOT NULL,
 );
 
-IF OBJECT_ID('dbo.mwo_accesspages', 'U') IS NOT NULL DROP TABLE dbo.mwo_accessmwo_accesspagespanel;
+IF OBJECT_ID('dbo.mwo_accesspages', 'U') IS NOT NULL DROP TABLE dbo.mwo_accesspages;
 CREATE TABLE [dbo].[mwo_accesspages]
 (
 	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,

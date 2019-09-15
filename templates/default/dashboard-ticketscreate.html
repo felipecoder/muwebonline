@@ -1,0 +1,30 @@
+{% extends "layoutdashboard.html" %}
+{% block dashboard %}
+<div class="col-md-12">
+  <h3 class="mt-40 mb-20">Abrir Ticket</h3>
+  <form action="{{link_dir}}dashboard/tickets/create" method="post">
+    <div class="form-horizontal mt-30 mb-40">
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="subject">Assunto:</label>
+        <div class="col-sm-10">
+          <input type="text" id="subject" name="subject" placeholder="Assunto" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="subject">Mensagem:</label>
+        <div class="col-sm-10">
+          <textarea name="message" class="form-control" rows="5"
+            placeholder="Descreva aqui o motivo para que nossa equipe possa analizar." required></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary">Criar Ticket</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

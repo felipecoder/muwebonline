@@ -220,4 +220,25 @@ $app->group("/dashboard", function ($app) {
       }
     })->setName('characterschangeclass');
   });
+
+  //No Vip
+  $app->get("/no-vip", function ($request, $response, $args) {
+    //Classes
+    $crontroller = new DashboardController();
+    $model       = new DashboardModel();
+    $view        = new View();
+
+    return $crontroller->getNoVip($model, $view, $response);
+  })->setName('novip');
+  
+  //Blocked
+  $app->get("/blocked", function ($request, $response, $args) {
+    //Classes
+    $crontroller = new DashboardController();
+    $model       = new DashboardModel();
+    $view        = new View();
+
+    return $crontroller->getBlocked($model, $view, $response);
+  })->setName('blocked');
+  
 })->add(new AccesPageMiddeware())->add(new UserMiddleware());

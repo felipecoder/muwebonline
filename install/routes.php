@@ -126,6 +126,8 @@ $app->map(['GET', 'POST'], "/config", function ($request, $response, $args) {
     fwrite($appfile, $txt);
     $txt = "putenv('DEBUG_BAR=false');\n";
     fwrite($appfile, $txt);
+    $txt = "putenv('USE_IP_LOGIN=true');\n";
+    fwrite($appfile, $txt);
     $txt = "putenv('DOMAIN={$domain}');\n";
     fwrite($appfile, $txt);
     $txt = "putenv('SITE_LINK={$sitelink}');\n";

@@ -34,10 +34,10 @@ class DefaultDatabase extends Connection
   public function getTotalOnline()
   {
     try {
-      $data = $this->db->prepare("SELECT * FROM MEMB_STAT WHERE Connectstat = 1");
+      $data = $this->db->prepare("SELECT count(*) FROM MEMB_STAT WHERE Connectstat = 1");
       $data->execute();
 
-      return $data->rowCount();
+      return $data->fetchColumn();
     } catch (PDOException $e) {
       return $e->getMessage();
     }

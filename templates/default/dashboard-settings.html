@@ -1,0 +1,79 @@
+{% extends "layoutdashboard.html" %}
+{% block dashboard %}
+<div class="col-md-12">
+  <form action="{{link_dir}}dashboard/settings/password" method="post">
+    <h3>Mudar Senha</h3>
+    <div class="form-horizontal mt-30 mb-40">
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="currentpassword">Senha Atual:</label>
+        <div class="col-sm-9">
+          <input type="password" id="currentpassword" name="currentpassword" class="form-control"
+            placeholder="Senha Atual">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="newpassword">Nova Senha:</label>
+        <div class="col-sm-9">
+          <input type="password" id="newpassword" name="newpassword" class="form-control" placeholder="Nova Senha">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="confimpassword">Repita a senha:</label>
+        <div class="col-sm-9">
+          <input type="password" id="confimpassword" name="confimpassword" class="form-control"
+            placeholder="Repita a Nova Senha">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" class="btn btn-primary">Mudar Senha</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form action="{{link_dir}}dashboard/settings/data" method="post">
+    <h3>Dados</h3>
+    <div class="form-horizontal mt-30 mb-40">
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="email">Email:</label>
+        <div class="col-sm-9">
+          <input type="email" disabled id="email" name="email" value="{{settings_data.mail_addr}}" class="form-control"
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="memb_name">Nome:</label>
+        <div class="col-sm-9">
+          <input type="text" name='memb_name' id='memb_name' value="{{settings_data.memb_name}}" class="form-control"
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for='tel__numb'>Telefone:</label>
+        <div class="col-sm-9">
+          <input type="text" id='tel__numb' name='tel__numb' value="{{settings_data.tel__numb}}" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="cur_password">Senha Atual:</label>
+        <div class="col-sm-9">
+          <input type="password" id="cur_password" name="cur_password" placeholder="Senha Atual" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" class="btn btn-primary">Alterar Dados</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

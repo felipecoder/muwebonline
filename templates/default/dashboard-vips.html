@@ -1,0 +1,57 @@
+{% extends "layoutdashboard.html" %}
+{% block dashboard %}
+<div class="col-md-12">
+  <h3 class="mt-40 mb-20">Comprar Vip</h3>
+  <div class="row vertical-gutter">
+    {% for item in vips%}
+    <div class="col-md-4">
+      <ul class="pricing-table">
+        <li class="plan-name">{{item.name}}</li>
+        <li class="plan-price">
+          Ajude-nos a crescer!
+          <span class="badge bg-default  badge-float">Seja {{item.name}}</span>
+        </li>
+        <li class="plan-action">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalVip{{item.ID}}">Comprar
+            {{item.name}}</button>
+        </li>
+      </ul>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="ModalVip{{item.ID}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Comprar {{item.name}}</h4>
+          </div>
+          <form action='{{link_dir}}dashboard/vips/buys/{{item.ID}}' method='post'>
+            <div class="modal-body">
+              Seu saldo é de: <strong>{{userdata.mwo_credits}}</strong> Créditos<br />
+              <strong>Por quanto tempo você deseja ser {{item.name}}?</strong><br /><br />
+              {% set i= 0 %}
+              {% for prices in item.prices%}
+              <div class="youplay-radio">
+                <input name='days' type='radio' id='vip{{item.ID}}{{i}}' value='{{item.days[i]}}' />
+                <label for='vip{{item.ID}}{{i}}' class="mt-10"> {{item.name}} {{item.days[i]}} dias:
+                  <strong>{{item.prices[i]}}</strong>
+                  Créditos</label>
+              </div>
+              {% set i= i+1 %}
+              {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Finalizar Compra</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

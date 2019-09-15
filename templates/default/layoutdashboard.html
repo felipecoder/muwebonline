@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="box">
+  <div class="box-header">
+    <h3>Painel</h3>
+  </div>
+  <div class="box-content panel-user">
+    <ul>
+      <li><a href="/dashboard/characters/reset" class="btn btn-primary">Reset</a></li>
+      <li><a href="/dashboard/characters/masterreset" class="btn btn-primary">Master Reset</a></li>
+      <li><a href="/dashboard/characters/cleanpk" class="btn btn-primary">Limpar PK</a></li>
+      <li><a href="/dashboard/characters/changenick" class="btn btn-primary">Alterar Nome</a></li>
+      <li><a href="/dashboard/characters/changeclass" class="btn btn-primary">Alterar Classe</a></li>
+    </ul>
+    {% for item in return %}
+    <div
+      class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">×</span></button>
+      <strong>{{ item.message }}</strong>
+    </div>
+    {% endfor %}
+
+    {% block dashboard %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}

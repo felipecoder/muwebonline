@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="box">
+    <div class="box-header">
+        <h3>Cadastro</h3>
+    </div>
+    <div class="box-content">
+        {% for item in return %}
+        <div
+            class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">×</span></button>
+            <strong>{{ item.message }}</strong>
+        </div>
+        {% endfor %}
+        <form role="form" method="post" action="{{link_dir}}register">
+            <div class="form-group col-md-6">
+                <label for="username" class="control-label">Login</label>
+                <input type="text" class="form-control" maxlength='10' name="username" id='username'
+                    placeholder="Login">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="nick" class="control-label">Apelido</label>
+                <input type="text" class="form-control" maxlength='10' name="nick" id="nick" placeholder="Apelido">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="email" class="control-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="reemail" class="control-label">Confirme o email</label>
+                <input type="email" class="form-control" name="reemail" id="reemail" placeholder="Email">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="password" class="control-label">Senha</label>
+                <input type="password" class="form-control" name="password" maxlength='10' id="password"
+                    placeholder="Senha">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="repassword" class="control-label">Confirmar Senha</label>
+                <input type="password" class="form-control" name="repassword" maxlength='10' id="repassword"
+                    placeholder="Confirmar Senha">
+            </div>
+            <div class="form-group col-md-6">
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_site }}"></div>
+            </div>
+            <div class="form-group col-md-6">
+                <input type="checkbox" name="agree_terms" id="checkbox1" required>
+                <label for="checkbox1">Eu concordo com os termos de uso do servidor</label>
+            </div>
+            <div class="form-group col-md-12">
+                <button type="submit" class="btn btn-primary col-md-12">Criar Conta</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

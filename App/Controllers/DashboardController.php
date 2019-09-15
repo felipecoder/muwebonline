@@ -139,7 +139,7 @@ class DashboardController
 
     $vip = $data->getVipInfo($id);
 
-    if ($home_data[$vip['column_level']] != $vip['level']) {
+    if ($home_data[$vip['column_level']] != $vip['level'] && $home_data[$vip['column_level']] > 0) {
 
       $return = array(
         'error'   => true,
@@ -1709,15 +1709,15 @@ class DashboardController
       $BLOCKED_NAMES = $config_changenick[1]['value'];
       $BLOCKED_NAMES = explode(',', $BLOCKED_NAMES);
       $connectstat   = $data->checkOnlineAccount($home_data['memb___id']);
-      
+
       foreach ($BLOCKED_NAMES as $word) {
         if (strpos(strtoupper($post['nick']), $word) !== false) {
           $return = array(
             'error'   => true,
             'success' => false,
-            'message' => 'Você não pode usar o nome '. $word .''
+            'message' => 'Você não pode usar o nome ' . $word . ''
           );
-  
+
           $messages->addMessage('response', $return);
           return $response->withRedirect("/dashboard/characters/changenick");
           exit();
@@ -1816,7 +1816,7 @@ class DashboardController
           $logger->addLoggerWarning("Error AccountCharacter", $values);
         }
 
-        if($config_muserver[2]['value'] >= 5 and $config_muserver[3]['value'] == 1){
+        if ($config_muserver[2]['value'] >= 5 and $config_muserver[3]['value'] == 1) {
           $deletemasterskill = $data->deleteMasterSkillTree($post['character']);
           if ($deletemasterskill == 'OK') {
             $values = array(
@@ -1824,7 +1824,7 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => 'Alterou o nome do personagem ' . $post['character'] . ' para ' . $post['nick'] . ''
             );
-  
+
             $logger->addLoggerInfo("MasterSkillTree", $values);
           } else {
             $values = array(
@@ -1832,7 +1832,7 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => $deletemasterskill
             );
-  
+
             $logger->addLoggerWarning("Error MasterSkillTree", $values);
           }
         }
@@ -1882,19 +1882,19 @@ class DashboardController
   }
 
   public function listClass($version, $class)
-	{
-		switch ($version) {
-			case 0: //Season 1 ou Abaixo - Sem DL
-				$listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
+  {
+    switch ($version) {
+      case 0: //Season 1 ou Abaixo - Sem DL
+        $listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
 				<option value='" . $class[1]['value'] . "'>" . $class[1]['label'] . "</option>
 				<option value='" . $class[3]['value'] . "'>" . $class[3]['label'] . "</option>
 				<option value='" . $class[4]['value'] . "'>" . $class[4]['label'] . "</option>
 				<option value='" . $class[6]['value'] . "'>" . $class[6]['label'] . "</option>
 				<option value='" . $class[7]['value'] . "'>" . $class[7]['label'] . "</option>
 				<option value='" . $class[9]['value'] . "'>" . $class[9]['label'] . "</option>";
-				break;
-			case 1: //Season 1 ou Abaixo
-				$listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
+        break;
+      case 1: //Season 1 ou Abaixo
+        $listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
 				<option value='" . $class[1]['value'] . "'>" . $class[1]['label'] . "</option>
 				<option value='" . $class[3]['value'] . "'>" . $class[3]['label'] . "</option>
 				<option value='" . $class[4]['value'] . "'>" . $class[4]['label'] . "</option>
@@ -1902,9 +1902,9 @@ class DashboardController
 				<option value='" . $class[7]['value'] . "'>" . $class[7]['label'] . "</option>
 				<option value='" . $class[9]['value'] . "'>" . $class[9]['label'] . "</option>
 				<option value='" . $class[11]['value'] . "'>" . $class[11]['label'] . "</option>";
-				break;
-			case 2: //Season 2
-				$listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
+        break;
+      case 2: //Season 2
+        $listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
 				<option value='" . $class[1]['value'] . "'>" . $class[1]['label'] . "</option>
 				<option value='" . $class[3]['value'] . "'>" . $class[3]['label'] . "</option>
 				<option value='" . $class[4]['value'] . "'>" . $class[4]['label'] . "</option>
@@ -1912,9 +1912,9 @@ class DashboardController
 				<option value='" . $class[7]['value'] . "'>" . $class[7]['label'] . "</option>
 				<option value='" . $class[9]['value'] . "'>" . $class[9]['label'] . "</option>
 				<option value='" . $class[11]['value'] . "'>" . $class[11]['label'] . "</option>";
-				break;
-			case 3: //Season 3 Episodio 1
-				$listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
+        break;
+      case 3: //Season 3 Episodio 1
+        $listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
 				<option value='" . $class[1]['value'] . "'>" . $class[1]['label'] . "</option>
 				<option value='" . $class[2]['value'] . "'>" . $class[2]['label'] . "</option>
 				<option value='" . $class[3]['value'] . "'>" . $class[3]['label'] . "</option>
@@ -1927,9 +1927,9 @@ class DashboardController
 				<option value='" . $class[10]['value'] . "'>" . $class[10]['label'] . "</option>
 				<option value='" . $class[11]['value'] . "'>" . $class[11]['label'] . "</option>
 				<option value='" . $class[12]['value'] . "'>" . $class[12]['label'] . "</option>";
-				break;
-			case 4: //Season 4
-				$listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
+        break;
+      case 4: //Season 4
+        $listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
 				<option value='" . $class[1]['value'] . "'>" . $class[1]['label'] . "</option>
 				<option value='" . $class[2]['value'] . "'>" . $class[2]['label'] . "</option>
 				<option value='" . $class[3]['value'] . "'>" . $class[3]['label'] . "</option>
@@ -1945,10 +1945,10 @@ class DashboardController
 				<option value='" . $class[13]['value'] . "'>" . $class[13]['label'] . "</option>
 				<option value='" . $class[14]['value'] . "'>" . $class[14]['label'] . "</option>
 				<option value='" . $class[15]['value'] . "'>" . $class[15]['label'] . "</option>";
-				break;
-			case 5:
-			case 6: //Season 6
-				$listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
+        break;
+      case 5:
+      case 6: //Season 6
+        $listClass = "<option value='" . $class[0]['value'] . "'>" . $class[0]['label'] . "</option>
 				<option value='" . $class[1]['value'] . "'>" . $class[1]['label'] . "</option>
 				<option value='" . $class[2]['value'] . "'>" . $class[2]['label'] . "</option>
 				<option value='" . $class[3]['value'] . "'>" . $class[3]['label'] . "</option>
@@ -1966,11 +1966,11 @@ class DashboardController
 				<option value='" . $class[15]['value'] . "'>" . $class[15]['label'] . "</option>
 				<option value='" . $class[16]['value'] . "'>" . $class[16]['label'] . "</option>
 				<option value='" . $class[17]['value'] . "'>" . $class[17]['label'] . "</option>";
-				break;
-		}
+        break;
+    }
 
-		return $listClass;
-	}
+    return $listClass;
+  }
 
   public function postChangeClass(DashboardModel $model, Response $response, $post)
   {
@@ -2071,7 +2071,7 @@ class DashboardController
 
         $logger->addLoggerInfo("Change Classe", $values);
 
-        if($config_muserver[2]['value'] >= 5 and $config_muserver[3]['value'] == 1){
+        if ($config_muserver[2]['value'] >= 5 and $config_muserver[3]['value'] == 1) {
           $deletemasterskill = $data->deleteMasterSkillTree($post['character']);
           if ($deletemasterskill == 'OK') {
             $values = array(
@@ -2079,7 +2079,7 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => 'Alterou a classe do personagem ' . $post['character'] . ''
             );
-  
+
             $logger->addLoggerInfo("MasterSkillTree", $values);
           } else {
             $values = array(
@@ -2087,12 +2087,12 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => $deletemasterskill
             );
-  
+
             $logger->addLoggerWarning("Error MasterSkillTree", $values);
           }
         }
 
-        if($RESET_QUESTS == 'true'){
+        if ($RESET_QUESTS == 'true') {
           $resetquests = $data->resetQuets($post['character']);
           if ($resetquests == 'OK') {
             $values = array(
@@ -2100,7 +2100,7 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => 'Alterou a classe do personagem ' . $post['character'] . ''
             );
-  
+
             $logger->addLoggerInfo("ResetQuest", $values);
           } else {
             $values = array(
@@ -2108,12 +2108,12 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => $resetquests
             );
-  
+
             $logger->addLoggerWarning("Error ResetQuest", $values);
           }
         }
 
-        if($RESET_SKILLS == 'true'){
+        if ($RESET_SKILLS == 'true') {
           $resetskills = $data->resetSkills($this->listSkills($config_muserver[2]['value']), $post['character']);
           if ($resetskills == 'OK') {
             $values = array(
@@ -2121,7 +2121,7 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => 'Alterou a classe do personagem ' . $post['character'] . ''
             );
-  
+
             $logger->addLoggerInfo("ResetSkill", $values);
           } else {
             $values = array(
@@ -2129,7 +2129,7 @@ class DashboardController
               'ipaddress' => $model->getIpaddress(),
               'message'   => $resetskills
             );
-  
+
             $logger->addLoggerWarning("Error ResetSkill", $values);
           }
         }
@@ -2155,31 +2155,51 @@ class DashboardController
       }
     }
   }
-  
-  public function listSkills($version)
-	{
-		switch ($version) {
-			case 0: //Season 1 ou Abaixo - Sem DL
-				$skill = 60;
-				break;
-			case 1: //Season 1 ou Abaixo
-        $skill = 60;
-				break;
-			case 2: //Season 2
-        $skill = 180;
-				break;
-			case 3: //Season 3 Episodio 1
-        $skill = 180;
-				break;
-			case 4: //Season 4
-        $skill = 180;
-				break;
-			case 5:
-			case 6: //Season 6
-        $skill = 180;
-				break;
-		}
 
-		return $skill;
-	}
+  public function listSkills($version)
+  {
+    switch ($version) {
+      case 0: //Season 1 ou Abaixo - Sem DL
+        $skill = 60;
+        break;
+      case 1: //Season 1 ou Abaixo
+        $skill = 60;
+        break;
+      case 2: //Season 2
+        $skill = 180;
+        break;
+      case 3: //Season 3 Episodio 1
+        $skill = 180;
+        break;
+      case 4: //Season 4
+        $skill = 180;
+        break;
+      case 5:
+      case 6: //Season 6
+        $skill = 180;
+        break;
+    }
+
+    return $skill;
+  }
+
+  public function getNoVip(DashboardModel $model, View $view, Response $response)
+  {
+    
+    $array = array(
+      'title_page' => 'Negado',
+    );
+
+    return $view->getRender($array, 'dashboard-novip', $response);
+  }
+
+  public function getBlocked(DashboardModel $model, View $view, Response $response)
+  {
+    
+    $array = array(
+      'title_page' => 'Bloqueado',
+    );
+
+    return $view->getRender($array, 'dashboard-blocked', $response);
+  }
 }

@@ -1,0 +1,88 @@
+{% extends "layoutdashboard.html" %}
+{% block dashboard %}
+<div class="col-md-12">
+  <h3>Informações</h3>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td>
+          <p>Nick</p>
+        </td>
+        <td>
+          <p>{{home_data.memb_name}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Login</p>
+        </td>
+        <td>
+          <p>{{home_data.memb___id}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Tipo</p>
+        </td>
+        <td>
+          <p>{{user_vip.name}} {% if user_vip.days is not empty %} vence daqui {{user_vip.days}} dias {% endif %}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>Créditos</p>
+        </td>
+        <td>
+          <p>{{userdata.mwo_credits}}</p>
+        </td>
+      </tr>
+      {% for item in coins_user %}
+      <tr>
+        <td>
+          <p>{{item.name}}</p>
+        </td>
+        <td>
+          <p>{{item.value}}</p>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Personagens</h3>
+  <h5>Utilize o game para criar novos personagens</h5>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td>
+          <strong><em>Personagem</em></strong>
+        </td>
+        <td>
+          <strong><em>Classe</em></strong>
+        </td>
+        <td>
+          <strong><em>Resets</em></strong>
+        </td>
+        <td>
+          <strong><em>PK</em></strong>
+        </td>
+      </tr>
+      {% if user_characters is not empty %}
+      {% for item in user_characters %}
+      <tr>
+        <td>{{item.Name}}</td>
+        <td>{{item.Class}}</td>
+        <td>{{item.Resets}}</td>
+        <td>{{item.PkCount}}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td>Você não tem personagens</td>
+      </tr>
+      {% endif %}
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}

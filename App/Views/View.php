@@ -67,6 +67,8 @@ class View
 		$config_details = json_decode($config_details, true);
 		$config_captcha = $data->getConfig('captcha');
 		$config_captcha = json_decode($config_captcha, true);
+		$config_class   = $data->getConfig('classcodes');
+		$config_class   = json_decode($config_class, true);
 		$social_link    = $data->getConfig('sociallinks');
 		$social_link    = json_decode($social_link, true);
 		$rankings       = $data->getRankings();
@@ -140,12 +142,32 @@ class View
 
 		if ($getkingofmu['mode'] == 'manual') {
 			$kingofmu = $data->getCharacterKingManual($getkingofmu['database'], $getkingofmu['table'], $getkingofmu['character']);
+			foreach ($config_class as $key => $value) {
+				if ($kingofmu['Class'] == $value['value']) {
+					$class_character = $value['label'];
+					break;
+				} else {
+					$class_character = 'Unknow';
+				}
+			}
+
 			$wins = array('wins' => $getkingofmu['wins']);
-			$kingofmu = array_merge($kingofmu, $wins);
+			$classname = array('classname' => $class_character);
+			$kingofmu = array_merge($kingofmu, $wins, $classname);
 		} else {
 			$kingofmu = $data->getCharacterKingAuto($getkingofmu['database'], $getkingofmu['table'], $getkingofmu['custom'], $getkingofmu['orderby']);
+			foreach ($config_class as $key => $value) {
+				if ($kingofmu['Class'] == $value['value']) {
+					$class_character = $value['label'];
+					break;
+				} else {
+					$class_character = 'Unknow';
+				}
+			}
+
 			$wins = array('wins' => $getkingofmu['wins']);
-			$kingofmu = array_merge($kingofmu, $wins);
+			$classname = array('classname' => $class_character);
+			$kingofmu = array_merge($kingofmu, $wins, $classname);
 		}
 
 		$values_default = array(
