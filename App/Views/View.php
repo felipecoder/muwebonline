@@ -107,7 +107,7 @@ class View
 					'ID'      => $value['ID'],
 					'name'    => $value['name'],
 					'column'  => $value['column'],
-					'ranking' => $data->createRanking($value['database'], $value['table'], $value['column'], $value['custom'])
+					'ranking' => $data->createRanking($value['database'], $value['table'], $value['column'], $value['max'], $value['custom'])
 				);
 			}
 		}

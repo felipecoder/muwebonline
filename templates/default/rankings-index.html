@@ -1,0 +1,59 @@
+{% extends "rankings.html" %} {% block rankings %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">{{ rankings_data.name }}</div>
+
+  <!-- Table -->
+  <table class="table table-hover table-bordered" style="color: #333">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nome</th>
+        <th>Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in rankings_data.data%}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ item.Name }}</td>
+        <td>{{ item.cLevel }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if pagination.needed %}
+<nav aria-label="Page navigation">
+  <ul class="pagination pagination-sm">
+    {% if pagination.page != 1 %}
+    <li>
+      <a
+        href="/rankings/{{ rankings_data.link }}/{{ pagination.page - 1 }}"
+        aria-label="Previous"
+      >
+        <span aria-hidden="true"
+          ><i class="fa fa-angle-left" aria-hidden="true"></i
+        ></span>
+      </a>
+    </li>
+    {% endif %} {% for i in 1..pagination.lastpage %}
+    <li class="{% if i == pagination.page %}active{% endif %}">
+      <a href="/rankings/{{ rankings_data.link }}/{{ i }}">{{ i }}</a>
+    </li>
+    {% endfor %} {% if pagination.page != pagination.lastpage %}
+    <li>
+      <a
+        href="/rankings/{{ rankings_data.link }}/{{ pagination.page + 1 }}"
+        aria-label="Next"
+      >
+        <span aria-hidden="true"
+          ><i class="fa fa-angle-right" aria-hidden="true"></i
+        ></span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %} {% endblock %}

@@ -18,4 +18,14 @@
     </div>
   </div>
 </div>
+{%if ticket_answer is not empty %}
+<div class="col-md-12">
+  <h3 class="mt-40 mb-20">Resposta</h3>
+  {{ticket_answer.message| raw}}
+  <p class="info"><i class="fa fa-calendar"></i> {{ ticket_answer.date|date('d/m/Y H:i') }} - <i class="fa fa-user"></i>
+    {{ ticket_answer.username }}</p>
+</div>
+{% else %}
+<p class="text-center">Aguardando resposta</p>
+{% endif %}
 {% endblock %}

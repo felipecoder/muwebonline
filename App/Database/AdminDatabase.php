@@ -49,6 +49,94 @@ class AdminDatabase extends Connection
 		}
 	}
 
+	public function getTotalOnline()
+	{
+		try {
+			$data = $this->db->prepare("SELECT count(*) FROM MEMB_STAT WHERE Connectstat = 1");
+			$data->execute();
+
+			return $data->fetchColumn();
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getAccessPanel()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_accesspanel");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getAccessPanelInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_accesspanel WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertAccessPanel($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_accesspanel ([username], [password], [access], [ipaddress]) VALUES (:username, :password, :access, :ipaddress)");
+			$data->execute(array(
+				':username'  => $post['username'],
+				':password'  => password_hash($post['password'], PASSWORD_DEFAULT),
+				':access'    => $post['access'],
+				':ipaddress' => $post['ipaddress'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editAccessPanel($post, $ID)
+	{
+		$account_data = $this->getAccessPanelInfo($ID);
+		try {
+			$data = $this->db->prepare("UPDATE mwo_accesspanel SET [username] = :username, [password] = :password, [access] = :access, [ipaddress] = :ipaddress WHERE ID = :ID");
+			$data->execute(array(
+				':username'  => $post['username'],
+				':password'  => ($post['password'] == NULL) ? $account_data['password'] : password_hash($post['password'], PASSWORD_DEFAULT),
+				':access'    => $post['access'],
+				':ipaddress' => $post['ipaddress'],
+				':ID'        => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteAccessPanel($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_accesspanel WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
 	public function getAccounts()
 	{
 		try {
@@ -459,13 +547,14 @@ class AdminDatabase extends Connection
 	public function insertRanking($post)
 	{
 		try {
-			$data = $this->db->prepare("INSERT INTO mwo_rankings ([name], [database], [table], [column], [custom]) VALUES (:name, :database, :table, :column, :custom)");
+			$data = $this->db->prepare("INSERT INTO mwo_rankings ([name], [database], [table], [column], [link], [max]) VALUES (:name, :database, :table, :column, :link, :max)");
 			$data->execute(array(
 				':name'     => $post['name'],
 				':database' => $post['database'],
 				':table'    => $post['table'],
 				':column'   => $post['column'],
-				':custom'   => (empty($post['custom'])) ? NULL : $post['custom'],
+				':max'   		=> $post['max'],
+				':link'     => $post['link'],
 			));
 
 			return 'OK';
@@ -477,13 +566,14 @@ class AdminDatabase extends Connection
 	public function editRanking($post, $ID)
 	{
 		try {
-			$data = $this->db->prepare("UPDATE mwo_rankings SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [custom] = :custom WHERE ID = :ID");
+			$data = $this->db->prepare("UPDATE mwo_rankings SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [max] = :max, [link] = :link WHERE ID = :ID");
 			$data->execute(array(
 				':name'     => $post['name'],
 				':database' => $post['database'],
 				':table'    => $post['table'],
 				':column'   => $post['column'],
-				':custom'   => (empty($post['custom'])) ? NULL : $post['custom'],
+				':max'   		=> $post['max'],
+				':link'     => $post['link'],
 				':ID'       => $ID,
 			));
 
@@ -497,6 +587,85 @@ class AdminDatabase extends Connection
 	{
 		try {
 			$data = $this->db->prepare("DELETE FROM mwo_rankings WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getRankingsHome()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_rankings_home");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getRankingHomeInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_rankings_home WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertRankingHome($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_rankings_home ([name], [database], [table], [column], [custom], [max]) VALUES (:name, :database, :table, :column, :custom, :max)");
+			$data->execute(array(
+				':name'     => $post['name'],
+				':database' => $post['database'],
+				':table'    => $post['table'],
+				':column'   => $post['column'],
+				':max'   		=> $post['max'],
+				':custom'   => (empty($post['custom'])) ? NULL : $post['custom'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editRankingHome($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_rankings_home SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [max] = :max, [custom] = :custom WHERE ID = :ID");
+			$data->execute(array(
+				':name'     => $post['name'],
+				':database' => $post['database'],
+				':table'    => $post['table'],
+				':column'   => $post['column'],
+				':max'   		=> $post['max'],
+				':custom'   => (empty($post['custom'])) ? NULL : $post['custom'],
+				':ID'       => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteRankingHome($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_rankings_home WHERE ID = :ID");
 			$data->execute(array(':ID' => $ID));
 
 			return 'OK';
@@ -1051,8 +1220,9 @@ class AdminDatabase extends Connection
 	public function editKingOfMu($post)
 	{
 		try {
-			$data = $this->db->prepare("UPDATE mwo_kingofmu SET [database] = :database, [table] = :table, [mode] = :mode, [custom] = :custom, [orderby] = :orderby, [character] = :character, [wins] = :wins");
+			$data = $this->db->prepare("UPDATE mwo_kingofmu SET [active] = :active, [database] = :database, [table] = :table, [mode] = :mode, [custom] = :custom, [orderby] = :orderby, [character] = :character, [wins] = :wins");
 			$data->execute(array(
+				':active'    => $post['active'],
 				':database'  => $post['database'],
 				':table'     => $post['table'],
 				':mode'      => (empty($post['mode'])) ? 'auto' : $post['mode'],
@@ -1061,6 +1231,861 @@ class AdminDatabase extends Connection
 				':character' => (empty($post['character'])) ? NULL : $post['character'],
 				':wins'      => (empty($post['wins'])) ? NULL : $post['wins'],
 			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getTickets()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_tickets");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getTicketInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_tickets WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteTicket($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_tickets WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getTicketAnswer($ticket_id)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_tickets_answers WHERE ticket_id = :ticket_id");
+			$data->execute(array(':ticket_id' => $ticket_id));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertTicketAnswer($post, $username, $ticket_id)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_tickets_answers (message, username, ticket_id) VALUES (:message, :username, :ticket_id)");
+			$data->execute(array(
+				':message'   => $post['message'],
+				':username'  => $username,
+				':ticket_id' => $ticket_id
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editTicketAnswer($post, $username, $ticket_id)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_tickets_answers SET message = :message, username = :username, date = CURRENT_TIMESTAMP WHERE ticket_id = :ticket_id");
+			$data->execute(array(
+				':message'   => $post['message'],
+				':username'  => $username,
+				':ticket_id' => $ticket_id,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteTicketAnswer($ticket_id)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_tickets_answers WHERE ticket_id = :ticket_id");
+			$data->execute(array(':ticket_id' => $ticket_id));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsAncients()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_ancients");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemAncientInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_ancients WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemAncient($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_items_ancients (section, index_, ancient, name) VALUES (:section, :index, :ancient, :name)");
+			$data->execute(array(
+				':section' => $post['section'],
+				':index'   => $post['index'],
+				':ancient' => $post['ancient'],
+				':name'    => $post['name'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemAncient($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_items_ancients SET section = :section, index_ = :index, ancient = :ancient, name = :name WHERE ID = :ID");
+			$data->execute(array(
+				':section' => $post['section'],
+				':index'   => $post['index'],
+				':ancient' => $post['ancient'],
+				':name'    => $post['name'],
+				':ID'      => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemAncient($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_items_ancients WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsHamornys()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_jewelofharmony");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemHamornyInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_jewelofharmony WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemHamorny($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_items_jewelofharmony (section, index_, level, harmonys) VALUES (:section, :index, :level, :harmonys)");
+			$data->execute(array(
+				':section'  => $post['section'],
+				':index'    => $post['index'],
+				':level'    => $post['level'],
+				':harmonys' => $post['harmonys'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemHamorny($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_items_jewelofharmony SET section = :section, index_ = :index, level = :level, harmonys = :harmonys WHERE ID = :ID");
+			$data->execute(array(
+				':section'  => $post['section'],
+				':index'    => $post['index'],
+				':level'    => $post['level'],
+				':harmonys' => $post['harmonys'],
+				':ID'       => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemHamorny($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_items_jewelofharmony WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsOptions()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_options");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemOptionInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_options WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemOption($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_items_options (index_, optionindex, value, minrange, maxrange, skill, luck, [option], newoption, name) VALUES (:index, :optionindex, :value, :minrange, :maxrange, :skill, :luck, :option, :newoption, :name)");
+			$data->execute(array(
+				':index'       => $post['index'],
+				':optionindex' => $post['optionindex'],
+				':value'       => $post['value'],
+				':minrange'    => $post['minrange'],
+				':maxrange'    => $post['maxrange'],
+				':skill'       => $post['skill'],
+				':luck'        => $post['luck'],
+				':option'      => $post['option'],
+				':newoption'   => $post['newoption'],
+				':name'        => $post['name'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemOption($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_items_options SET index_ = :index, optionindex = :optionindex, value = :value, minrange = :minrange, maxrange = :maxrange, skill = :skill, luck = :luck, [option] = :option, newoption = :newoption, name = :name WHERE ID = :ID");
+			$data->execute(array(
+				':index'       => $post['index'],
+				':optionindex' => $post['optionindex'],
+				':value'       => $post['value'],
+				':minrange'    => $post['minrange'],
+				':maxrange'    => $post['maxrange'],
+				':skill'       => $post['skill'],
+				':luck'        => $post['luck'],
+				':option'      => $post['option'],
+				':newoption'   => $post['newoption'],
+				':name'        => $post['name'],
+				':ID'          => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemOption($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_items_options WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsSockets()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_sockets");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemSocketInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_sockets WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemSocket($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_items_sockets (section, index_, max, sockets) VALUES (:section, :index, :max, :sockets)");
+			$data->execute(array(
+				':section' => $post['section'],
+				':index'   => $post['index'],
+				':max'     => $post['max'],
+				':sockets' => $post['sockets'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemSocket($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_items_sockets SET section = :section, index_ = :index, max = :max, sockets = :sockets WHERE ID = :ID");
+			$data->execute(array(
+				':section' => $post['section'],
+				':index'   => $post['index'],
+				':max'     => $post['max'],
+				':sockets' => $post['sockets'],
+				':ID'      => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemSocket($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_items_sockets WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsRefines()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_refines");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemRefineInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_items_refines WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemRefine($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_items_refines (section, index_, options) VALUES (:section, :index, :options)");
+			$data->execute(array(
+				':section' => $post['section'],
+				':index'   => $post['index'],
+				':options' => $post['options'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemRefine($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_items_refines SET section = :section, index_ = :index, options = :options WHERE ID = :ID");
+			$data->execute(array(
+				':section' => $post['section'],
+				':index'   => $post['index'],
+				':options' => $post['options'],
+				':ID'      => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemRefine($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_items_refines WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsSkills()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_skills_name");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemSkillInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_skills_name WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemSkill($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_skills_name (index_, name) VALUES (:index, :name)");
+			$data->execute(array(
+				':index' => $post['index'],
+				':name'  => $post['name'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemSkill($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_skills_name SET index_ = :index, name = :name WHERE ID = :ID");
+			$data->execute(array(
+				':index' => $post['index'],
+				':name'  => $post['name'],
+				':ID'    => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemSkill($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_skills_name WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getWebShops()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshops");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getWebShopsParentID($parentid)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshops WHERE parentid = :parentid");
+			$data->execute(array(':parentid' => $parentid));
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getWebShopInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshops WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertWebShop($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_webshops (name, label, link, parentid, status, coin) VALUES (:name, :label, :link, :parentid, :status, :coin)");
+			$data->execute(array(
+				':name'     => $post['name'],
+				':label'    => $post['label'],
+				':link'     => $post['link'],
+				':parentid' => $post['parentid'],
+				':status'   => $post['status'],
+				':coin'     => $post['coin'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editWebShop($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_webshops SET name = :name, label = :label, link = :link, parentid = :parentid, status = :status, coin = :coin WHERE ID = :ID");
+			$data->execute(array(
+				':name'     => $post['name'],
+				':label'    => $post['label'],
+				':link'     => $post['link'],
+				':parentid' => $post['parentid'],
+				':status'   => $post['status'],
+				':coin'     => $post['coin'],
+				':ID'       => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteWebShop($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_webshops WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getCategoriesWebShops()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshop_categories");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getCategoriesWebShopsParentID($parentid)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshop_categories WHERE parentid = :parentid");
+			$data->execute(array(':parentid' => $parentid));
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getCategorieWebShopInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshop_categories WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertCategorieWebShop($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_webshop_categories (name, label, link, parentid, webshopid, status) VALUES (:name, :label, :link, :parentid, :webshopid, :status)");
+			$data->execute(array(
+				':name'      => $post['name'],
+				':label'     => $post['label'],
+				':link'      => $post['link'],
+				':parentid'  => $post['parentid'],
+				':webshopid' => $post['webshopid'],
+				':status'    => $post['status'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editCategorieWebShop($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_webshop_categories SET name = :name, label = :label, link = :link, parentid = :parentid, webshopid = :webshopid, status = :status WHERE ID = :ID");
+			$data->execute(array(
+				':name'      => $post['name'],
+				':label'     => $post['label'],
+				':link'      => $post['link'],
+				':parentid'  => $post['parentid'],
+				':webshopid' => $post['webshopid'],
+				':status'    => $post['status'],
+				':ID'       => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteCategorieWebShop($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_webshop_categories WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemsWebShops()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshop_items");
+			$data->execute();
+
+			$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getItemWebShopInfo($ID)
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_webshop_items WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
+
+			$rows = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $rows;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function insertItemWebShop($post)
+	{
+		try {
+			$data = $this->db->prepare("INSERT INTO mwo_webshop_items (categoryid, section, index_, name, durability, width, height, skill, link, status, price, price_level, price_option, price_skill, price_luck, price_ancient, price_harmony, price_refine, price_socket, price_excellent, max_excellent, max_sockets, image, classes) VALUES (:categoryid, :section, :index_, :name, :durability, :width, :height, :skill, :link, :status, :price, :price_level, :price_option, :price_skill, :price_luck, :price_ancient, :price_harmony, :price_refine, :price_socket, :price_excellent, :max_excellent, :max_sockets, :image, :classes)");
+			$data->execute(array(
+				':categoryid'      => $post['categoryid'],
+				':section'         => $post['section'],
+				':index_'          => $post['index_'],
+				':name'            => $post['name'],
+				':durability'      => $post['durability'],
+				':width'           => $post['width'],
+				':height'          => $post['height'],
+				':skill'           => $post['skill'],
+				':link'            => $post['link'],
+				':status'          => $post['status'],
+				':price'           => $post['price'],
+				':price_level'     => $post['price_level'],
+				':price_option'    => $post['price_option'],
+				':price_skill'     => $post['price_skill'],
+				':price_luck'      => $post['price_luck'],
+				':price_ancient'   => $post['price_ancient'],
+				':price_harmony'   => $post['price_harmony'],
+				':price_refine'    => $post['price_refine'],
+				':price_socket'    => $post['price_socket'],
+				':price_excellent' => $post['price_excellent'],
+				':max_excellent'   => $post['max_excellent'],
+				':max_sockets'     => $post['max_sockets'],
+				':image'           => $post['image'],
+				':classes'         => $post['classes'],
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editItemsWebShop($post, $ID)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_webshop_items SET categoryid = :categoryid, section = :section, index_ = :index_, name = :name, durability = :durability, width = :width, height = :height, skill = :skill, link = :link, status = :status, price = :price, price_level = :price_level, price_option = :price_option, price_skill = :price_skill, price_luck = :price_luck, price_ancient = :price_ancient, price_harmony = :price_harmony, price_refine = :price_refine, price_socket = :price_socket, price_excellent = :price_excellent, max_excellent = :max_excellent, max_sockets = :max_sockets, image = :image, classes = :classes WHERE ID = :ID");
+			$data->execute(array(
+				':categoryid'      => $post['categoryid'],
+				':section'         => $post['section'],
+				':index_'          => $post['index_'],
+				':name'            => $post['name'],
+				':durability'      => $post['durability'],
+				':width'           => $post['width'],
+				':height'          => $post['height'],
+				':skill'           => $post['skill'],
+				':link'            => $post['link'],
+				':status'          => $post['status'],
+				':price'           => $post['price'],
+				':price_level'     => $post['price_level'],
+				':price_option'    => $post['price_option'],
+				':price_skill'     => $post['price_skill'],
+				':price_luck'      => $post['price_luck'],
+				':price_ancient'   => $post['price_ancient'],
+				':price_harmony'   => $post['price_harmony'],
+				':price_refine'    => $post['price_refine'],
+				':price_socket'    => $post['price_socket'],
+				':price_excellent' => $post['price_excellent'],
+				':max_excellent'   => $post['max_excellent'],
+				':max_sockets'     => $post['max_sockets'],
+				':image'           => $post['image'],
+				':classes'         => $post['classes'],
+				':ID'              => $ID,
+			));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function deleteItemWebShop($ID)
+	{
+		try {
+			$data = $this->db->prepare("DELETE FROM mwo_webshop_items WHERE ID = :ID");
+			$data->execute(array(':ID' => $ID));
 
 			return 'OK';
 		} catch (PDOException $e) {

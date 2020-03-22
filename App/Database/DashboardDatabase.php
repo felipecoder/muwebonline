@@ -249,6 +249,70 @@ class DashboardDatabase extends Connection
     }
   }
 
+  public function getCustomer($memb___id)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM mwo_customers WHERE memb___id = :memb___id");
+      $data->execute(array(
+        ':memb___id' => $memb___id,
+      ));
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function createCustomer($post, $memb___id)
+  {
+    try {
+      $data = $this->db->prepare("INSERT INTO mwo_customers ([memb___id], [name], [email], [cpf], [street], [number], [complement], [district], [city], [state], [postalcode]) VALUES (:memb___id, :name, :email, :cpf, :street, :number, :complement, :district, :city, :state, :postalcode)");
+      $data->execute(array(
+        ':memb___id'  => $memb___id,
+        ':name'       => $post['name'],
+        ':email'      => $post['email'],
+        ':cpf'        => preg_replace("/[^0-9]/", "", trim($post['cpf'])),
+        ':street'     => $post['street'],
+        ':number'     => preg_replace("/[^0-9]/", "", trim($post['number'])),
+        ':complement' => $post['complement'],
+        ':district'   => $post['district'],
+        ':city'       => $post['city'],
+        ':state'      => $post['state'],
+        ':postalcode' => preg_replace("/[^0-9]/", "", trim($post['postalcode'])),
+      ));
+
+      return 'OK';
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function updateCustomer($post, $memb___id)
+  {
+    try {
+      $data = $this->db->prepare("UPDATE mwo_customers SET [name] = :name, [email] = :email, [cpf] = :cpf, [street] = :street, [number] = :number, [complement] = :complement, [district] = :district, [city] = :city, [state] = :state, [postalcode] = :postalcode WHERE memb___id = :memb___id");
+      $data->execute(array(
+        ':name'       => $post['name'],
+        ':email'      => $post['email'],
+        ':cpf'        => preg_replace("/[^0-9]/", "", trim($post['cpf'])),
+        ':street'     => $post['street'],
+        ':number'     => preg_replace("/[^0-9]/", "", trim($post['number'])),
+        ':complement' => $post['complement'],
+        ':district'   => $post['district'],
+        ':city'       => $post['city'],
+        ':state'      => $post['state'],
+        ':postalcode' => preg_replace("/[^0-9]/", "", trim($post['postalcode'])),
+        ':memb___id'  => $memb___id,
+      ));
+
+      return 'OK';
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
   public function getTickets($username)
   {
     try {
@@ -288,6 +352,20 @@ class DashboardDatabase extends Connection
       ));
 
       return 'OK';
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getTicketAnswer($ticket_id)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM mwo_tickets_answers WHERE ticket_id = :ticket_id");
+      $data->execute(array(':ticket_id' => $ticket_id));
+
+      $rows = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $rows;
     } catch (PDOException $e) {
       return $e->getMessage();
     }
@@ -594,17 +672,33 @@ class DashboardDatabase extends Connection
     }
   }
 
-	public function getAccessPageInfo($name)
-	{
-		try {
-			$data = $this->db->prepare("SELECT * FROM mwo_accesspages WHERE name = :name");
-			$data->execute(array(':name' => $name));
+  public function getAccessPageInfo($name)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM mwo_accesspages WHERE name = :name");
+      $data->execute(array(':name' => $name));
 
-			$rows = $data->fetch(PDO::FETCH_ASSOC);
+      $rows = $data->fetch(PDO::FETCH_ASSOC);
 
-			return $rows;
-		} catch (PDOException $e) {
-			return $e->getMessage();
-		}
-	}
+      return $rows;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function changeImage($Money, $mwo_image, $Name)
+  {
+    try {
+      $data = $this->db->prepare("UPDATE Character SET mwo_image = :mwo_image, Money = Money - :Money WHERE Name = :Name");
+      $data->execute(array(
+        ':Money'     => $Money,
+        ':mwo_image' => $mwo_image,
+        ':Name'      => $Name,
+      ));
+
+      return 'OK';
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
 }

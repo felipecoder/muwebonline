@@ -5,3 +5,4 @@ temp/
 logs/
 src/app.php
 src/database.php
+uploads/

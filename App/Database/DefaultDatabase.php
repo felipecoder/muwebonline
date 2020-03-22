@@ -88,7 +88,7 @@ class DefaultDatabase extends Connection
   public function getRankings()
   {
     try {
-      $data = $this->db->prepare("SELECT * FROM mwo_rankings");
+      $data = $this->db->prepare("SELECT * FROM mwo_rankings_home");
       $data->execute();
 
       $rows = $data->fetchAll(PDO::FETCH_ASSOC);
@@ -99,10 +99,10 @@ class DefaultDatabase extends Connection
     }
   }
 
-  public function createRanking($database, $table, $column, $custom)
+  public function createRanking($database, $table, $column, $max, $custom)
   {
     try {
-      $data = $this->db->prepare("SELECT TOP 5 $custom, $column as ranking FROM $database.dbo.$table ORDER BY $column DESC");
+      $data = $this->db->prepare("SELECT TOP $max $custom, mwo_image, $column as ranking FROM $database.dbo.$table ORDER BY $column DESC");
       $data->execute();
 
       $rows = $data->fetchAll(PDO::FETCH_ASSOC);

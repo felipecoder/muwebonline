@@ -1,0 +1,244 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Retiradas</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'create' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Criar Retirada</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/withdrawals/create" method="post">
+              <div class="form-group">
+                <label for="price" class="control-label col-md-3 col-sm-2 col-xs-12">Preço</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="price" class="form-control col-md-7 col-xs-12 money" id="price"
+                    placeholder="Preço" required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'info' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Detalhes da Transação</h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <section class="content invoice">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-xs-12 invoice-header">
+                  <h1>
+                    <i class="fa fa-money"></i> Transação
+                    <small class="pull-right">Data: {{ transaction_data.date|date('d/m/Y H:i') }}</small>
+                  </h1>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  Pago por
+                  <address>
+                    <strong>{{ transaction_data.paidby }}</strong>
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b>Transação #{{ transaction_data.transactionid }}</b>
+                  <br>
+                  <br>
+                  <b>Pedido ID:</b> {{ transaction_data.id }}
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-xs-12 table">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Qtd</th>
+                        <th style="width: 59%">Description</th>
+                        <th>Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{ transaction_data.amount }}</td>
+                        <td>{{ transaction_data.description }}</td>
+                        <td>R${{ transaction_data.pricetotal|number_format(2, ',', '.') }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-xs-6">
+                  <p class="lead">Metodo de Pagamento:</p>
+                  <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    {% if transaction_data.methodpay == 'withdraw'%}
+                    Retirada
+                    {% elseif transaction_data.methodpay == 'billet'%}
+                    Boleto
+                    {% elseif transaction_data.methodpay == 'card'%}
+                    Cartão
+                    {% else %}
+                    Retirada
+                    {% endif %}
+                  </p>
+                  <p class="lead">Estatus:</p>
+                  <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                    {% if transaction_data.status == 'pending'%}
+                    {% set title = 'Em Progresso' %}
+                    {% elseif transaction_data.status == 'pay'%}
+                    {% set title = 'Finalizado' %}
+                    {% elseif transaction_data.status == 'canceled'%}
+                    {% set title = 'Cancelado' %}
+                    {% else %}
+                    {% set title = 'Em Progresso' %}
+                    {% endif %}
+                    {{ title }}
+                  </p>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-6">
+                  <p class="lead">Pagamento</p>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tbody>
+                        <tr>
+                          <th style="width:50%">Subtotal:</th>
+                          <td>R${{ transaction_data.pricetotal|number_format(2, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                          <th>Taxa</th>
+                          <td>R${{ transaction_data.pricefee|number_format(2, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                          <th>Total:</th>
+                          <td>R${{ transaction_data.pricefished|number_format(2, ',', '.') }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+              <div class="row no-print">
+                <div class="col-xs-12">
+                  <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        {%elseif page_type == 'list' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Todas as Retiradas</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap"
+              cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Estatus</th>
+                  <th>Valor</th>
+                  <th>Taxa</th>
+                  <th>Total</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in withdrawals %}
+                <tr>
+                  <td>{{ item.transactionid }}</td>
+                  <td>Retirada</td>
+                  <td>
+                    {% if item.status == 'pending'%}
+                    {% set title = 'Em Progresso' %}
+                    {% elseif item.status == 'pay'%}
+                    {% set title = 'Finalizado' %}
+                    {% elseif item.status == 'canceled'%}
+                    {% set title = 'Cancelado' %}
+                    {% else %}
+                    {% set title = 'Em Progresso' %}
+                    {% endif %}
+                    {{ title }}
+                  </td>
+                  <td>R${{ item.pricetotal|number_format(2, ',', '.') }}</td>
+                  <td>R${{ item.pricefee|number_format(2, ',', '.') }}</td>
+                  <td>R${{ item.pricefished|number_format(2, ',', '.') }}</td>
+                  <td>{{ item.date|date('d/m/Y H:i') }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {%endif%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /page content -->
+
+{% endblock %}

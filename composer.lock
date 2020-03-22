@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "562f7fd32b8b7e00560c99cf4d61b18b",
+    "content-hash": "b6cf4dc89614e109035d4cdd00b96351",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -35,6 +35,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
+            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
@@ -442,6 +443,79 @@
                 "psr-3"
             ],
             "time": "2017-06-19T01:22:40+00:00"
+        },
+        {
+            "name": "mwo/items",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "plugins/mwo/items",
+                "reference": "1079361afadb6c7f97eb4f8795ac317f2575adac"
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MWOItems\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Felipe Bruno",
+                    "email": "felipexgyn619@gmail.com"
+                }
+            ],
+            "description": "Biblioteca de items MuOnline para PHP",
+            "homepage": "https://github.com/felipecoder/mwoitems",
+            "keywords": [
+                "items",
+                "itemsmuonlinephp",
+                "muonline",
+                "muwebonline"
+            ],
+            "transport-options": {
+                "symlink": true
+            }
+        },
+        {
+            "name": "mwopay/sdk",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "plugins/mwopay/sdk",
+                "reference": "fd87559960b25f0a21fd68c136c199b5a26fad34"
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MWOPay\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Felipe Bruno",
+                    "email": "felipexgyn619@gmail.com"
+                }
+            ],
+            "description": "Biblioteca de integração PHP MWOPay",
+            "homepage": "https://muwebonline.com",
+            "keywords": [
+                "mwopay"
+            ],
+            "transport-options": {
+                "symlink": true
+            }
         },
         {
             "name": "nikic/fast-route",
@@ -1374,7 +1448,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mwopay/sdk": 20,
+        "mwo/items": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -219,6 +219,28 @@ $app->group("/dashboard", function ($app) {
         return $crontroller->getChangeClass($model, $view, $response);
       }
     })->setName('characterschangeclass');
+
+    $app->map(['GET', 'POST'], "/changeimage", function ($request, $response, $args) {
+      //Classes
+      $crontroller = new DashboardController();
+      $model       = new DashboardModel();
+      $view        = new View();
+
+      //Variables
+      $model->setUsername($_SESSION['usernameuser']);
+
+      if ($request->isPost()) {
+        $data      = $_POST;
+        $files     = $request->getUploadedFiles();
+        $ipaddress = $request->getServerParam('REMOTE_ADDR');
+
+        $model->setIpaddress($ipaddress);
+
+        return $crontroller->postChangeImage($model, $response, $data, $files);
+      } else {
+        return $crontroller->getChangeImage($model, $view, $response);
+      }
+    })->setName('characterschangeimage');
   });
 
   //No Vip
@@ -230,7 +252,7 @@ $app->group("/dashboard", function ($app) {
 
     return $crontroller->getNoVip($model, $view, $response);
   })->setName('novip');
-  
+
   //Blocked
   $app->get("/blocked", function ($request, $response, $args) {
     //Classes
@@ -240,5 +262,4 @@ $app->group("/dashboard", function ($app) {
 
     return $crontroller->getBlocked($model, $view, $response);
   })->setName('blocked');
-  
 })->add(new AccesPageMiddeware())->add(new UserMiddleware());

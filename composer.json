@@ -5,11 +5,28 @@
         "muwebonline",
         "muonline"
     ],
+    "license": "MIT",
     "homepage": "https://muwebonline.com",
     "authors": [
         {
             "name": "Felipe Bruno",
             "email": "felipexgyn619@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "plugins/mwopay/sdk",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "plugins/mwo/items",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {
@@ -23,7 +40,9 @@
         "kitchenu/slim-debugbar": "^1.1",
         "zeuxisoo/slim-whoops": "0.6.*",
         "monolog/monolog": "1.23.*",
-        "visualappeal/php-auto-update": "0.9.*"
+        "visualappeal/php-auto-update": "0.9.*",
+        "mwopay/sdk": "@dev",
+        "mwo/items": "@dev"
     },
     "autoload": {
         "psr-4": {

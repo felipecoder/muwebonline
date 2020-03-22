@@ -1,274 +1,768 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <!-- Meta, title, CSS, favicons, etc. -->
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin {{ title_site }} | {{ title_page}}</title>
+    <base href="/templates/gentelella/" />
 
-  <title>Admin {{ title_site }} | {{ title_page}}</title>
-  <base href="/templates/gentelella/">
+    <!-- Bootstrap -->
+    <link
+      href="vendors/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      href="vendors/font-awesome/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- NProgress -->
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link
+      href="vendors/bootstrap-daterangepicker/daterangepicker.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap tags input -->
+    <link
+      rel="stylesheet"
+      href="vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.css"
+    />
+    <!-- Datatables -->
+    <link
+      href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Bootstrap -->
-  <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <!-- NProgress -->
-  <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
-  <!-- bootstrap-daterangepicker -->
-  <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-  <!-- Bootstrap tags input -->
-  <link rel="stylesheet" href="vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
-  <!-- Datatables -->
-  <link href="vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-  <link href="vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-  <link href="vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-  <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-  <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="build/css/custom.min.css" rel="stylesheet" />
+    <!-- Icon -->
+    <link rel="shortcut icon" type="image/x-icon" href="images/icon.jpg" />
+  </head>
 
-  <!-- Custom Theme Style -->
-  <link href="build/css/custom.min.css" rel="stylesheet">
-  <!-- Icon -->
-  <link rel="shortcut icon" type="image/x-icon" href="images/icon.jpg">
-</head>
-
-<body class="nav-md">
-  <div class="container body">
-    <div class="main_container">
-      <div class="col-md-3 left_col">
-        <div class="left_col scroll-view">
-          <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title"><i class="fa fa-code"></i> <span>MuWebOnline</span></a>
-          </div>
-
-          <div class="clearfix"></div>
-
-          <!-- menu profile quick info -->
-          <div class="profile clearfix">
-            <div class="profile_pic">
-              <img src="images/img.jpg" alt="{{ admin_data.username }}" class="img-circle profile_img">
-            </div>
-            <div class="profile_info">
-              <span>Level: {{ admin_data.access }}</span>
-              <h2>{{ admin_data.username }}</h2>
-            </div>
-          </div>
-          <!-- /menu profile quick info -->
-
-          <br />
-
-          <!-- sidebar menu -->
-          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-              <h3>General</h3>
-              <ul class="nav side-menu">
-                <li><a href="/{{link_admin}}/"><i class="fa fa-dashboard"></i> Início</a></li>
-                <li><a><i class="fa fa-users"></i> Contas <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/accounts/list">Todas as Contas</a></li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-male"></i> Personagens <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/characters/list">Todos os Personagens</a></li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-newspaper-o"></i> Notícias <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/news/list">Todas as Notícias</a></li>
-                    <li><a href="/{{link_admin}}/news/create">Adicionar Notícia</a></li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-file-code-o"></i> Template <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a>Menus<span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                        <li><a href="/{{link_admin}}/menus/list">Todos os Menus</a></li>
-                        <li><a href="/{{link_admin}}/menus/create">Adicionar Menu</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li><a>Páginas<span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                        <li><a href="/{{link_admin}}/pages/list">Todos as Páginas</a>
-                        </li>
-                        <li><a href="/{{link_admin}}/pages/create">Adicionar Página</a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-bar-chart"></i> Rankings <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/rankings/list">Todos os Rankings</a>
-                    </li>
-                    <li><a href="/{{link_admin}}/rankings/create">Adicionar Ranking</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-hourglass-half"></i> Eventos <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/events/list">Todos os Eventos</a></li>
-                    <li><a href="/{{link_admin}}/events/create">Adicionar Evento</a></li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-usd"></i> Moedas <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/coins/list">Todas as Moedas</a></li>
-                    <li><a href="/{{link_admin}}/coins/create">Adicionar Moeda</a></li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-diamond"></i> Vips <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/vips/list">Todos os Vips</a></li>
-                    <li><a href="/{{link_admin}}/vips/create">Adicionar Vip</a></li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-unlock-alt"></i> Acesso Páginas <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/accesspages/list">Todos os Acessos</a>
-                    </li>
-                    <li><a href="/{{link_admin}}/accesspages/create">Adicionar Acesso</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a><i class="fa fa-image"></i> Slides <span class="fa fa-chevron-down"></span></a>
-                  <ul class="nav child_menu">
-                    <li><a href="/{{link_admin}}/slides/list">Todos os Slides</a>
-                    </li>
-                    <li><a href="/{{link_admin}}/slides/create">Adicionar Slide</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="/{{link_admin}}/kingofmu"><i class="fa fa-child"></i> Rei do Mu</a></li>
-              </ul>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"
+                ><i class="fa fa-code"></i> <span>MuWebOnline</span></a
+              >
             </div>
 
-          </div>
-          <!-- /sidebar menu -->
+            <div class="clearfix"></div>
 
-          <!-- /menu footer buttons -->
-          <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Configurações" href="/{{link_admin}}/configs/list">
-              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Update" href="/{{link_admin}}/update">
-              <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="FullScreen" onclick="toggleFullScreen()"
-              href="javascript:void(0)">
-              <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Sair" href="/{{link_admin}}/logout">
-              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-            </a>
-          </div>
-          <!-- /menu footer buttons -->
-        </div>
-      </div>
-
-      <!-- top navigation -->
-      <div class="top_nav">
-        <div class="nav_menu">
-          <nav>
-            <div class="nav toggle">
-              <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img
+                  src="images/img.jpg"
+                  alt="{{ admin_data.username }}"
+                  class="img-circle profile_img"
+                />
+              </div>
+              <div class="profile_info">
+                <span>Level: {{ admin_data.access }}</span>
+                <h2>{{ admin_data.username }}</h2>
+              </div>
             </div>
+            <!-- /menu profile quick info -->
 
-            <ul class="nav navbar-nav navbar-right">
-              <li class="">
-                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                  aria-expanded="false">
-                  <img src="images/img.jpg" alt="">{{ admin_data.username }}
-                  <span class=" fa fa-angle-down"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-usermenu pull-right">
+            <br />
+
+            <!-- sidebar menu -->
+            <div
+              id="sidebar-menu"
+              class="main_menu_side hidden-print main_menu"
+            >
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
                   <li>
-                    <a href="/{{link_admin}}/logout">
-                      <span>Configurações</span>
-                    </a>
+                    <a href="/{{link_admin}}/"
+                      ><i class="fa fa-dashboard"></i> Início</a
+                    >
                   </li>
-                  <li><a href="/{{link_admin}}/logout"><i class="fa fa-sign-out pull-right"></i> Sair</a></li>
+                  <li>
+                    <a
+                      ><i class="fa fa-user-secret"></i> Contas Painel
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/accesspanel/list"
+                          >Todos as Contas</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/accesspanel/create"
+                          >Adicionar Conta</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-users"></i> Contas
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/accounts/list"
+                          >Todas as Contas</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-male"></i> Personagens
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/characters/list"
+                          >Todos os Personagens</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-newspaper-o"></i> Notícias
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/news/list"
+                          >Todas as Notícias</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/news/create"
+                          >Adicionar Notícia</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-file-code-o"></i> Template
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a>Menus<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/menus/list"
+                              >Todos os Menus</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/menus/create"
+                              >Adicionar Menu</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>Páginas<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/pages/list"
+                              >Todos as Páginas</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/pages/create"
+                              >Adicionar Página</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-bar-chart"></i> Rankings
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/rankings/list"
+                          >Todos os Rankings</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/rankings/create"
+                          >Adicionar Ranking</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-area-chart"></i> Rankings Home<span
+                        class="fa fa-chevron-down"
+                      ></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/rankings-home/list"
+                          >Todos os Rankings Home</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/rankings-home/create"
+                          >Adicionar Ranking Home</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-hourglass-half"></i> Eventos
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/events/list"
+                          >Todos os Eventos</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/events/create"
+                          >Adicionar Evento</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-usd"></i> Moedas
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/coins/list">Todas as Moedas</a>
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/coins/create"
+                          >Adicionar Moeda</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-diamond"></i> Vips
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/vips/list">Todos os Vips</a>
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/vips/create">Adicionar Vip</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-unlock-alt"></i> Acesso Páginas
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/accesspages/list"
+                          >Todos os Acessos</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/accesspages/create"
+                          >Adicionar Acesso</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-image"></i> Slides
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a href="/{{link_admin}}/slides/list"
+                          >Todos os Slides</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/{{link_admin}}/slides/create"
+                          >Adicionar Slide</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="/{{link_admin}}/kingofmu"
+                      ><i class="fa fa-child"></i> Rei do Mu</a
+                    >
+                  </li>
+                  <li>
+                    <a href="/{{link_admin}}/tickets/list"
+                      ><i class="fa fa-ticket"></i> Tickets</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-line-chart"></i> MWOPay
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a
+                          >Transações<span class="fa fa-chevron-down"></span
+                        ></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/transactions/all"
+                              >Todas as Transações</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/transactions/card"
+                              >Cartões</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/transactions/billet"
+                              >Boletos</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/transactions/withdraw"
+                              >Retiradas</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>Retiradas<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/withdrawals/list"
+                              >Todas as Retiradas</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/withdrawals/create"
+                              >Programar Retirada</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="/{{link_admin}}/logs/list"
+                      ><i class="fa fa-history"></i> Logs</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-book"></i> Items
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a>Ancients<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/items/ancients/list"
+                              >Todos Items Ancients</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/ancients/generate"
+                              >Gerar Items Ancients</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/ancients/create"
+                              >Criar Item Ancient</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a
+                          >Jewel Of Harmony<span
+                            class="fa fa-chevron-down"
+                          ></span
+                        ></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/items/harmonys/list"
+                              >Todos Items Harmonys</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/harmonys/generate"
+                              >Gerar Items Harmonys</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/harmonys/create"
+                              >Criar Item Harmony</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>Options<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/items/options/list"
+                              >Todos Items Options</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/options/generate"
+                              >Gerar Items Options</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/options/create"
+                              >Criar Item Option</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>Sockets<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/items/sockets/list"
+                              >Todos Items Sockets</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/sockets/generate"
+                              >Gerar Items Sockets</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/sockets/create"
+                              >Criar Item Socket</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>380<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/items/refines/list"
+                              >Todos Items 380</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/refines/generate"
+                              >Gerar Items 380</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/refines/create"
+                              >Criar Item 380</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>Skills<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/items/skills/list"
+                              >Todas as Skills</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/skills/generate"
+                              >Gerar Skills</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/items/skills/create"
+                              >Criar Skill</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a
+                      ><i class="fa fa-shopping-cart"></i> WebShop
+                      <span class="fa fa-chevron-down"></span
+                    ></a>
+                    <ul class="nav child_menu">
+                      <li>
+                        <a>Shops<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/webshops/all/list"
+                              >Todos Shops</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/webshops/all/create"
+                              >Criar Shop</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a
+                          >Categorias<span class="fa fa-chevron-down"></span
+                        ></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/webshops/categories/list"
+                              >Todas Categorias</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/webshops/categories/create"
+                              >Criar Categoria</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a>Items<span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li>
+                            <a href="/{{link_admin}}/webshops/items/list"
+                              >Todos Items</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/webshops/items/generate"
+                              >Gerar Items</a
+                            >
+                          </li>
+                          <li>
+                            <a href="/{{link_admin}}/webshops/items/create"
+                              >Criar Item</a
+                            >
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
                 </ul>
-              </li>
-            </ul>
-          </nav>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Configurações"
+                href="/{{link_admin}}/configs/list"
+              >
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Update"
+                href="/{{link_admin}}/update"
+              >
+                <span
+                  class="glyphicon glyphicon-download"
+                  aria-hidden="true"
+                ></span>
+              </a>
+              <a
+                data-toggle="tooltip"
+                data-placement="top"
+                title="FullScreen"
+                onclick="toggleFullScreen()"
+                href="javascript:void(0)"
+              >
+                <span
+                  class="glyphicon glyphicon-fullscreen"
+                  aria-hidden="true"
+                ></span>
+              </a>
+              <a
+                data-toggle="tooltip"
+                data-placement="top"
+                title="Sair"
+                href="/{{link_admin}}/logout"
+              >
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
         </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a
+                    href="javascript:;"
+                    class="user-profile dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img src="images/img.jpg" alt="" />{{ admin_data.username }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li>
+                      <a href="/{{link_admin}}/configs/list">
+                        <span>Configurações</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/{{link_admin}}/logout"
+                        ><i class="fa fa-sign-out pull-right"></i> Sair</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        {% block content %} {% endblock %}
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Desenvolvido por
+            <a href="https://muwebonline.com.br/" target="_blank"
+              >Mu WebOnline</a
+            >
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
       </div>
-      <!-- /top navigation -->
-
-      {% block content %}
-      {% endblock %}
-
-      <!-- footer content -->
-      <footer>
-        <div class="pull-right">
-          Desenvolvido por <a href="https://muwebonline.com.br/" target="_blank">Mu WebOnline</a>
-        </div>
-        <div class="clearfix"></div>
-      </footer>
-      <!-- /footer content -->
     </div>
-  </div>
 
-  <!-- jQuery -->
-  <script src="vendors/jquery/dist/jquery.min.js"></script>
-  <!-- Bootstrap -->
-  <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-  <!-- FastClick -->
-  <script src="vendors/fastclick/lib/fastclick.js"></script>
-  <!-- NProgress -->
-  <script src="vendors/nprogress/nprogress.js"></script>
-  <!-- Chart.js -->
-  <script src="vendors/Chart.js/dist/Chart.min.js"></script>
-  <!-- jQuery Sparklines -->
-  <script src="vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-  <!-- Flot -->
-  <script src="vendors/Flot/jquery.flot.js"></script>
-  <script src="vendors/Flot/jquery.flot.pie.js"></script>
-  <script src="vendors/Flot/jquery.flot.time.js"></script>
-  <script src="vendors/Flot/jquery.flot.stack.js"></script>
-  <script src="vendors/Flot/jquery.flot.resize.js"></script>
-  <!-- Flot plugins -->
-  <script src="vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-  <script src="vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-  <script src="vendors/flot.curvedlines/curvedLines.js"></script>
-  <!-- DateJS -->
-  <script src="vendors/DateJS/build/date.js"></script>
-  <!-- bootstrap-daterangepicker -->
-  <script src="vendors/moment/min/moment.min.js"></script>
-  <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-  <!-- bootstrap tags input -->
-  <script src="vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-  <!-- Datatables -->
-  <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  <script src="vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-  <script src="vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script src="vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script src="vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script src="vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script src="vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script src="vendors/jszip/dist/jszip.min.js"></script>
-  <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
-  <!-- CK Editor -->
-  <script src="vendors/ckeditor/ckeditor.js"></script>
+    <!-- jQuery -->
+    <script src="vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- Flot -->
+    <script src="vendors/Flot/jquery.flot.js"></script>
+    <script src="vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="vendors/Flot/jquery.flot.time.js"></script>
+    <script src="vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="vendors/DateJS/build/date.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="vendors/moment/min/moment.min.js"></script>
+    <script src="vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- bootstrap tags input -->
+    <script src="vendors/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+    <!-- Datatables -->
+    <script src="vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="vendors/jszip/dist/jszip.min.js"></script>
+    <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- CK Editor -->
+    <script src="vendors/ckeditor/ckeditor.js"></script>
+    <!-- jquery.inputmask -->
+    <script src="vendors/jquery-mask/jquery.mask.js"></script>
 
-  <!-- Custom Theme Scripts -->
-  <script src="build/js/custom.js"></script>
-  <!-- Page script -->
-  <script>
-    $(function () {
-      CKEDITOR.replace('ckeditor');
-    });
-  </script>
-</body>
+    <!-- Custom Theme Scripts -->
+    <script src="build/js/custom.js"></script>
+    <!-- Page script -->
+    <script>
+      $(function() {
+        $(".cep").mask("00000-000");
 
+        $(".cpf").mask("000.000.000-00", { reverse: true });
+        $(".money").mask("###0.00", { reverse: true });
+
+        var SPMaskBehavior = function(val) {
+            return val.replace(/\D/g, "").length === 11
+              ? "(00) 00000-0000"
+              : "(00) 0000-00009";
+          },
+          spOptions = {
+            onKeyPress: function(val, e, field, options) {
+              field.mask(SPMaskBehavior.apply({}, arguments), options);
+            }
+          };
+
+        $(".phone").mask(SPMaskBehavior, spOptions);
+      });
+      $(function() {
+        CKEDITOR.replace("ckeditor");
+      });
+    </script>
+  </body>
 </html>

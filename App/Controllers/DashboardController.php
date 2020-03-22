@@ -8,6 +8,7 @@ use App\Views\View;
 use App\Views\ViewLogger;
 use App\Views\ViewMessages;
 use Slim\Http\Response;
+use Slim\Http\UploadedFile;
 use DateTime;
 
 class DashboardController
@@ -529,11 +530,13 @@ class DashboardController
     $data = new DashboardDatabase();
 
     //Variables
-    $settings_data = $data->getUser($model);
+    $settings_data     = $data->getUser($model);
+    $settings_customer = $data->getCustomer($model->getUsername());
 
     $array = array(
-      'title_page'    => 'Configurações',
-      'settings_data' => $settings_data,
+      'title_page'        => 'Configurações',
+      'settings_data'     => $settings_data,
+      'settings_customer' => $settings_customer,
     );
 
     return $view->getRender($array, 'dashboard-settings', $response);
@@ -712,6 +715,69 @@ class DashboardController
           return $response->withRedirect("/dashboard/settings");
         }
       }
+    } elseif ($page == 'customer') {
+      if (empty($post['name']) or empty($post['email']) or empty($post['cpf']) or empty($post['street']) or empty($post['number']) or empty($post['district']) or empty($post['city']) or empty($post['state']) or empty($post['postalcode'])) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'Preencha todos os campos'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect("/dashboard/settings");
+        exit();
+      } elseif ($post['cur_password'] != $home_data['memb__pwd']) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'A senha atual está incorreta'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect("/dashboard/settings");
+      } else {
+        $check_customer = $data->getCustomer($home_data['memb___id']);
+        if(isset($check_customer['ID'])){
+          $update_customer = $data->updateCustomer($post, $home_data['memb___id']);
+        }else{
+          $update_customer = $data->createCustomer($post, $home_data['memb___id']);
+        }        
+        if ($update_customer == 'OK') {
+          $return = array(
+            'error'   => false,
+            'success' => true,
+            'message' => 'Dados de compra alterado com sucesso'
+          );
+
+          $messages->addMessage('response', $return);
+
+          $values = array(
+            'username'  => $model->getUsername(),
+            'ipaddress' => $model->getIpaddress(),
+            'message'   => 'Alterou os dados de compra'
+          );
+
+          $logger->addLoggerInfo("Settings", $values);
+          return $response->withRedirect("/dashboard/settings");
+        } else {
+          $return = array(
+            'error'   => true,
+            'success' => false,
+            'message' => 'Error ao alterar os dados de compra, tente novamente'
+          );
+
+          $messages->addMessage('response', $return);
+
+          $values = array(
+            'username'  => $model->getUsername(),
+            'ipaddress' => $model->getIpaddress(),
+            'message'   => $update_customer
+          );
+
+          $logger->addLoggerWarning("Error Settings", $values);
+          return $response->withRedirect("/dashboard/settings");
+        }
+      }
     } else {
       $return = array(
         'error'   => true,
@@ -784,9 +850,12 @@ class DashboardController
         return $response->withRedirect("/dashboard/tickets");
         exit();
       } else {
+        $ticket_answer = $data->getTicketAnswer($id);
+
         $array = array(
-          'title_page'  => 'Ver Ticket',
-          'ticket_data' => $ticket_data,
+          'title_page'    => 'Ver Ticket',
+          'ticket_data'   => $ticket_data,
+          'ticket_answer' => $ticket_answer,
         );
 
         return $view->getRender($array, 'dashboard-ticketsview', $response);
@@ -2183,9 +2252,152 @@ class DashboardController
     return $skill;
   }
 
+  public function getChangeImage(DashboardModel $model, View $view, Response $response)
+  {
+    //Classes
+    $data = new DashboardDatabase();
+
+    //Variables
+    $home_data       = $data->getUser($model);
+    $characters_list = $data->getCharacters($home_data['memb___id']);
+
+    $array = array(
+      'title_page'      => 'Alterar Imagem',
+      'characters_list' => $characters_list,
+    );
+
+    return $view->getRender($array, 'characters-image', $response);
+  }
+
+  public function postChangeImage(DashboardModel $model, Response $response, $post, $files)
+  {
+    //Classes
+    $data     = new DashboardDatabase();
+    $logger   = new ViewLogger('changeimage');
+    $messages = new ViewMessages();
+
+    //Variables
+    $home_data = $data->getUser($model);
+    $patch_upload = getenv('DIRIMG');
+    $patch_images = getenv('DIRECTORY_ROOT') . $patch_upload . "users";
+
+    if (empty($post['character']) or empty($files['mwo_image'])) {
+      $return = array(
+        'error'   => true,
+        'success' => false,
+        'message' => 'Preencha todos os campos'
+      );
+
+      $messages->addMessage('response', $return);
+      return $response->withRedirect("/dashboard/characters/changeimage");
+      exit();
+    } else {
+      $config_columns     = $data->getConfig('columns');
+      $config_columns     = json_decode($config_columns, true);
+      $config_changeimage = $data->getConfig('changeclass');
+      $config_changeimage = json_decode($config_changeimage, true);
+      $config_muserver    = $data->getConfig('muserver');
+      $config_muserver    = json_decode($config_muserver, true);
+      $charater_details   = $data->getCharacter($config_columns[0]['value'], $home_data['memb___id'], $post['character']);
+      $vips               = $data->getVipsConfigs();
+
+      if (empty($charater_details)) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'Personagem não encontrado'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect("/dashboard/characters/changeimage");
+      }
+
+      if (empty($vips)) {
+        $vip_level = 0;
+      } else {
+        foreach ($vips as $key => $value) {
+          if ($home_data[$value['column_level']] == $value['level']) {
+            $vip_level = $value['level'];
+            break;
+          } else {
+            $vip_level = 0;
+          }
+        }
+      }
+
+      $PRICEZEN = $config_changeimage[0]['value'];
+      $PRICEZEN = explode(',', $PRICEZEN);
+      $PRICEZEN = $PRICEZEN[$vip_level];
+
+      if ($charater_details['Money'] < $PRICEZEN) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'Você não tem zen necessário para alterar imagem'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect("/dashboard/characters/changeimage");
+      }
+
+      $image = $files['mwo_image'];
+      if ($image->getError() === UPLOAD_ERR_OK) {
+        $imagename = $this->moveUploadedFile($patch_images, $image, $post['character']);
+      } else {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'Error upload de imagem tente novamente'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect("/dashboard/characters/changeimage");
+        exit();
+      }
+
+      $changeimage = $data->changeImage($PRICEZEN, $imagename, $post['character']);
+      if ($changeimage == 'OK') {
+        $return = array(
+          'error'   => false,
+          'success' => true,
+          'message' => 'Imagem alterada com sucesso'
+        );
+
+        $messages->addMessage('response', $return);
+
+        $values = array(
+          'username'  => $model->getUsername(),
+          'ipaddress' => $model->getIpaddress(),
+          'message'   => 'Alterou a imagem do personagem ' . $post['character'] . ''
+        );
+
+        $logger->addLoggerInfo("Change Image", $values);
+
+        return $response->withRedirect("/dashboard/characters/changeimage");
+      } else {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'Não foi possível alterar a imagem do personagem, tente novamente'
+        );
+
+        $messages->addMessage('response', $return);
+
+        $values = array(
+          'username'  => $model->getUsername(),
+          'ipaddress' => $model->getIpaddress(),
+          'message'   => $changeimage
+        );
+
+        $logger->addLoggerWarning("Error Change Image", $values);
+        return $response->withRedirect("/dashboard/characters/changeimage");
+      }
+    }
+  }
+
   public function getNoVip(DashboardModel $model, View $view, Response $response)
   {
-    
+
     $array = array(
       'title_page' => 'Negado',
     );
@@ -2195,11 +2407,22 @@ class DashboardController
 
   public function getBlocked(DashboardModel $model, View $view, Response $response)
   {
-    
+
     $array = array(
       'title_page' => 'Bloqueado',
     );
 
     return $view->getRender($array, 'dashboard-blocked', $response);
+  }
+
+  public function moveUploadedFile($directory, UploadedFile $uploadedFile, $name)
+  {
+    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+    $basename = bin2hex(rand());
+    $filename = sprintf('%s-%s.%0.8s', $name, $basename, $extension);
+
+    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+    return $filename;
   }
 }

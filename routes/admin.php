@@ -14,7 +14,11 @@ $app->group("/{$patch_admin}", function ($app) {
 		$model       = new AdminModel();
 		$view        = new ViewAdmin();
 
-		$model->setUsername($_SESSION['usernameadmin']);
+		//Variables
+		$ipaddress = $request->getServerParam('REMOTE_ADDR');
+
+		$model->setUsername($_SESSION['usernameadmin'])
+			->setIpaddress($ipaddress);
 
 		return $crontroller->getHome($model, $view, $response);
 	})->setName('home');
@@ -44,6 +48,35 @@ $app->group("/{$patch_admin}", function ($app) {
 			return $crontroller->getLogin($model, $view, $response);
 		}
 	})->setName('login');
+
+	$app->map(['GET', 'POST'], "/accesspanel/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postAccessPanel($model, $view, $response, $args['page'], $data, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getAccessPanel($model, $view, $response, $args['page'], $id);
+		}
+	})->setName('accesspanel');
 
 	$app->map(['GET', 'POST'], "/accounts/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
 		if ($request->isPost()) {
@@ -189,6 +222,35 @@ $app->group("/{$patch_admin}", function ($app) {
 			return $crontroller->getRankings($model, $view, $response, $args['page'], $id);
 		}
 	})->setName('rankings');
+
+	$app->map(['GET', 'POST'], "/rankings-home/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postRankingsHome($model, $view, $response, $args['page'], $data, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getRankingsHome($model, $view, $response, $args['page'], $id);
+		}
+	})->setName('rankings-home');
 
 	$app->map(['GET', 'POST'], "/news/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
 		if ($request->isPost()) {
@@ -431,6 +493,166 @@ $app->group("/{$patch_admin}", function ($app) {
 			return $crontroller->getKingOfMu($model, $view, $response);
 		}
 	})->setName('kingofmu');
+
+	$app->get("/transactions/{page}[/{id}]", function ($request, $response, $args) {
+		//Classes
+		$crontroller = new AdminController();
+		$model       = new AdminModel();
+		$view        = new ViewAdmin();
+
+		//Variables
+		$ipaddress = $request->getServerParam('REMOTE_ADDR');
+		$page      = (isset($args['page'])) ? $args['page'] : NULL;
+		$id        = (isset($args['id'])) ? $args['id'] : NULL;
+		$model->setIpaddress($ipaddress);
+
+		return $crontroller->getTransactions($model, $view, $response, $page, $id);
+	})->setName('transactions');
+
+	$app->map(['GET', 'POST'], "/withdrawals/{page}[/{id}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postWithdrawals($model, $view, $response, $args['page'], $data);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getWithdrawals($model, $view, $response, $args['page'], $id);
+		}
+	})->setName('withdrawals');
+
+	$app->map(['GET', 'POST'], "/tickets/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postTickets($model, $view, $response, $args['page'], $data, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getTickets($model, $view, $response, $args['page'], $id);
+		}
+	})->setName('tickets');
+
+	$app->map(['GET', 'POST'], "/logs/{page}[/{name}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$name      = (isset($args['name'])) ? $args['name'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postLogs($model, $view, $response, $args['page'], $name);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$name = (isset($args['name'])) ? $args['name'] : NULL;
+
+			return $crontroller->getLogs($model, $view, $response, $args['page'], $name);
+		}
+	})->setName('logs');
+
+	$app->map(['GET', 'POST'], "/items/{action}/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$files     = $request->getUploadedFiles();
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postItems($model, $view, $response, $args['action'], $args['page'], $data, $files, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getItems($model, $view, $response, $args['action'], $args['page'], $id);
+		}
+	})->setName('items');
+
+	$app->map(['GET', 'POST'], "/webshops/{action}/{page}[/{id:[0-9]+}]", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$files     = $request->getUploadedFiles();
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+			$id        = (isset($args['id'])) ? $args['id'] : NULL;
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postWebShops($model, $view, $response, $args['action'], $args['page'], $data, $files, $id);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$id = (isset($args['id'])) ? $args['id'] : NULL;
+
+			return $crontroller->getWebShops($model, $view, $response, $args['action'], $args['page'], $id);
+		}
+	})->setName('webshops');
 
 	$app->get("/logout", function ($request, $response, $args) {
 		$crontroller = new AdminController();

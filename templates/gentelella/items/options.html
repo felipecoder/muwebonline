@@ -1,0 +1,416 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Items Options</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'generate' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Gerar Item Option</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/options/generate" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="itemoption" class="control-label col-md-3 col-sm-2 col-xs-12">ItemOption</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" name="itemoption" class="form-control col-md-7 col-xs-12" id="itemoption"
+                    accept=".txt" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="itemoptionname" class="control-label col-md-3 col-sm-2 col-xs-12">ItemOptionName</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" name="itemoptionname" class="form-control col-md-7 col-xs-12" id="itemoptionname"
+                    accept=".txt" required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Gerar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'create' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Criar Item Option</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/options/create" method="post">
+              <div class="form-group">
+                <label for="index" class="control-label col-md-3 col-sm-2 col-xs-12">ID</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="index" class="form-control col-md-7 col-xs-12" id="index" placeholder="ID"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="optionindex" class="control-label col-md-3 col-sm-2 col-xs-12">Index</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="optionindex" class="form-control col-md-7 col-xs-12" id="optionindex"
+                    placeholder="Index" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="value" class="control-label col-md-3 col-sm-2 col-xs-12">Valor</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="value" class="form-control col-md-7 col-xs-12" id="value"
+                    placeholder="Valor" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="minrange" class="control-label col-md-3 col-sm-2 col-xs-12">Minimo Range</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="minrange" class="form-control col-md-7 col-xs-12" id="minrange"
+                    placeholder="Minimo Range" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="maxrange" class="control-label col-md-3 col-sm-2 col-xs-12">Máximo Range</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="maxrange" class="form-control col-md-7 col-xs-12" id="maxrange"
+                    placeholder="Máximo Range" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="skill" class="control-label col-md-3 col-sm-2 col-xs-12">Skill</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="skill" class="form-control col-md-7 col-xs-12" id="skill" placeholder="Skill"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="luck" class="control-label col-md-3 col-sm-2 col-xs-12">Luck</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="luck" class="form-control col-md-7 col-xs-12" id="luck" placeholder="Luck"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="option" class="control-label col-md-3 col-sm-2 col-xs-12">Opção</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="option" class="form-control col-md-7 col-xs-12" id="option"
+                    placeholder="Opção" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newoption" class="control-label col-md-3 col-sm-2 col-xs-12">Nova Opção</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="newoption" class="form-control col-md-7 col-xs-12" id="newoption"
+                    placeholder="Nova Opção" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'edit' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Editar Item Option</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/options/edit/{{ option_data.ID }}" method="post">
+              <div class="form-group">
+                <label for="index" class="control-label col-md-3 col-sm-2 col-xs-12">ID</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="index" class="form-control col-md-7 col-xs-12" id="index" placeholder="ID"
+                    value="{{ option_data.index_ }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="optionindex" class="control-label col-md-3 col-sm-2 col-xs-12">Index</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="optionindex" class="form-control col-md-7 col-xs-12" id="optionindex"
+                    placeholder="Index" value="{{ option_data.optionindex }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="value" class="control-label col-md-3 col-sm-2 col-xs-12">Valor</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="value" class="form-control col-md-7 col-xs-12" id="value"
+                    placeholder="Valor" value="{{ option_data.value }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="minrange" class="control-label col-md-3 col-sm-2 col-xs-12">Minimo Range</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="minrange" class="form-control col-md-7 col-xs-12" id="minrange"
+                    placeholder="Minimo Range" value="{{ option_data.minrange }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="maxrange" class="control-label col-md-3 col-sm-2 col-xs-12">Máximo Range</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="maxrange" class="form-control col-md-7 col-xs-12" id="maxrange"
+                    placeholder="Máximo Range" value="{{ option_data.maxrange }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="skill" class="control-label col-md-3 col-sm-2 col-xs-12">Skill</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="skill" class="form-control col-md-7 col-xs-12" id="skill" placeholder="Skill"
+                    value="{{ option_data.skill }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="luck" class="control-label col-md-3 col-sm-2 col-xs-12">Luck</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="luck" class="form-control col-md-7 col-xs-12" id="luck" placeholder="Luck"
+                    value="{{ option_data.luck }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="option" class="control-label col-md-3 col-sm-2 col-xs-12">Opção</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="option" class="form-control col-md-7 col-xs-12" id="option"
+                    placeholder="Opção" value="{{ option_data.option }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newoption" class="control-label col-md-3 col-sm-2 col-xs-12">Nova Opção</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="newoption" class="form-control col-md-7 col-xs-12" id="newoption"
+                    placeholder="Nova Opção" value="{{ option_data.newoption }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    value="{{ option_data.name }}" required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Editar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'delete' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Deletar Item Option</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/options/delete/{{ option_data.ID }}" method="post">
+              <div class="form-group">
+                <label for="index" class="control-label col-md-3 col-sm-2 col-xs-12">ID</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="index" class="form-control col-md-7 col-xs-12" id="index" placeholder="ID"
+                    value="{{ option_data.index_ }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="optionindex" class="control-label col-md-3 col-sm-2 col-xs-12">Index</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="optionindex" class="form-control col-md-7 col-xs-12" id="optionindex"
+                    placeholder="Index" value="{{ option_data.optionindex }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="value" class="control-label col-md-3 col-sm-2 col-xs-12">Valor</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="value" class="form-control col-md-7 col-xs-12" id="value"
+                    placeholder="Valor" value="{{ option_data.value }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="minrange" class="control-label col-md-3 col-sm-2 col-xs-12">Minimo Range</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="minrange" class="form-control col-md-7 col-xs-12" id="minrange"
+                    placeholder="Minimo Range" value="{{ option_data.minrange }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="maxrange" class="control-label col-md-3 col-sm-2 col-xs-12">Máximo Range</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="maxrange" class="form-control col-md-7 col-xs-12" id="maxrange"
+                    placeholder="Máximo Range" value="{{ option_data.maxrange }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="skill" class="control-label col-md-3 col-sm-2 col-xs-12">Skill</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="skill" class="form-control col-md-7 col-xs-12" id="skill" placeholder="Skill"
+                    value="{{ option_data.skill }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="luck" class="control-label col-md-3 col-sm-2 col-xs-12">Luck</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="luck" class="form-control col-md-7 col-xs-12" id="luck" placeholder="Luck"
+                    value="{{ option_data.luck }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="option" class="control-label col-md-3 col-sm-2 col-xs-12">Opção</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="option" class="form-control col-md-7 col-xs-12" id="option"
+                    placeholder="Opção" value="{{ option_data.option }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newoption" class="control-label col-md-3 col-sm-2 col-xs-12">Nova Opção</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="newoption" class="form-control col-md-7 col-xs-12" id="newoption"
+                    placeholder="Nova Opção" value="{{ option_data.newoption }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    value="{{ option_data.name }}" disabled>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <a href="/{{link_admin}}/items/options/list" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-primary pull-right">Deletar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'list' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Todos os Items Options</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap"
+              cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>ID</th>
+                  <th>Index</th>
+                  <th>Minino Range</th>
+                  <th>Maximo Range</th>
+                  <th>Nome</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in options_data %}
+                <tr>
+                  <td>{{ item.ID }}</td>
+                  <td>{{ item.index_ }}</td>
+                  <td>{{ item.optionindex }}</td>
+                  <td>{{ item.minrange }}</td>
+                  <td>{{ item.maxrange }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>
+                    <a href="/{{link_admin}}/items/options/edit/{{ item.ID }}"
+                      class="btn btn-sm btn-primary btn-flat">Editar</a>
+                    <a href="/{{link_admin}}/items/options/delete/{{ item.ID }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {%endif%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /page content -->
+
+{% endblock %}

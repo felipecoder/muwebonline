@@ -50,6 +50,8 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         'M' => 
         array (
             'Monolog\\' => 8,
+            'MWOPay\\' => 7,
+            'MWOItems\\' => 9,
         ),
         'K' => 
         array (
@@ -143,6 +145,14 @@ class ComposerStaticInit28e699b31aa5e3e8b21d6c36aa471bf1
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'MWOPay\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mwopay/sdk/src',
+        ),
+        'MWOItems\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mwo/items/src',
         ),
         'Kitchenu\\Debugbar\\' => 
         array (

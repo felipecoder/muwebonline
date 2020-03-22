@@ -58,6 +58,19 @@ CREATE TABLE [dbo].[mwo_rankings]
 	[database] [varchar](MAX) NOT NULL,
 	[table] [varchar](MAX) NOT NULL,
 	[column] [varchar](MAX) NOT NULL,
+	[max] [int] NOT NULL,
+	[link] [varchar](MAX) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_rankings_home', 'U') IS NOT NULL DROP TABLE dbo.mwo_rankings_home;
+CREATE TABLE [dbo].[mwo_rankings_home]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[database] [varchar](MAX) NOT NULL,
+	[table] [varchar](MAX) NOT NULL,
+	[column] [varchar](MAX) NOT NULL,
+	[max] [int] NOT NULL,
 	[custom] [varchar](MAX) DEFAULT NULL,
 );
 
@@ -148,6 +161,7 @@ CREATE TABLE [dbo].[mwo_slides]
 IF OBJECT_ID('dbo.mwo_kingofmu', 'U') IS NOT NULL DROP TABLE dbo.mwo_kingofmu;
 CREATE TABLE [dbo].[mwo_kingofmu]
 (
+	[active] [int] DEFAULT ((1)) NOT NULL,
 	[database] [varchar](MAX) NOT NULL,
 	[table] [varchar](MAX) NOT NULL,
 	[mode] [varchar](MAX) NOT NULL,
@@ -157,18 +171,165 @@ CREATE TABLE [dbo].[mwo_kingofmu]
 	[wins] [int] DEFAULT ((0)) NOT NULL,
 );
 
+IF OBJECT_ID('dbo.mwo_customers', 'U') IS NOT NULL DROP TABLE dbo.mwo_customers;
+CREATE TABLE [dbo].[mwo_customers]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[memb___id] [varchar](10) NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[email] [varchar](MAX) NOT NULL,
+	[cpf] [varchar](11) NOT NULL,
+	[street] [varchar](MAX) NOT NULL,
+	[number] [varchar](10) NOT NULL,
+	[complement] [varchar](MAX) DEFAULT NULL,
+	[district] [varchar](MAX) NOT NULL,
+	[city] [varchar](MAX) NOT NULL,
+	[state] [varchar](MAX) NOT NULL,
+	[postalcode] [varchar](9) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_items_ancients', 'U') IS NOT NULL DROP TABLE dbo.mwo_items_ancients;
+CREATE TABLE [dbo].[mwo_items_ancients]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[section] [int] NOT NULL,
+	[index_] [int] NOT NULL,
+	[ancient] [int] NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_items_jewelofharmony', 'U') IS NOT NULL DROP TABLE dbo.mwo_items_jewelofharmony;
+CREATE TABLE [dbo].[mwo_items_jewelofharmony]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[section] [int] NOT NULL,
+	[index_] [int] NOT NULL,
+	[level] [int] NOT NULL,
+	[harmonys] [varchar](MAX) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_items_sockets', 'U') IS NOT NULL DROP TABLE dbo.mwo_items_sockets;
+CREATE TABLE [dbo].[mwo_items_sockets]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[section] [int] NOT NULL,
+	[index_] [int] NOT NULL,
+	[max] [int] NOT NULL,
+	[sockets] [varchar](MAX) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_items_refines', 'U') IS NOT NULL DROP TABLE dbo.mwo_items_refines;
+CREATE TABLE [dbo].[mwo_items_refines]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[section] [int] NOT NULL,
+	[index_] [int] NOT NULL,
+	[options] [varchar](MAX) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_items_options', 'U') IS NOT NULL DROP TABLE dbo.mwo_items_options;
+CREATE TABLE [dbo].[mwo_items_options]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[index_] [int] NOT NULL,
+	[optionindex] [int] NOT NULL,
+	[value] [int] NOT NULL,
+	[minrange] [int] NOT NULL,
+	[maxrange] [int] NOT NULL,
+	[skill] [varchar](1) NOT NULL,
+	[luck] [varchar](1) NOT NULL,
+	[option] [varchar](1) NOT NULL,
+	[newoption] [varchar](1) NOT NULL,
+	[name] [varchar](MAX) DEFAULT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_skills_name', 'U') IS NOT NULL DROP TABLE dbo.mwo_skills_name;
+CREATE TABLE [dbo].[mwo_skills_name]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[index_] [int] NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_webshops', 'U') IS NOT NULL DROP TABLE dbo.mwo_webshops;
+create table mwo_webshops
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[label] [varchar](MAX) DEFAULT NULL,
+	[link] [varchar](MAX) NOT NULL,
+	[parentid] [int] DEFAULT ((0)) NOT NULL,
+	[status] [int] DEFAULT ((1)) NOT NULL,
+	[coin] [int] DEFAULT ((1)) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_webshop_categories', 'U') IS NOT NULL DROP TABLE dbo.mwo_webshop_categories;
+CREATE TABLE [dbo].[mwo_webshop_categories]
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[label] [varchar](MAX) DEFAULT NULL,
+	[link] [varchar](MAX) NOT NULL,
+	[parentid] [int] DEFAULT ((0)) NOT NULL,
+	[webshopid] [int] DEFAULT ((0)) NOT NULL,
+	[status] [int] DEFAULT ((1)) NOT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_webshop_items', 'U') IS NOT NULL DROP TABLE dbo.mwo_webshop_items;
+create table mwo_webshop_items
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[categoryid] [int] NOT NULL,
+	[section] [int] NOT NULL,
+	[index_] [int] NOT NULL,
+	[name] [varchar](MAX) NOT NULL,
+	[durability] [int] DEFAULT ((255)) NOT NULL,
+	[width] [int] DEFAULT ((255)) NOT NULL,
+	[height] [int] DEFAULT ((255)) NOT NULL,
+	[skill] [int] DEFAULT ((0)) NOT NULL,
+	[link] [varchar](MAX) NOT NULL,
+	[status] [int] DEFAULT ((1)) NOT NULL,
+	[price] [int] DEFAULT ((0)) NOT NULL,
+	[price_level] [int] DEFAULT ((0)) NOT NULL,
+	[price_option] [int] DEFAULT ((0)) NOT NULL,
+	[price_skill] [int] DEFAULT ((0)) NOT NULL,
+	[price_luck] [int] DEFAULT ((0)) NOT NULL,
+	[price_ancient] [int] DEFAULT ((0)) NOT NULL,
+	[price_harmony] [int] DEFAULT ((0)) NOT NULL,
+	[price_refine] [int] DEFAULT ((0)) NOT NULL,
+	[price_socket] [int] DEFAULT ((0)) NOT NULL,
+	[price_excellent] [int] DEFAULT ((0)) NOT NULL,
+	[max_excellent] [int] DEFAULT ((6)) NOT NULL,
+	[max_sockets] [int] DEFAULT ((5)) NOT NULL,
+	[image] [varchar](MAX) DEFAULT NULL,
+	[classes] [varchar](MAX) DEFAULT NULL,
+);
+
+IF OBJECT_ID('dbo.mwo_webshop_orders', 'U') IS NOT NULL DROP TABLE dbo.mwo_webshop_orders;
+create table mwo_webshop_orders
+(
+	[ID] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	[username] [varchar](10) NOT NULL,
+	[coin] [varchar](MAX) NOT NULL,
+	[section] [int] NOT NULL,
+	[index_] [int] NOT NULL,
+	[serial] [varchar](MAX) NOT NULL,
+	[date] DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert rows into table 'mwo_kingofmu'
 INSERT INTO mwo_kingofmu
 	( -- columns to insert data into
-	[database], [table], [mode], [character], [wins]
+	[active], [database], [table], [mode], [character], [wins]
 	)
 VALUES
 	( -- first row: values for the columns in the list above
-		'MuOnline', 'Character', 'manual', 'MuWebOnline', 1
+		0, 'MuOnline', 'Character', 'manual', 'MuWebOnline', 1
 );
 
 ALTER TABLE dbo.MEMB_INFO ADD [mwo_credits] [int] NOT NULL DEFAULT 0;
 ALTER TABLE dbo.MEMB_INFO ADD [mwo_token] [varchar](MAX)  DEFAULT NULL;
+ALTER TABLE dbo.Character ADD [mwo_image] [varchar](MAX)  DEFAULT NULL;
 
 -- Insert rows into table 'mwo_configs'
 INSERT INTO mwo_configs
@@ -216,5 +377,11 @@ VALUES
 		'Alterar Classe', 'changeclass', '[{"name":"PRICEZEN","label":"Pre\u00e7o zen por vip","value":"2000000, 1500000, 1000000, 1000000"},{"name":"RESET_QUESTS","label":"Resetar Quest ao trocar de classe","value":"true"},{"name":"RESET_SKILLS","label":"Resetar Skills ao trocar de classe","value":"true"}]'
 ),
 	( -- first row: values for the columns in the list above
+		'Alterar Imagem', 'changeimage', '[{"name":"PRICEZEN","label":"Pre\u00e7o zen por vip","value":"2000000, 1500000, 1000000, 1000000"}]'
+),
+	( -- first row: values for the columns in the list above
 		'Social Links', 'sociallinks', '[{"name":"FACEBOOK","label":"Facebook","value":"Meu Facebook"},{"name":"TWITTER","label":"Twitter","value":"Meu Twitter"},{"name":"INSTAGRAM","label":"Instagram","value":"Meu Instagram"},{"name":"DISCORD","label":"Discord","value":"Meu Discord"},{"name":"YOUTUBE","label":"YouTube","value":"Meu YouTube"},{"name":"WHATSAPP","label":"WhastApp","value":"Meu WhastApp"},{"name":"TEAMSPEAK","label":"TeamSpeak","value":"Meu TeamSpeak"}]'
+),
+	( -- first row: values for the columns in the list above
+		'API MWOPay', 'apimwopay', '[{"name":"EMAIL","label":"Email","value":"Meu Email"},{"name":"TOKEN","label":"Token","value":"Meu Token"}]'
 );

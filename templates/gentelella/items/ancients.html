@@ -1,0 +1,270 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Items Ancients</h3>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        {% for item in return %}
+        <div
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <h4><i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
+            Alerta!</h4>
+          {{ item.message }}
+        </div>
+        {% endfor %}
+
+        {%if page_type == 'generate' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Gerar Item Ancient</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/ancients/generate" method="post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="itemtype" class="control-label col-md-3 col-sm-2 col-xs-12">SetItemType</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" name="itemtype" class="form-control col-md-7 col-xs-12" id="itemtype" accept=".txt"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="itemoption" class="control-label col-md-3 col-sm-2 col-xs-12">SetItemOption</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" name="itemoption" class="form-control col-md-7 col-xs-12" id="itemoption"
+                    accept=".txt" required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Gerar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'create' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Criar Item Ancient</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/ancients/create" method="post">
+              <div class="form-group">
+                <label for="section" class="control-label col-md-3 col-sm-2 col-xs-12">Categoria</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="section" class="form-control col-md-7 col-xs-12" id="section"
+                    placeholder="Categoria" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="index" class="control-label col-md-3 col-sm-2 col-xs-12">ID</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="index" class="form-control col-md-7 col-xs-12" id="index" placeholder="ID"
+                    required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ancient" class="control-label col-md-3 col-sm-2 col-xs-12">Ancient</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="ancient" class="form-control col-md-7 col-xs-12" id="ancient"
+                    placeholder="Ancient" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Cadastrar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'edit' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Editar Item Ancient</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/ancients/edit/{{ ancient_data.ID }}" method="post">
+              <div class="form-group">
+                <label for="section" class="control-label col-md-3 col-sm-2 col-xs-12">Categoria</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="section" class="form-control col-md-7 col-xs-12" id="section"
+                    placeholder="Categoria" value="{{ ancient_data.section }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="index" class="control-label col-md-3 col-sm-2 col-xs-12">ID</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="index" class="form-control col-md-7 col-xs-12" id="index" placeholder="ID"
+                    value="{{ ancient_data.index_ }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ancient" class="control-label col-md-3 col-sm-2 col-xs-12">Ancient</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="ancient" class="form-control col-md-7 col-xs-12" id="ancient"
+                    placeholder="Ancient" value="{{ ancient_data.ancient }}" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    value="{{ ancient_data.name }}" required>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <button type="reset" class="btn btn-danger">Limpar campos</button>
+                <button type="submit" class="btn btn-primary pull-right">Editar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'delete' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Deletar Item Ancient</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/items/ancients/delete/{{ ancient_data.ID }}" method="post">
+              <div class="form-group">
+                <label for="section" class="control-label col-md-3 col-sm-2 col-xs-12">Categoria</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="section" class="form-control col-md-7 col-xs-12" id="section"
+                    placeholder="Categoria" value="{{ ancient_data.section }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="index" class="control-label col-md-3 col-sm-2 col-xs-12">ID</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="index" class="form-control col-md-7 col-xs-12" id="index" placeholder="ID"
+                    value="{{ ancient_data.index_ }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ancient" class="control-label col-md-3 col-sm-2 col-xs-12">Ancient</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="number" name="ancient" class="form-control col-md-7 col-xs-12" id="ancient"
+                    placeholder="Ancient" value="{{ ancient_data.ancient }}" disabled>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    value="{{ ancient_data.name }}" disabled>
+                </div>
+              </div>
+
+              <div class="ln_solid"></div>
+              <div class="box-footer">
+                <a href="/{{link_admin}}/items/ancients/list" class="btn btn-danger">Cancelar</a>
+                <button type="submit" class="btn btn-primary pull-right">Deletar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        {%elseif page_type == 'list' %}
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Todos os Items Ancients</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap"
+              cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Categoria</th>
+                  <th>ID</th>
+                  <th>Ancient</th>
+                  <th>Nome</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in ancients_data %}
+                <tr>
+                  <td>{{ item.ID }}</td>
+                  <td>{{ item.section }}</td>
+                  <td>{{ item.index_ }}</td>
+                  <td>{{ item.ancient }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>
+                    <a href="/{{link_admin}}/items/ancients/edit/{{ item.ID }}"
+                      class="btn btn-sm btn-primary btn-flat">Editar</a>
+                    <a href="/{{link_admin}}/items/ancients/delete/{{ item.ID }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {%endif%}
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /page content -->
+
+{% endblock %}

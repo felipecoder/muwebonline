@@ -22,6 +22,8 @@ return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
+    'MWOPay\\' => array($vendorDir . '/mwopay/sdk/src'),
+    'MWOItems\\' => array($vendorDir . '/mwo/items/src'),
     'Kitchenu\\Debugbar\\' => array($vendorDir . '/kitchenu/slim-debugbar/src'),
     'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),
     'Hybridauth\\' => array($vendorDir . '/hybridauth/hybridauth/src'),

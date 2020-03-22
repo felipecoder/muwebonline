@@ -75,5 +75,107 @@
       </div>
     </div>
   </form>
+
+  <form action="{{link_dir}}dashboard/settings/customer" method="post">
+    <h3>Dados de Compra</h3>
+    <div class="form-horizontal mt-30 mb-40">
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="name">Nome:</label>
+        <div class="col-sm-9">
+          <input type="text" id="name" name="name" value="{{settings_customer.name}}" placeholder="Nome"
+            class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="email">Email:</label>
+        <div class="col-sm-9">
+          <input type="email" id="email" name="email" value="{{settings_customer.email}}" placeholder="Email"
+            class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="cpf">CPF:</label>
+        <div class="col-sm-9">
+          <input type="text" name='cpf' id='cpf' value="{{settings_customer.cpf}}" class="form-control cpf"
+            placeholder="CPF" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for='postalcode'>CEP:</label>
+        <div class="col-sm-6">
+          <input type="text" id='postalcode' name='postalcode' value="{{settings_customer.postalcode}}"
+            class="form-control cep" placeholder="CEP" required>
+        </div>
+        <div class="col-sm-3">
+          <button type="button" class="col-md-12 btn btn-success" onclick="getAddress()">Buscar</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="street">Rua:</label>
+        <div class="col-sm-9">
+          <input type="text" id="street" name="street" value="{{settings_customer.street}}" placeholder="Rua"
+            class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="number">Número:</label>
+        <div class="col-sm-9">
+          <input type="text" id="number" name="number" value="{{settings_customer.number}}" placeholder="Número"
+            class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="complement">Complemento:</label>
+        <div class="col-sm-9">
+          <input type="text" id="complement" name="complement" value="{{settings_customer.complement}}"
+            placeholder="Complemento" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="district">Bairro:</label>
+        <div class="col-sm-9">
+          <input type="text" id="district" name="district" value="{{settings_customer.district}}" placeholder="Bairro"
+            class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="city">Cidade:</label>
+        <div class="col-sm-9">
+          <input type="text" id="city" name="city" value="{{settings_customer.city}}" placeholder="Cidade"
+            class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="state">Estado:</label>
+        <div class="col-sm-9">
+          <input type="text" id="state" name="state" value="{{settings_customer.state}}" placeholder="Sigla Estado"
+            maxlength="2" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="cur_password">Senha Atual:</label>
+        <div class="col-sm-9">
+          <input type="password" id="cur_password" name="cur_password" placeholder="Senha Atual" class="form-control"
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" class="btn btn-primary">Alterar Dados</button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 {% endblock %}

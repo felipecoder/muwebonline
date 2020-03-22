@@ -32,6 +32,16 @@
             <form data-parsley-validate class="form-horizontal form-label-left"
               action="{{link_dir}}{{link_admin}}/kingofmu" method="post">
               <div class="form-group">
+                <label for="active" class="control-label col-md-3 col-sm-2 col-xs-12">Ativado</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="active" name="active" required>
+                    <option value="1" {%if kingofmu_data.active == 1 %}selected{%endif%}>Sim</option>
+                    <option value="0" {%if kingofmu_data.active == 0 %}selected{%endif%}>Não</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="database" class="control-label col-md-3 col-sm-2 col-xs-12">Database</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
