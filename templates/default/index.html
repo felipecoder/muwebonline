@@ -20,9 +20,13 @@
     {% if item.status == 1 %}
     <!-- Slide {{ loop.index - 1 }} -->
     <div class="item {%if loop.index - 1 == 0%}active{% endif %}">
+      {% if item.link != "#" %}
       <a href="{{ item.link }}" target="_blank">
-        <img src="{{ item.image }}" alt={{ item.name }}">
+        <img src="{{ link_images }}slides/{{ item.image }}" alt="{{ item.name }}">
       </a>
+      {% else %}
+      <img src="{{ link_images }}slides/{{ item.image }}" alt="{{ item.name }}">
+      {% endif %}
       <div class="carousel-caption">
         <h3>{{ item.name }}</h3>
         <p>{{ item.label }}</p>
@@ -54,12 +58,12 @@
     {% for item in news %}
     <div class="new">
       <div class="col-md-5">
-        <a href="/news/{{item.ID}}">
-          <img src="{{item.image}}" alt="{{item.title}}" class="img-responsive">
+        <a href="{{ link_dir }}news/{{item.ID}}">
+          <img src="{{ link_images }}news/{{item.image}}" alt="{{item.title}}" class="img-responsive">
         </a>
       </div>
       <div class="col-md-7">
-        <a href="/news/{{item.ID}}">
+        <a href="{{ link_dir }}news/{{item.ID}}">
           <h4>{{item.title}}</h4>
         </a>
         <p>
@@ -103,9 +107,14 @@
             <div class="item {%if loop.index == 1%}active{%endif%}">
               <div class="col-xs-3 character text-center">
                 <p><b>{{ loop.index }}° Lugar</b></p>
-                <p><b>{{rankings.Name}}</b></p>
-                <img src="{{ link_images }}users/{{ rankings.mwo_image is empty ? 'default.png' : rankings.mwo_image}}"
-                  class="img-responsive" width="100">
+                <p><b>{{rankings.name}}</b></p>
+                {% if item.type == "guild" %}
+                <img class="img-responsive" src="{{ link_dir }}logoguild/{{rankings.G_Mark}}/100"
+                  alt="{{rankings.name}}" width="100">
+                {% else %}
+                <img class="img-responsive" src="{{ link_dir }}logochar/{{rankings.name}}" alt="{{rankings.name}}"
+                  width="100">
+                {% endif %}
                 <p class="text-primary">{{rankings.ranking}} Pontos</p>
               </div>
             </div>
@@ -127,6 +136,37 @@
   </div>
 </div>
 
+{% if castlesiege.active == 1 %}
+<!--King Of Mu-->
+<div class="box">
+  <div class="box-header">
+    <i class="fa fa-futbol-o"></i>
+    <h3>Castle Siege</h3>
+  </div>
+  <div class="box-content">
+    <div class="king-of-mu">
+      <div class="col-md-6">
+        <div class="col-md-4 text-center">
+          <p><b>{{ castlesiege.G_Name }}</b></p>
+          <img src="{{ castlesiege.logo }}" class="img-responsive">
+        </div>
+        <div class="col-md-8">
+          <ul>
+            <li>Master: <span class="text-danger">{{ castlesiege.G_Name }}</span></li>
+            <li>Score: <span class="text-danger">{{ castlesiege.G_Score }}</span></li>
+            <li>Membros: <span class="text-danger">{{ castlesiege.TotalMembers }}</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6 text-center">
+        <h4>Próximo Confronto</h4>
+        <p>{{ castlesiege.confrontation }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{%endif%}
+
 {% if kingofmu.active == 1 %}
 <!--King Of Mu-->
 <div class="box">
@@ -139,7 +179,8 @@
       <div class="col-md-6">
         <div class="col-md-4 text-center">
           <p><b>{{ kingofmu.Name }}</b></p>
-          <img src="{{ link_images }}users/default.png" class="img-responsive">
+          <img src="{{ link_images }}users/{{ kingofmu.mwo_image is empty ? 'default.png' : kingofmu.mwo_image}}"
+            class="img-responsive">
           <p class="text-primary">{{ kingofmu.wins }} Pontos</p>
         </div>
         <div class="col-md-8">

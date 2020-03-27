@@ -9,15 +9,23 @@
       <tr>
         <th>#</th>
         <th>Nome</th>
-        <th>Level</th>
+        <th>Imagem</th>
+        <th>Score</th>
       </tr>
     </thead>
     <tbody>
       {% for item in rankings_data.data%}
       <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ item.Name }}</td>
-        <td>{{ item.cLevel }}</td>
+        <td>{{ item.position }}</td>
+        <td>
+          {% if rankings_data.type == "guild" %}
+          <img class="img-responsive" src="{{ link_dir }}logoguild/{{item.G_Mark}}/100" alt="{{item.name}}" width="100">
+          {% else %}
+          <img src="{{ link_dir }}logochar/{{item.name}}" alt="{{item.name}}" width="100">
+          {% endif %}
+        </td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.score }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -29,28 +37,18 @@
   <ul class="pagination pagination-sm">
     {% if pagination.page != 1 %}
     <li>
-      <a
-        href="/rankings/{{ rankings_data.link }}/{{ pagination.page - 1 }}"
-        aria-label="Previous"
-      >
-        <span aria-hidden="true"
-          ><i class="fa fa-angle-left" aria-hidden="true"></i
-        ></span>
+      <a href="{{ link_dir }}rankings/{{ rankings_data.link }}/{{ pagination.page - 1 }}" aria-label="Previous">
+        <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
       </a>
     </li>
     {% endif %} {% for i in 1..pagination.lastpage %}
     <li class="{% if i == pagination.page %}active{% endif %}">
-      <a href="/rankings/{{ rankings_data.link }}/{{ i }}">{{ i }}</a>
+      <a href="{{ link_dir }}rankings/{{ rankings_data.link }}/{{ i }}">{{ i }}</a>
     </li>
     {% endfor %} {% if pagination.page != pagination.lastpage %}
     <li>
-      <a
-        href="/rankings/{{ rankings_data.link }}/{{ pagination.page + 1 }}"
-        aria-label="Next"
-      >
-        <span aria-hidden="true"
-          ><i class="fa fa-angle-right" aria-hidden="true"></i
-        ></span>
+      <a href="{{ link_dir }}rankings/{{ rankings_data.link }}/{{ pagination.page + 1 }}" aria-label="Next">
+        <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
       </a>
     </li>
     {% endif %}

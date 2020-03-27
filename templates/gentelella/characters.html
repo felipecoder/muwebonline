@@ -236,7 +236,7 @@
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a href="/{{link_admin}}/characters/list" class="btn btn-danger">Cancelar</a>
+                <a href="{{link_dir}}{{link_admin}}/characters/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">Deletar</button>
               </div>
 
@@ -272,9 +272,9 @@
                   <td>{{ item.Class }}</td>
                   <td>{{ item.Resets }}</td>
                   <td>
-                    <a href="/{{link_admin}}/characters/edit/{{ item.Name }}"
+                    <a href="{{link_dir}}{{link_admin}}/characters/edit/{{ item.Name }}"
                       class="btn btn-sm btn-primary btn-flat">Editar</a>
-                    <a href="/{{link_admin}}/characters/delete/{{ item.Name }}"
+                    <a href="{{link_dir}}{{link_admin}}/characters/delete/{{ item.Name }}"
                       class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>

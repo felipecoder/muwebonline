@@ -14,20 +14,12 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         {% for item in return %}
         <div
-          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible"
-        >
-          <button
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-hidden="true"
-          >
+          class="alert {% if item.error %}alert-danger{% endif %}{% if item.success %}alert-success{% endif %} alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
             ×
           </button>
           <h4>
-            <i
-              class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"
-            ></i>
+            <i class="icon fa {% if item.error %}fa-ban{% endif %}{% if item.success %}fa-check{% endif %}"></i>
             Alerta!
           </h4>
           {{ item.message }}
@@ -40,117 +32,65 @@
           </div>
           <div class="x_content">
             <br />
-            <form
-              data-parsley-validate
-              class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/rankings-home/create"
-              method="post"
-            >
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/rankings-home/create" method="post">
               <div class="form-group">
-                <label
-                  for="name"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Nome</label
-                >
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="name"
-                    class="form-control col-md-7 col-xs-12"
-                    id="name"
-                    placeholder="Nome"
-                    required
-                  />
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="database"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Database</label
-                >
+                <label for="database" class="control-label col-md-3 col-sm-2 col-xs-12">Database</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="database"
-                    class="form-control col-md-7 col-xs-12"
-                    id="database"
-                    placeholder="Database"
-                    required
-                  />
+                  <input type="text" name="database" class="form-control col-md-7 col-xs-12" id="database"
+                    placeholder="Database" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="table"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Tabela</label
-                >
+                <label for="table" class="control-label col-md-3 col-sm-2 col-xs-12">Tabela</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="table"
-                    class="form-control col-md-7 col-xs-12"
-                    id="table"
-                    placeholder="Tabela"
-                    required
-                  />
+                  <input type="text" name="table" class="form-control col-md-7 col-xs-12" id="table"
+                    placeholder="Tabela" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="column"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Coluna</label
-                >
+                <label for="column" class="control-label col-md-3 col-sm-2 col-xs-12">Coluna</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="column"
-                    class="form-control col-md-7 col-xs-12"
-                    id="column"
-                    placeholder="Coluna"
-                    required
-                  />
+                  <input type="text" name="column" class="form-control col-md-7 col-xs-12" id="column"
+                    placeholder="Coluna" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="max"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Máximo de Resultados (por página)</label
-                >
+                <label for="max" class="control-label col-md-3 col-sm-2 col-xs-12">Máximo de Resultados (por
+                  página)</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="number"
-                    name="max"
-                    class="form-control col-md-7 col-xs-12"
-                    id="max"
-                    placeholder="Coluna"
-                    required
-                  />
+                  <input type="number" name="max" class="form-control col-md-7 col-xs-12" id="max" placeholder="Coluna"
+                    required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="custom"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Adicionais</label
-                >
+                <label for="custom" class="control-label col-md-3 col-sm-2 col-xs-12">Adicionais</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="custom"
-                    class="form-control col-md-7 col-xs-12"
-                    id="custom"
-                    placeholder="Adicionais"
-                  />
+                  <input type="text" name="custom" class="form-control col-md-7 col-xs-12" id="custom"
+                    placeholder="Adicionais" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="type" class="control-label col-md-3 col-sm-2 col-xs-12">Tipo</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="type" name="type" required>
+                    <option value="character">Character / Custom</option>
+                    <option value="guild">Guild</option>
+                  </select>
                 </div>
               </div>
 
@@ -175,123 +115,67 @@
           </div>
           <div class="x_content">
             <br />
-            <form
-              data-parsley-validate
-              class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/rankings-home/edit/{{ ranking_data.ID }}"
-              method="post"
-            >
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/rankings-home/edit/{{ ranking_data.ID }}" method="post">
               <div class="form-group">
-                <label
-                  for="name"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Nome</label
-                >
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="name"
-                    class="form-control col-md-7 col-xs-12"
-                    id="name"
-                    placeholder="Nome"
-                    value="{{ ranking_data.name }}"
-                    required
-                  />
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    value="{{ ranking_data.name }}" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="database"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Database</label
-                >
+                <label for="database" class="control-label col-md-3 col-sm-2 col-xs-12">Database</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="database"
-                    class="form-control col-md-7 col-xs-12"
-                    id="database"
-                    placeholder="Database"
-                    value="{{ ranking_data.database }}"
-                    required
-                  />
+                  <input type="text" name="database" class="form-control col-md-7 col-xs-12" id="database"
+                    placeholder="Database" value="{{ ranking_data.database }}" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="table"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Tabela</label
-                >
+                <label for="table" class="control-label col-md-3 col-sm-2 col-xs-12">Tabela</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="table"
-                    class="form-control col-md-7 col-xs-12"
-                    id="table"
-                    placeholder="Tabela"
-                    value="{{ ranking_data.table }}"
-                    required
-                  />
+                  <input type="text" name="table" class="form-control col-md-7 col-xs-12" id="table"
+                    placeholder="Tabela" value="{{ ranking_data.table }}" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="column"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Coluna</label
-                >
+                <label for="column" class="control-label col-md-3 col-sm-2 col-xs-12">Coluna</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="column"
-                    class="form-control col-md-7 col-xs-12"
-                    id="column"
-                    placeholder="Coluna"
-                    value="{{ ranking_data.column }}"
-                    required
-                  />
+                  <input type="text" name="column" class="form-control col-md-7 col-xs-12" id="column"
+                    placeholder="Coluna" value="{{ ranking_data.column }}" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="max"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Máximo de Resultados (por página)</label
-                >
+                <label for="max" class="control-label col-md-3 col-sm-2 col-xs-12">Máximo de Resultados (por
+                  página)</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="number"
-                    name="max"
-                    class="form-control col-md-7 col-xs-12"
-                    id="max"
-                    placeholder="Coluna"
-                    value="{{ ranking_data.max }}"
-                    required
-                  />
+                  <input type="number" name="max" class="form-control col-md-7 col-xs-12" id="max" placeholder="Coluna"
+                    value="{{ ranking_data.max }}" required />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="custom"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Adicionais</label
-                >
+                <label for="custom" class="control-label col-md-3 col-sm-2 col-xs-12">Adicionais</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="custom"
-                    class="form-control col-md-7 col-xs-12"
-                    id="custom"
-                    placeholder="Adicionais"
-                    value="{{ ranking_data.custom }}"
-                  />
+                  <input type="text" name="custom" class="form-control col-md-7 col-xs-12" id="custom"
+                    placeholder="Adicionais" value="{{ ranking_data.custom }}" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="type" class="control-label col-md-3 col-sm-2 col-xs-12">Tipo</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="type" name="type" required>
+                    <option value="character" {%if ranking_data.type == 'character'%}selected{%endif%}>Character /
+                      Custom
+                    </option>
+                    <option value="guild" {%if ranking_data.type == 'guild'%}selected{%endif%}>Guild</option>
+                  </select>
                 </div>
               </div>
 
@@ -316,96 +200,44 @@
           </div>
           <div class="x_content">
             <br />
-            <form
-              data-parsley-validate
-              class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/rankings-home/delete/{{ ranking_data.ID }}"
-              method="post"
-            >
+            <form data-parsley-validate class="form-horizontal form-label-left"
+              action="{{link_dir}}{{link_admin}}/rankings-home/delete/{{ ranking_data.ID }}" method="post">
               <div class="form-group">
-                <label
-                  for="name"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Nome</label
-                >
+                <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="name"
-                    class="form-control col-md-7 col-xs-12"
-                    id="name"
-                    placeholder="Nome"
-                    value="{{ ranking_data.name }}"
-                    disabled
-                  />
+                  <input type="text" name="name" class="form-control col-md-7 col-xs-12" id="name" placeholder="Nome"
+                    value="{{ ranking_data.name }}" disabled />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="database"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Database</label
-                >
+                <label for="database" class="control-label col-md-3 col-sm-2 col-xs-12">Database</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="database"
-                    class="form-control col-md-7 col-xs-12"
-                    id="database"
-                    placeholder="Database"
-                    value="{{ ranking_data.database }}"
-                    disabled
-                  />
+                  <input type="text" name="database" class="form-control col-md-7 col-xs-12" id="database"
+                    placeholder="Database" value="{{ ranking_data.database }}" disabled />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="table"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Tabela</label
-                >
+                <label for="table" class="control-label col-md-3 col-sm-2 col-xs-12">Tabela</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="table"
-                    class="form-control col-md-7 col-xs-12"
-                    id="table"
-                    placeholder="Tabela"
-                    value="{{ ranking_data.table }}"
-                    disabled
-                  />
+                  <input type="text" name="table" class="form-control col-md-7 col-xs-12" id="table"
+                    placeholder="Tabela" value="{{ ranking_data.table }}" disabled />
                 </div>
               </div>
               <div class="form-group">
-                <label
-                  for="column"
-                  class="control-label col-md-3 col-sm-2 col-xs-12"
-                  >Coluna</label
-                >
+                <label for="column" class="control-label col-md-3 col-sm-2 col-xs-12">Coluna</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input
-                    type="text"
-                    name="column"
-                    class="form-control col-md-7 col-xs-12"
-                    id="column"
-                    placeholder="Coluna"
-                    value="{{ ranking_data.column }}"
-                    disabled
-                  />
+                  <input type="text" name="column" class="form-control col-md-7 col-xs-12" id="column"
+                    placeholder="Coluna" value="{{ ranking_data.column }}" disabled />
                 </div>
               </div>
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a
-                  href="/{{link_admin}}/rankings-home/list"
-                  class="btn btn-danger"
-                  >Cancelar</a
-                >
+                <a href="{{link_dir}}{{link_admin}}/rankings-home/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">
                   Deletar
                 </button>
@@ -421,12 +253,8 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <table
-              id="datatable-responsive"
-              class="table table-striped table-bordered dt-responsive nowrap"
-              cellspacing="0"
-              width="100%"
-            >
+            <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap"
+              cellspacing="0" width="100%">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -448,16 +276,10 @@
                   <td>{{ item.column }}</td>
                   <td>{{ item.max }}</td>
                   <td>
-                    <a
-                      href="/{{link_admin}}/rankings-home/edit/{{ item.ID }}"
-                      class="btn btn-sm btn-primary btn-flat"
-                      >Editar</a
-                    >
-                    <a
-                      href="/{{link_admin}}/rankings-home/delete/{{ item.ID }}"
-                      class="btn btn-sm btn-danger btn-flat"
-                      >Deletar</a
-                    >
+                    <a href="{{link_dir}}{{link_admin}}/rankings-home/edit/{{ item.ID }}"
+                      class="btn btn-sm btn-primary btn-flat">Editar</a>
+                    <a href="{{link_dir}}{{link_admin}}/rankings-home/delete/{{ item.ID }}"
+                      class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>
                 {% endfor %}

@@ -9,7 +9,7 @@ class AdminMiddleware
 
 	function __invoke($request, $response, $next)
 	{
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv("DIR") . getenv('DIRADMIN');
 		$route       = $request->getAttribute('route');
 		$routeName   = $route->getName();
 		$groups      = $route->getGroups();
@@ -31,7 +31,7 @@ class AdminMiddleware
 
 			$messages->addMessage('response', $return);
 
-			$response = $response->withRedirect("/{$patch_admin}/login");
+			$response = $response->withRedirect("{$patch_admin}/login");
 		} elseif (isset($_SESSION['loggedinadmin']) && in_array($routeName, $publicRoutesArray)) {
 			$messages = new ViewMessages();
 
@@ -42,7 +42,7 @@ class AdminMiddleware
 			);
 
 			$messages->addMessage('response', $return);
-			$response = $response->withRedirect("/{$patch_admin}/");
+			$response = $response->withRedirect("{$patch_admin}/");
 		} else {
 			$response = $next($request, $response);
 		}

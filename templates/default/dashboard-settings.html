@@ -76,6 +76,32 @@
     </div>
   </form>
 
+  <form action="{{link_dir}}dashboard/settings/personalid" method="post">
+    <h3>Acesso Pessoal</h3>
+    <div class="form-horizontal mt-30 mb-40">
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for='personalid'>Personal ID:</label>
+        <div class="col-sm-9">
+          <input type="text" id='personalid' name='personalid' maxlength="7" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="cur_password">Senha Atual:</label>
+        <div class="col-sm-9">
+          <input type="password" id="cur_password" name="cur_password" placeholder="Senha Atual" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" class="btn btn-primary">Alterar Dados</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
   <form action="{{link_dir}}dashboard/settings/customer" method="post">
     <h3>Dados de Compra</h3>
     <div class="form-horizontal mt-30 mb-40">

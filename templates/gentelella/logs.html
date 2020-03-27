@@ -58,7 +58,8 @@
                   <td>{{ item }}</td>
                   <td>
                     <form action="{{link_dir}}{{link_admin}}/logs/delete/{{ item }}" method="post">
-                      <a href="/{{link_admin}}/logs/view/{{ item }}" class="btn btn-sm btn-primary btn-flat">Ver</a>
+                      <a href="{{link_dir}}{{link_admin}}/logs/view/{{ item }}"
+                        class="btn btn-sm btn-primary btn-flat">Ver</a>
                       <button type="submit" class="btn btn-sm btn-danger btn-flat">Deletar</button>
                     </form>
                   </td>

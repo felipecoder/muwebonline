@@ -6,7 +6,7 @@
   </div>
   <div class="box-content">
     <div class="col-md-12">
-      <img src="{{new_data.image}}" alt="{{new_data.title}}">
+      <img src="{{ link_images }}news/{{new_data.image}}" alt="{{new_data.title}}" class="img-responsive">
       {{new_data.content| raw}}
     </div>
     <div class="col-md-12">

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <base href="/templates/default/">
+  <base href="{{link_dir}}templates/default/">
   <title>{{title_site}} - {{title_page}}</title>
   <meta name="description" content="{{ server_slogan }}" />
   <meta name="robots" content="index, follow" />
@@ -68,13 +68,13 @@
             {%if user_logged_in %}
             <h4>Olá, {{ userdata.memb_name }}</h4>
             <ul>
-              <li><a href="/dashboard/home">Minha Conta</a></li>
-              <li><a href="/dashboard/settings">Configurações</a></li>
-              <li><a href="/dashboard/tickets">Meus Tickets</a></li>
-              <li><a href="/dashboard/tickets/create">Abrir novo Ticket</a></li>
-              <li><a href="/dashboard/vips">Seja VIP</a></li>
-              <li><a href="/dashboard/coins">Coins</a></li>
-              <li><a href="/logout">Sair</a></li>
+              <li><a href="{{ link_dir }}dashboard/home">Minha Conta</a></li>
+              <li><a href="{{ link_dir }}dashboard/settings">Configurações</a></li>
+              <li><a href="{{ link_dir }}dashboard/tickets">Meus Tickets</a></li>
+              <li><a href="{{ link_dir }}dashboard/tickets/create">Abrir novo Ticket</a></li>
+              <li><a href="{{ link_dir }}dashboard/vips">Seja VIP</a></li>
+              <li><a href="{{ link_dir }}dashboard/coins">Coins</a></li>
+              <li><a href="{{ link_dir }}logout">Sair</a></li>
             </ul>
             {%else%}
             <form action="{{link_dir}}login" method="post">
@@ -89,8 +89,8 @@
               </div>
             </form>
             <div class="col-md-12">
-              <a href="/forget">Esqueceu sua senha?</a><br>
-              <a href="/register">Nova conta</a>
+              <a href="{{ link_dir }}forget">Esqueceu sua senha?</a><br>
+              <a href="{{ link_dir }}register">Nova conta</a>
             </div>
             {%endif%}
 
@@ -121,7 +121,7 @@
                 Total Online: <span class="label label-success">{{total_onlines}}</span>
               </li>
               <li>
-                <a href="/info" class="btn btn-primary col-md-12">+ Informações</a>
+                <a href="{{ link_dir }}info" class="btn btn-primary col-md-12">+ Informações</a>
               </li>
             </ul>
           </div>
@@ -192,7 +192,7 @@
   <!--Google Recaptcha-->
   <script src='https://www.google.com/recaptcha/api.js?hl=pt-BR'></script>
   <!--MuWebOnline-->
-  <script src="assets/js/muwebonline.min.js"></script>
+  <script src="{{link_dir}}resources/js/muwebonline.min.js"></script>
   <!--Custom JS-->
   <script src="assets/js/default.min.js"></script>
   <script>

@@ -28,7 +28,7 @@ class ActiveController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     }
 
@@ -42,7 +42,7 @@ class ActiveController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     }
 
@@ -63,7 +63,7 @@ class ActiveController
       );
 
       $logger->addLoggerInfo("Active", $values);
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     } else {
       $return = array(
@@ -81,7 +81,7 @@ class ActiveController
       );
 
       $logger->addLoggerWarning("Error Active", $values);
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     }
   }

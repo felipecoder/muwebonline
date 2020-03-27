@@ -36,7 +36,6 @@ class RankingsController
       } else {
         $page      = ($id > 0) ? $id : 1;
         $limit     = $ranking_data['max'];
-        $skip      = $page * $limit;
         $count     = $data->countRanking($ranking_data['database'], $ranking_data['table']);
 
         $ranking_return = array(
@@ -47,7 +46,8 @@ class RankingsController
           'max'      => $ranking_data['max'],
           'column'   => $ranking_data['column'],
           'link'     => $ranking_data['link'],
-          'data'     => $data->createRanking($ranking_data['table'], $ranking_data['column'], $skip, $ranking_data['max']),
+          'type'     => $ranking_data['type'],
+          'data'     => $data->createRanking($ranking_data['table'], $ranking_data['column'], $ranking_data['custom'], $page, $ranking_data['max']),
         );
 
         $array = array(

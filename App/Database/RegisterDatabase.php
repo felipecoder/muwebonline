@@ -21,12 +21,13 @@ class RegisterDatabase extends Connection
   {
     try {
       $data = $this->db->prepare("INSERT INTO MEMB_INFO (memb___id,memb__pwd,memb_name,sno__numb,post_code,addr_info,addr_deta,mail_addr,phon_numb,job__code,appl_days,modi_days,out__days,true_days,mail_chek,bloc_code,ctl1_code) 
-      VALUES (:username, :password, :nick,'1',NULL,NULL,NULL,:email,NULL,'1','2003-11-23','2003-11-23','2003-11-23','2003-11-23','0','0','1')");
+      VALUES (:username, :password, :nick,:personalid,NULL,NULL,NULL,:email,NULL,'1','2003-11-23','2003-11-23','2003-11-23','2003-11-23','0','0','1')");
       $data->execute(array(
-        ':username' => $username,
-        ':password' => $post['password'],
-        ':nick'     => $post['nick'],
-        ':email'    => $post['email']
+        ':username'   => $username,
+        ':password'   => $post['password'],
+        ':nick'       => $post['nick'],
+        ':personalid' => '111111' . $post['personalid'],
+        ':email'      => $post['email']
       ));
 
       return 'OK';

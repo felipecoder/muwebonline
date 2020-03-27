@@ -6,3 +6,8 @@ logs/
 src/app.php
 src/database.php
 uploads/
+templates/mu14/
+items/
+update/
+execute.php
+test.php

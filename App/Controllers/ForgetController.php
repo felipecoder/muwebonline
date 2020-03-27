@@ -38,7 +38,7 @@ class ForgetController
 
       $messages->addMessage('response', $return);
 
-      return $response->withRedirect("/forget");
+      return $response->withRedirect(getenv("DIR") . "forget");
       exit();
     }
 
@@ -53,7 +53,7 @@ class ForgetController
 
       $messages->addMessage('response', $return);
 
-      return $response->withRedirect("/forget");
+      return $response->withRedirect(getenv("DIR") . "forget");
       exit();
     }
     $token       = md5(uniqid(rand(), true));
@@ -86,7 +86,7 @@ class ForgetController
 
       $logger->addLoggerInfo("Forget", $values);
 
-      return $response->withRedirect("/forget");
+      return $response->withRedirect(getenv("DIR") . "forget");
       exit();
     } else {
       $return = array(
@@ -103,7 +103,7 @@ class ForgetController
 
       $logger->addLoggerWarning("Error Forget", $values);
 
-      return $response->withRedirect("/forget");
+      return $response->withRedirect(getenv("DIR") . "forget");
       exit();
     }
   }

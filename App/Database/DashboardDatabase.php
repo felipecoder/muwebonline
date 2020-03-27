@@ -249,6 +249,21 @@ class DashboardDatabase extends Connection
     }
   }
 
+  public function updatePersonalID($post, $memb___id)
+  {
+    try {
+      $data = $this->db->prepare("UPDATE MEMB_INFO SET [sno__numb] = :personalid WHERE memb___id = :memb___id");
+      $data->execute(array(
+        ':personalid' => '111111' . $post['personalid'],
+        ':memb___id'  => $memb___id,
+      ));
+
+      return 'OK';
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
   public function getCustomer($memb___id)
   {
     try {
@@ -341,14 +356,15 @@ class DashboardDatabase extends Connection
     }
   }
 
-  public function createTicket($post, $username)
+  public function createTicket($post, $image, $username)
   {
     try {
-      $data = $this->db->prepare("INSERT INTO mwo_tickets ([subject], [message], [username]) VALUES (:subject, :message, :username)");
+      $data = $this->db->prepare("INSERT INTO mwo_tickets ([subject], [message], [username], [image]) VALUES (:subject, :message, :username, :image)");
       $data->execute(array(
         ':subject'  => $post['subject'],
         ':message'  => $post['message'],
         ':username' => $username,
+        ':image'    => $image,
       ));
 
       return 'OK';

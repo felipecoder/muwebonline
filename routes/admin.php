@@ -5,7 +5,7 @@ use App\Middlewares\AdminMiddleware;
 use App\Models\AdminModel;
 use App\Views\ViewAdmin;
 
-$patch_admin 	= getenv('DIRADMIN');
+$patch_admin = getenv('DIRADMIN');
 
 $app->group("/{$patch_admin}", function ($app) {
 	$app->get("/", function ($request, $response, $args) {
@@ -262,12 +262,13 @@ $app->group("/{$patch_admin}", function ($app) {
 
 			//Variables
 			$data      = $_POST;
+			$files     = $request->getUploadedFiles();
 			$ipaddress = $request->getServerParam('REMOTE_ADDR');
 			$id        = (isset($args['id'])) ? $args['id'] : NULL;
 
 			$model->setIpaddress($ipaddress);
 
-			return $crontroller->postNews($model, $view, $response, $args['page'], $data, $id);
+			return $crontroller->postNews($model, $view, $response, $args['page'], $data, $files, $id);
 		} else {
 			//Classes
 			$crontroller = new AdminController();
@@ -450,12 +451,13 @@ $app->group("/{$patch_admin}", function ($app) {
 
 			//Variables
 			$data      = $_POST;
+			$files     = $request->getUploadedFiles();
 			$ipaddress = $request->getServerParam('REMOTE_ADDR');
 			$id        = (isset($args['id'])) ? $args['id'] : NULL;
 
 			$model->setIpaddress($ipaddress);
 
-			return $crontroller->postSlides($model, $view, $response, $args['page'], $data, $id);
+			return $crontroller->postSlides($model, $view, $response, $args['page'], $data, $files, $id);
 		} else {
 			//Classes
 			$crontroller = new AdminController();
@@ -493,6 +495,31 @@ $app->group("/{$patch_admin}", function ($app) {
 			return $crontroller->getKingOfMu($model, $view, $response);
 		}
 	})->setName('kingofmu');
+
+	$app->map(['GET', 'POST'], "/castlesiege", function ($request, $response, $args) {
+		if ($request->isPost()) {
+
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			//Variables
+			$data      = $_POST;
+			$ipaddress = $request->getServerParam('REMOTE_ADDR');
+
+			$model->setIpaddress($ipaddress);
+
+			return $crontroller->postCastleSiege($model, $view, $response, $data);
+		} else {
+			//Classes
+			$crontroller = new AdminController();
+			$model       = new AdminModel();
+			$view        = new ViewAdmin();
+
+			return $crontroller->getCastleSiege($model, $view, $response);
+		}
+	})->setName('castelesiege');
 
 	$app->get("/transactions/{page}[/{id}]", function ($request, $response, $args) {
 		//Classes

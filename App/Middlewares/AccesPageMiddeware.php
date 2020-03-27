@@ -18,7 +18,7 @@ class AccesPageMiddeware
     $get_user = (empty($username)) ? NULL : $data->getUserDefault($username);
 
     if (empty($get_user)) {
-      $response = $response->withRedirect("/login");
+      $response = $response->withRedirect(getenv("DIR") . "login");
     } else {
       $vips       = $data->getVipsConfigs();
       $route      = $request->getAttribute('route');
@@ -60,9 +60,9 @@ class AccesPageMiddeware
       }
 
       if ($blocked == 1) {
-        $response = $response->withRedirect("/dashboard/no-vip");
+        $response = $response->withRedirect(getenv("DIR") . "dashboard/no-vip");
       } elseif ($blocked == 2) {
-        $response = $response->withRedirect("/dashboard/blocked");
+        $response = $response->withRedirect(getenv("DIR") . "dashboard/blocked");
       } else {
         $response = $next($request, $response);
       }

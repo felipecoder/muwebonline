@@ -212,7 +212,7 @@
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a href="/{{link_admin}}/webshops/all/list" class="btn btn-danger">Cancelar</a>
+                <a href="{{link_dir}}{{link_admin}}/webshops/all/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">Deletar</button>
               </div>
 
@@ -250,9 +250,9 @@
                   <td>{{ item.parentid}}</td>
                   <td>{{ item.status }}</td>
                   <td>
-                    <a href="/{{link_admin}}/webshops/all/edit/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/webshops/all/edit/{{ item.ID }}"
                       class="btn btn-sm btn-primary btn-flat">Editar</a>
-                    <a href="/{{link_admin}}/webshops/all/delete/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/webshops/all/delete/{{ item.ID }}"
                       class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>

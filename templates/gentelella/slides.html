@@ -32,7 +32,7 @@
           <div class="x_content">
             <br />
             <form data-parsley-validate class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/slides/create" method="post">
+              action="{{link_dir}}{{link_admin}}/slides/create" method="post" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
 
@@ -61,8 +61,8 @@
                 <label for="image" class="control-label col-md-3 col-sm-2 col-xs-12">Imagem</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" name="image" class="form-control col-md-7 col-xs-12" id="image"
-                    placeholder="Link Imagem" required>
+                  <input type="file" name="mwo_image" id="mwo_image" class="form-control col-md-7 col-xs-12"
+                    accept="image/*" required>
                 </div>
               </div>
               <div class="form-group">
@@ -95,7 +95,8 @@
           <div class="x_content">
             <br />
             <form data-parsley-validate class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/slides/edit/{{ slide_data.ID }}" method="post">
+              action="{{link_dir}}{{link_admin}}/slides/edit/{{ slide_data.ID }}" method="post"
+              enctype="multipart/form-data">
               <div class="form-group">
                 <label for="name" class="control-label col-md-3 col-sm-2 col-xs-12">Nome</label>
 
@@ -123,9 +124,13 @@
               <div class="form-group">
                 <label for="image" class="control-label col-md-3 col-sm-2 col-xs-12">Imagem</label>
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" name="image" class="form-control col-md-7 col-xs-12" id="image"
-                    placeholder="Link Imagem" value="{{ slide_data.image }}" required>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <input type="file" name="mwo_image" id="mwo_image" class="form-control col-md-7 col-xs-12"
+                    accept="image/*">
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <img src="{{ link_images }}slides/{{ slide_data.image }}" alt="{{ slide_data.image }}"
+                    class="img-responsive">
                 </div>
               </div>
               <div class="form-group">
@@ -178,7 +183,7 @@
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a href="/{{link_admin}}/slides/list" class="btn btn-danger">Cancelar</a>
+                <a href="{{link_dir}}{{link_admin}}/slides/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">Deletar</button>
               </div>
 
@@ -213,12 +218,15 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.label }}</td>
                   <td>{{ item.link }}</td>
-                  <td><img src="{{ item.image}}" alt="{{ item.name }}" width="50"></td>
+                  <td>
+                    <img src="{{ link_images }}slides/{{ item.image }}" alt="{{ item.image }}" class="img-responsive"
+                      width="100">
+                  </td>
                   <td>{{ item.status }}</td>
                   <td>
-                    <a href="/{{link_admin}}/slides/edit/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/slides/edit/{{ item.ID }}"
                       class="btn btn-sm btn-primary btn-flat">Editar</a>
-                    <a href="/{{link_admin}}/slides/delete/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/slides/delete/{{ item.ID }}"
                       class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>

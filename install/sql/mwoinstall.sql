@@ -58,8 +58,10 @@ CREATE TABLE [dbo].[mwo_rankings]
 	[database] [varchar](MAX) NOT NULL,
 	[table] [varchar](MAX) NOT NULL,
 	[column] [varchar](MAX) NOT NULL,
+	[custom] [varchar](MAX) NOT NULL,
 	[max] [int] NOT NULL,
 	[link] [varchar](MAX) NOT NULL,
+	[type] [varchar](MAX) DEFAULT NULL,
 );
 
 IF OBJECT_ID('dbo.mwo_rankings_home', 'U') IS NOT NULL DROP TABLE dbo.mwo_rankings_home;
@@ -72,6 +74,7 @@ CREATE TABLE [dbo].[mwo_rankings_home]
 	[column] [varchar](MAX) NOT NULL,
 	[max] [int] NOT NULL,
 	[custom] [varchar](MAX) DEFAULT NULL,
+	[type] [varchar](MAX) DEFAULT NULL,
 );
 
 IF OBJECT_ID('dbo.mwo_news', 'U') IS NOT NULL DROP TABLE dbo.mwo_news;
@@ -135,6 +138,7 @@ CREATE TABLE [dbo].[mwo_tickets]
 	[message] [varchar](MAX) NOT NULL,
 	[username] [varchar](10) NOT NULL,
 	[date] DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	[image] [varchar](MAX) NOT NULL,
 );
 
 IF OBJECT_ID('dbo.mwo_tickets_answers', 'U') IS NOT NULL DROP TABLE dbo.mwo_tickets_answers;
@@ -317,6 +321,15 @@ create table mwo_webshop_orders
 	[date] DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+IF OBJECT_ID('dbo.mwo_castlesiege', 'U') IS NOT NULL DROP TABLE dbo.mwo_castlesiege;
+CREATE TABLE [dbo].[mwo_castlesiege]
+(
+	[active] [int] DEFAULT ((1)) NOT NULL,
+	[mode] [varchar](MAX) NOT NULL,
+	[confrontation] [varchar](MAX) NOT NULL,
+	[guild] [varchar](MAX) NOT NULL
+);
+
 -- Insert rows into table 'mwo_kingofmu'
 INSERT INTO mwo_kingofmu
 	( -- columns to insert data into
@@ -326,6 +339,17 @@ VALUES
 	( -- first row: values for the columns in the list above
 		0, 'MuOnline', 'Character', 'manual', 'MuWebOnline', 1
 );
+
+-- Insert rows into table 'mwo_castlesiege'
+INSERT INTO mwo_castlesiege
+	( -- columns to insert data into
+	[active], [mode], [confrontation], [guild]
+	)
+VALUES
+	( -- first row: values for the columns in the list above
+		0, 'manual', 'Sábado 18:00h', 'MuWebOnline'
+);
+
 
 ALTER TABLE dbo.MEMB_INFO ADD [mwo_credits] [int] NOT NULL DEFAULT 0;
 ALTER TABLE dbo.MEMB_INFO ADD [mwo_token] [varchar](MAX)  DEFAULT NULL;

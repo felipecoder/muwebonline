@@ -67,6 +67,15 @@
                 </div>
               </div>
               <div class="form-group">
+                <label for="date" class="control-label col-md-3 col-sm-2 col-xs-12">Imagem</label>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <a href="{{ link_images }}tickets/{{ ticket_data.image }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ link_images }}tickets/{{ ticket_data.image }}" alt="{{ ticket_data.image }}">
+                  </a>
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="message" class="control-label col-md-3 col-sm-2 col-xs-12" required>Resposta</label>
 
                 <div class="col-md-9 col-sm-8 col-xs-12">
@@ -129,7 +138,7 @@
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a href="/{{link_admin}}/tickets/list" class="btn btn-danger">Cancelar</a>
+                <a href="{{link_dir}}{{link_admin}}/tickets/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">Deletar</button>
               </div>
 
@@ -163,9 +172,9 @@
                   <td>{{ item.username }}</td>
                   <td>{{ item.date|date('d/m/Y H:i') }}</td>
                   <td>
-                    <a href="/{{link_admin}}/tickets/answers/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/tickets/answers/{{ item.ID }}"
                       class="btn btn-sm btn-primary btn-flat">Responder</a>
-                    <a href="/{{link_admin}}/tickets/delete/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/tickets/delete/{{ item.ID }}"
                       class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>

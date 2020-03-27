@@ -42,11 +42,24 @@
                     placeholder="Confirmar Senha">
             </div>
             <div class="form-group col-md-6">
+                <label for="personalid" class="control-label">Personal ID</label>
+                <input type="text" class="form-control" name="personalid" maxlength='7' id="personalid"
+                    placeholder="Personal ID">
+            </div>
+            <div class="form-group col-md-6"></div>
+            <div class="form-group col-md-6">
                 <div class="g-recaptcha" data-sitekey="{{ recaptcha_site }}"></div>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
                 <input type="checkbox" name="agree_terms" id="checkbox1" required>
-                <label for="checkbox1">Eu concordo com os termos de uso do servidor</label>
+                <label for="checkbox1">
+                    <a href="#terms" data-toggle="collapse">
+                        Eu concordo com os termos de uso do servidor
+                    </a>
+                </label>
+                <div id="terms" class="collapse">
+                    {% include 'terms.html' %}
+                </div>
             </div>
             <div class="form-group col-md-12">
                 <button type="submit" class="btn btn-primary col-md-12">Criar Conta</button>

@@ -50,7 +50,7 @@ class LoginController
 
       $logger->addLoggerWarning("Error Login", $values);
 
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     } elseif ($password != $login['memb__pwd']) {
       $return = array(
@@ -69,7 +69,7 @@ class LoginController
 
       $logger->addLoggerWarning("Error Login", $values);
 
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     } else {
       $_SESSION['loggedinuser'] = true;
@@ -91,7 +91,7 @@ class LoginController
 
       $logger->addLoggerInfo("Login", $values);
 
-      return $response->withRedirect("/dashboard");
+      return $response->withRedirect(getenv("DIR") . "dashboard");
       exit();
     }
   }

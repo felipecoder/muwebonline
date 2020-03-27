@@ -153,7 +153,7 @@
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a href="/{{link_admin}}/accounts/list" class="btn btn-danger">Cancelar</a>
+                <a href="{{link_dir}}{{link_admin}}/accounts/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">Deletar</button>
               </div>
 
@@ -191,9 +191,9 @@
                   <td>{{ item.tel__numb }}</td>
                   <td>{{ item.mwo_credits }}</td>
                   <td>
-                    <a href="/{{link_admin}}/accounts/edit/{{ item.memb_guid }}"
+                    <a href="{{link_dir}}{{link_admin}}/accounts/edit/{{ item.memb_guid }}"
                       class="btn btn-sm btn-primary btn-flat">Editar</a>
-                    <a href="/{{link_admin}}/accounts/delete/{{ item.memb_guid }}"
+                    <a href="{{link_dir}}{{link_admin}}/accounts/delete/{{ item.memb_guid }}"
                       class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>

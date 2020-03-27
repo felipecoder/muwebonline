@@ -32,7 +32,7 @@
           <div class="x_content">
             <br />
             <form data-parsley-validate class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/news/create" method="post">
+              action="{{link_dir}}{{link_admin}}/news/create" method="post" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="title" class="control-label col-md-3 col-sm-2 col-xs-12">Título</label>
 
@@ -52,8 +52,8 @@
                 <label for="image" class="control-label col-md-3 col-sm-2 col-xs-12">Imagem</label>
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" name="image" class="form-control col-md-7 col-xs-12" id="image"
-                    placeholder="Imagem">
+                  <input type="file" name="mwo_image" id="mwo_image" class="form-control col-md-7 col-xs-12"
+                    accept="image/*" required>
                 </div>
               </div>
               <div class="form-group">
@@ -83,7 +83,8 @@
           <div class="x_content">
             <br />
             <form data-parsley-validate class="form-horizontal form-label-left"
-              action="{{link_dir}}{{link_admin}}/news/edit/{{ new_data.ID }}" method="post">
+              action="{{link_dir}}{{link_admin}}/news/edit/{{ new_data.ID }}" method="post"
+              enctype="multipart/form-data">
               <div class="form-group">
                 <label for="title" class="control-label col-md-3 col-sm-2 col-xs-12">Título</label>
 
@@ -103,9 +104,13 @@
               <div class="form-group">
                 <label for="image" class="control-label col-md-3 col-sm-2 col-xs-12">Imagem</label>
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" name="image" class="form-control col-md-7 col-xs-12" id="image"
-                    placeholder="Imagem" value="{{ new_data.image }}">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <input type="file" name="mwo_image" id="mwo_image" class="form-control col-md-7 col-xs-12"
+                    accept="image/*">
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <img src="{{ link_images }}news/{{ new_data.image }}" alt="{{ new_data.image }}"
+                    class="img-responsive">
                 </div>
               </div>
               <div class="form-group">
@@ -154,16 +159,15 @@
               </div>
               <div class="form-group">
                 <label for="image" class="control-label col-md-3 col-sm-2 col-xs-12">Imagem</label>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" name="image" class="form-control col-md-7 col-xs-12" id="image"
-                    placeholder="Imagem" value="{{ new_data.image }}" disabled>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                  <img src="{{ link_images }}news/{{ new_data.image }}" alt="{{ new_data.image }}"
+                    class="img-responsive">
                 </div>
               </div>
 
               <div class="ln_solid"></div>
               <div class="box-footer">
-                <a href="/{{link_admin}}/news/list" class="btn btn-danger">Cancelar</a>
+                <a href="{{link_dir}}{{link_admin}}/news/list" class="btn btn-danger">Cancelar</a>
                 <button type="submit" class="btn btn-primary pull-right">Deletar</button>
               </div>
 
@@ -196,11 +200,15 @@
                   <td>{{ item.ID }}</td>
                   <td>{{ item.title }}</td>
                   <td>{{ item.tag }}</td>
-                  <td>{{ item.image }}</td>
+                  <td>
+                    <img src="{{ link_images }}news/{{ item.image }}" alt="{{ item.image }}" class="img-responsive"
+                      width="50">
+                  </td>
                   <td>{{ item.date|date('d/m/Y H:i') }}</td>
                   <td>
-                    <a href="/{{link_admin}}/news/edit/{{ item.ID }}" class="btn btn-sm btn-primary btn-flat">Editar</a>
-                    <a href="/{{link_admin}}/news/delete/{{ item.ID }}"
+                    <a href="{{link_dir}}{{link_admin}}/news/edit/{{ item.ID }}"
+                      class="btn btn-sm btn-primary btn-flat">Editar</a>
+                    <a href="{{link_dir}}{{link_admin}}/news/delete/{{ item.ID }}"
                       class="btn btn-sm btn-danger btn-flat">Deletar</a>
                   </td>
                 </tr>

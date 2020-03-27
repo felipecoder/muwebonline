@@ -122,7 +122,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Vips", $values);
-      return $response->withRedirect("/dashboard/vips");
+      return $response->withRedirect(getenv("DIR") . "dashboard/vips");
       exit();
     }
 
@@ -134,7 +134,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/vips");
+      return $response->withRedirect(getenv("DIR") . "dashboard/vips");
       exit();
     }
 
@@ -149,7 +149,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/vips");
+      return $response->withRedirect(getenv("DIR") . "dashboard/vips");
       exit();
     }
 
@@ -174,7 +174,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/vips");
+      return $response->withRedirect(getenv("DIR") . "dashboard/vips");
       exit();
     }
 
@@ -208,7 +208,7 @@ class DashboardController
           );
 
           $logger->addLoggerInfo("Vips", $values);
-          return $response->withRedirect("/dashboard/vips");
+          return $response->withRedirect(getenv("DIR") . "dashboard/vips");
           exit();
         } else {
           $return = array(
@@ -245,7 +245,7 @@ class DashboardController
 
             $logger->addLoggerWarning("Error Credits", $values);
           }
-          return $response->withRedirect("/dashboard/vips");
+          return $response->withRedirect(getenv("DIR") . "dashboard/vips");
           exit();
         }
       } else {
@@ -264,7 +264,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Credits", $values);
-        return $response->withRedirect("/dashboard/vips");
+        return $response->withRedirect(getenv("DIR") . "dashboard/vips");
         exit();
       }
     } else {
@@ -297,7 +297,7 @@ class DashboardController
           );
 
           $logger->addLoggerInfo("Vips", $values);
-          return $response->withRedirect("/dashboard/vips");
+          return $response->withRedirect(getenv("DIR") . "dashboard/vips");
           exit();
         } else {
           $return = array(
@@ -334,7 +334,7 @@ class DashboardController
 
             $logger->addLoggerWarning("Error Credits", $values);
           }
-          return $response->withRedirect("/dashboard/vips");
+          return $response->withRedirect(getenv("DIR") . "dashboard/vips");
           exit();
         }
       } else {
@@ -353,7 +353,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Credits", $values);
-        return $response->withRedirect("/dashboard/vips");
+        return $response->withRedirect(getenv("DIR") . "dashboard/vips");
         exit();
       }
     }
@@ -403,7 +403,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Coins", $values);
-      return $response->withRedirect("/dashboard/coins");
+      return $response->withRedirect(getenv("DIR") . "dashboard/coins");
       exit();
     }
 
@@ -415,7 +415,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/coins");
+      return $response->withRedirect(getenv("DIR") . "dashboard/coins");
       exit();
     }
 
@@ -428,7 +428,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/coins");
+      return $response->withRedirect(getenv("DIR") . "dashboard/coins");
       exit();
     }
 
@@ -463,7 +463,7 @@ class DashboardController
         );
 
         $logger->addLoggerInfo("Coins", $values);
-        return $response->withRedirect("/dashboard/coins");
+        return $response->withRedirect(getenv("DIR") . "dashboard/coins");
         exit();
       } else {
         $return = array(
@@ -500,7 +500,7 @@ class DashboardController
 
           $logger->addLoggerWarning("Error Credits", $values);
         }
-        return $response->withRedirect("/dashboard/coins");
+        return $response->withRedirect(getenv("DIR") . "dashboard/coins");
         exit();
       }
     } else {
@@ -519,7 +519,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Credits", $values);
-      return $response->withRedirect("/dashboard/coins");
+      return $response->withRedirect(getenv("DIR") . "dashboard/coins");
       exit();
     }
   }
@@ -568,7 +568,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Settings", $values);
-      return $response->withRedirect("/dashboard/settings");
+      return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       exit();
     }
 
@@ -581,7 +581,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         exit();
       } elseif ($post['currentpassword'] != $home_data['memb__pwd']) {
         $return = array(
@@ -591,7 +591,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       } elseif (strlen($post['newpassword']) < 4 or strlen($post['newpassword']) > 10) {
         $return = array(
           'error'   => true,
@@ -600,7 +600,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       } elseif (strlen($post['confimpassword']) < 4 or strlen($post['confimpassword']) > 10) {
         $return = array(
           'error'   => true,
@@ -609,7 +609,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       } elseif ($post['newpassword'] != $post['confimpassword']) {
         $return = array(
           'error'   => true,
@@ -618,7 +618,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       } else {
         $update_password = $data->updatePassword($post['newpassword'], $home_data['memb___id']);
         if ($update_password == 'OK') {
@@ -637,7 +637,7 @@ class DashboardController
           );
 
           $logger->addLoggerInfo("Settings", $values);
-          return $response->withRedirect("/dashboard/settings");
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         } else {
           $return = array(
             'error'   => true,
@@ -654,7 +654,7 @@ class DashboardController
           );
 
           $logger->addLoggerWarning("Error Settings", $values);
-          return $response->withRedirect("/dashboard/settings");
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         }
       }
     } elseif ($page == 'data') {
@@ -666,7 +666,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         exit();
       } elseif ($post['cur_password'] != $home_data['memb__pwd']) {
         $return = array(
@@ -676,7 +676,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       } else {
         $update_data = $data->updateData($post, $home_data['memb___id']);
         if ($update_data == 'OK') {
@@ -695,7 +695,7 @@ class DashboardController
           );
 
           $logger->addLoggerInfo("Settings", $values);
-          return $response->withRedirect("/dashboard/settings");
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         } else {
           $return = array(
             'error'   => true,
@@ -712,7 +712,85 @@ class DashboardController
           );
 
           $logger->addLoggerWarning("Error Settings", $values);
-          return $response->withRedirect("/dashboard/settings");
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
+        }
+      }
+    } elseif ($page == 'personalid') {
+      if (empty($post['personalid'])) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'Preencha o Personal ID'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
+        exit();
+      } elseif (is_numeric($post['personalid']) == false) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'O Personal ID deve ser somente números'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
+        exit();
+      } elseif (strlen($post['personalid']) != 7) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'O Personal ID deve conter 7 caracteres'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
+        exit();
+      } elseif ($post['cur_password'] != $home_data['memb__pwd']) {
+        $return = array(
+          'error'   => true,
+          'success' => false,
+          'message' => 'A senha atual está incorreta'
+        );
+
+        $messages->addMessage('response', $return);
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
+      } else {
+        $update_data = $data->updatePersonalID($post, $home_data['memb___id']);
+        if ($update_data == 'OK') {
+          $return = array(
+            'error'   => false,
+            'success' => true,
+            'message' => 'Personal ID alterado com sucesso'
+          );
+
+          $messages->addMessage('response', $return);
+
+          $values = array(
+            'username'  => $model->getUsername(),
+            'ipaddress' => $model->getIpaddress(),
+            'message'   => 'Alterou o personal id'
+          );
+
+          $logger->addLoggerInfo("Settings", $values);
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
+        } else {
+          $return = array(
+            'error'   => true,
+            'success' => false,
+            'message' => 'Error ao alterar o personal id, tente novamente'
+          );
+
+          $messages->addMessage('response', $return);
+
+          $values = array(
+            'username'  => $model->getUsername(),
+            'ipaddress' => $model->getIpaddress(),
+            'message'   => $update_data
+          );
+
+          $logger->addLoggerWarning("Error Settings", $values);
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         }
       }
     } elseif ($page == 'customer') {
@@ -724,7 +802,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         exit();
       } elseif ($post['cur_password'] != $home_data['memb__pwd']) {
         $return = array(
@@ -734,14 +812,14 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/settings");
+        return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       } else {
         $check_customer = $data->getCustomer($home_data['memb___id']);
-        if(isset($check_customer['ID'])){
+        if (isset($check_customer['ID'])) {
           $update_customer = $data->updateCustomer($post, $home_data['memb___id']);
-        }else{
+        } else {
           $update_customer = $data->createCustomer($post, $home_data['memb___id']);
-        }        
+        }
         if ($update_customer == 'OK') {
           $return = array(
             'error'   => false,
@@ -758,7 +836,7 @@ class DashboardController
           );
 
           $logger->addLoggerInfo("Settings", $values);
-          return $response->withRedirect("/dashboard/settings");
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         } else {
           $return = array(
             'error'   => true,
@@ -775,7 +853,7 @@ class DashboardController
           );
 
           $logger->addLoggerWarning("Error Settings", $values);
-          return $response->withRedirect("/dashboard/settings");
+          return $response->withRedirect(getenv("DIR") . "dashboard/settings");
         }
       }
     } else {
@@ -794,7 +872,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Settings", $values);
-      return $response->withRedirect("/dashboard/settings");
+      return $response->withRedirect(getenv("DIR") . "dashboard/settings");
       exit();
     }
   }
@@ -823,7 +901,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/tickets");
+        return $response->withRedirect(getenv("DIR") . "dashboard/tickets");
         exit();
       }
 
@@ -837,7 +915,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/tickets");
+        return $response->withRedirect(getenv("DIR") . "dashboard/tickets");
         exit();
       } elseif ($ticket_data['username'] != $home_data['memb___id']) {
         $return = array(
@@ -847,7 +925,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/tickets");
+        return $response->withRedirect(getenv("DIR") . "dashboard/tickets");
         exit();
       } else {
         $ticket_answer = $data->getTicketAnswer($id);
@@ -870,7 +948,7 @@ class DashboardController
     }
   }
 
-  public function postTickets(DashboardModel $model, Response $response, $post, $page)
+  public function postTickets(DashboardModel $model, Response $response, $post, $files, $page)
   {
     //Classes
     $data     = new DashboardDatabase();
@@ -878,7 +956,9 @@ class DashboardController
     $messages = new ViewMessages();
 
     //Variables
-    $home_data = $data->getUser($model);
+    $home_data    = $data->getUser($model);
+    $patch_upload = getenv('DIRIMG');
+    $patch_images = getenv('DIRECTORY_ROOT') . $patch_upload . "tickets";
 
     if (empty($page)) {
       $return = array(
@@ -896,7 +976,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Settings", $values);
-      return $response->withRedirect("/dashboard/tickets/create");
+      return $response->withRedirect(getenv("DIR") . "dashboard/tickets/create");
       exit();
     }
 
@@ -909,10 +989,36 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/tickets/create");
+        return $response->withRedirect(getenv("DIR") . "dashboard/tickets/create");
         exit();
       } else {
-        $create_ticket = $data->createTicket($post, $home_data['memb___id']);
+        if (empty($files['mwo_image'])) {
+          $return = array(
+            'error'   => true,
+            'success' => false,
+            'message' => 'Preencha todos os campos'
+          );
+
+          $messages->addMessage('response', $return);
+          return $response->withRedirect(getenv("DIR") . "dashboard/tickets/create");
+          exit();
+        }
+
+        $image = $files['mwo_image'];
+        if ($image->getError() === UPLOAD_ERR_OK) {
+          $imagename = $this->moveUploadedFile($patch_images, $image, strtolower(preg_replace('/\s*/', '', $home_data['memb___id'])));
+        } else {
+          $return = array(
+            'error'   => true,
+            'success' => false,
+            'message' => 'Error upload de imagem tente novamente'
+          );
+
+          $messages->addMessage('response', $return);
+          return $response->withRedirect(getenv("DIR") . "dashboard/tickets/create");
+          exit();
+        }
+        $create_ticket = $data->createTicket($post, $imagename, $home_data['memb___id']);
         if ($create_ticket == 'OK') {
           $return = array(
             'error'   => false,
@@ -929,7 +1035,7 @@ class DashboardController
           );
 
           $logger->addLoggerInfo("Tickets", $values);
-          return $response->withRedirect("/dashboard/tickets");
+          return $response->withRedirect(getenv("DIR") . "dashboard/tickets");
         } else {
           $return = array(
             'error'   => true,
@@ -946,7 +1052,7 @@ class DashboardController
           );
 
           $logger->addLoggerWarning("Error Tickets", $values);
-          return $response->withRedirect("/dashboard/tickets/create");
+          return $response->withRedirect(getenv("DIR") . "dashboard/tickets/create");
         }
       }
     } else {
@@ -965,7 +1071,7 @@ class DashboardController
       );
 
       $logger->addLoggerWarning("Error Settings", $values);
-      return $response->withRedirect("/dashboard/tickets/create");
+      return $response->withRedirect(getenv("DIR") . "dashboard/tickets/create");
       exit();
     }
   }
@@ -1005,7 +1111,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/characters/reset");
+      return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       exit();
     } else {
       $config_columns   = $data->getConfig('columns');
@@ -1025,7 +1131,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       }
 
       if (empty($vips)) {
@@ -1091,7 +1197,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       } elseif ($charater_details[$config_columns[0]['value']] >= $LIMIT_RESETS and $LIMIT_RESETS != 0) {
         $return = array(
           'error'   => true,
@@ -1100,7 +1206,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       } elseif ($charater_details['cLevel'] < $LEVEL_RESETS) {
         $return = array(
           'error'   => true,
@@ -1109,7 +1215,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       } elseif ($charater_details['Money'] < $ZEN_REQUIRE) {
         $return = array(
           'error'   => true,
@@ -1118,7 +1224,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       }
 
       $resetarray = array(
@@ -1211,7 +1317,7 @@ class DashboardController
           }
         }
 
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       } else {
         $return = array(
           'error'   => true,
@@ -1228,7 +1334,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Reset", $values);
-        return $response->withRedirect("/dashboard/characters/reset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/reset");
       }
     }
   }
@@ -1268,7 +1374,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/characters/masterreset");
+      return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       exit();
     } else {
       $config_columns   = $data->getConfig('columns');
@@ -1288,7 +1394,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       }
 
       if (empty($vips)) {
@@ -1358,7 +1464,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       } elseif ($charater_details[$config_columns[0]['value']] >= $LIMIT_RESETS and $LIMIT_RESETS != 0) {
         $return = array(
           'error'   => true,
@@ -1367,7 +1473,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       } elseif ($charater_details['cLevel'] < $LEVEL_RESETS) {
         $return = array(
           'error'   => true,
@@ -1376,7 +1482,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       } elseif ($charater_details['Money'] < $ZEN_REQUIRE) {
         $return = array(
           'error'   => true,
@@ -1385,7 +1491,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       } elseif ($charater_details[$config_columns[0]['value']] < $REQUIRE_RESETS) {
         $return = array(
           'error'   => true,
@@ -1394,7 +1500,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       }
 
       $resetarray = array(
@@ -1488,7 +1594,7 @@ class DashboardController
           }
         }
 
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       } else {
         $return = array(
           'error'   => true,
@@ -1505,7 +1611,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Master Reset", $values);
-        return $response->withRedirect("/dashboard/characters/masterreset");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/masterreset");
       }
     }
   }
@@ -1582,7 +1688,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/characters/cleanpk");
+      return $response->withRedirect(getenv("DIR") . "dashboard/characters/cleanpk");
       exit();
     } else {
       $config_columns   = $data->getConfig('columns');
@@ -1602,7 +1708,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/cleanpk");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/cleanpk");
       }
 
       if (empty($vips)) {
@@ -1647,7 +1753,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/cleanpk");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/cleanpk");
       } elseif ($charater_details['Money'] < $PRICEZEN) {
         $return = array(
           'error'   => true,
@@ -1656,7 +1762,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/cleanpk");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/cleanpk");
       }
 
       $cleanpk = $data->cleanPK($PRICEZEN, $post['character']);
@@ -1677,7 +1783,7 @@ class DashboardController
 
         $logger->addLoggerInfo("Clean PK", $values);
 
-        return $response->withRedirect("/dashboard/characters/cleanpk");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/cleanpk");
       } else {
         $return = array(
           'error'   => true,
@@ -1694,7 +1800,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Clean PK", $values);
-        return $response->withRedirect("/dashboard/characters/cleanpk");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/cleanpk");
       }
     }
   }
@@ -1734,7 +1840,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/characters/changenick");
+      return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       exit();
     } else {
       $config_columns    = $data->getConfig('columns');
@@ -1756,7 +1862,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       }
 
       if (empty($vips)) {
@@ -1788,7 +1894,7 @@ class DashboardController
           );
 
           $messages->addMessage('response', $return);
-          return $response->withRedirect("/dashboard/characters/changenick");
+          return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
           exit();
         }
       }
@@ -1801,7 +1907,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       } elseif ($charater_details['Money'] < $PRICEZEN) {
         $return = array(
           'error'   => true,
@@ -1810,7 +1916,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       } elseif (!empty($check_nick)) {
         $return = array(
           'error'   => true,
@@ -1819,7 +1925,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       } elseif (!empty($check_guild)) {
         $return = array(
           'error'   => true,
@@ -1828,7 +1934,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       } elseif ($charater_details['CtlCode'] == 1) {
         $return = array(
           'error'   => true,
@@ -1837,7 +1943,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       }
 
       $changenick = $data->changeNick($PRICEZEN, $post['nick'], $post['character']);
@@ -1906,7 +2012,7 @@ class DashboardController
           }
         }
 
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       } else {
         $return = array(
           'error'   => true,
@@ -1923,7 +2029,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Change Nick", $values);
-        return $response->withRedirect("/dashboard/characters/changenick");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changenick");
       }
     }
   }
@@ -2059,7 +2165,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/characters/changeclass");
+      return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeclass");
       exit();
     } else {
       $config_columns     = $data->getConfig('columns');
@@ -2079,7 +2185,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changeclass");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeclass");
       }
 
       if (empty($vips)) {
@@ -2110,7 +2216,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changeclass");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeclass");
       } elseif ($charater_details['Money'] < $PRICEZEN) {
         $return = array(
           'error'   => true,
@@ -2119,7 +2225,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changeclass");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeclass");
       }
 
       $changeclass = $data->changeClass($PRICEZEN, $post['class'], $post['character']);
@@ -2203,7 +2309,7 @@ class DashboardController
           }
         }
 
-        return $response->withRedirect("/dashboard/characters/changeclass");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeclass");
       } else {
         $return = array(
           'error'   => true,
@@ -2220,7 +2326,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Change Nick", $values);
-        return $response->withRedirect("/dashboard/characters/changeclass");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeclass");
       }
     }
   }
@@ -2289,7 +2395,7 @@ class DashboardController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/dashboard/characters/changeimage");
+      return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeimage");
       exit();
     } else {
       $config_columns     = $data->getConfig('columns');
@@ -2309,7 +2415,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changeimage");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeimage");
       }
 
       if (empty($vips)) {
@@ -2337,7 +2443,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changeimage");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeimage");
       }
 
       $image = $files['mwo_image'];
@@ -2351,7 +2457,7 @@ class DashboardController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/dashboard/characters/changeimage");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeimage");
         exit();
       }
 
@@ -2373,7 +2479,7 @@ class DashboardController
 
         $logger->addLoggerInfo("Change Image", $values);
 
-        return $response->withRedirect("/dashboard/characters/changeimage");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeimage");
       } else {
         $return = array(
           'error'   => true,
@@ -2390,7 +2496,7 @@ class DashboardController
         );
 
         $logger->addLoggerWarning("Error Change Image", $values);
-        return $response->withRedirect("/dashboard/characters/changeimage");
+        return $response->withRedirect(getenv("DIR") . "dashboard/characters/changeimage");
       }
     }
   }

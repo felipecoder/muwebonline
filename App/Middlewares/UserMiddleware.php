@@ -32,7 +32,7 @@ class UserMiddleware
 
       $messages->addMessage('response', $return);
 
-      $response = $response->withRedirect("/login");
+      $response = $response->withRedirect(getenv("DIR") . "login");
     } elseif (isset($_SESSION['loggedinuser']) && in_array($routeName, $publicRoutesArray)) {
       $messages = new ViewMessages();
 
@@ -43,7 +43,7 @@ class UserMiddleware
       );
 
       $messages->addMessage('response', $return);
-      $response = $response->withRedirect("/dashboard");
+      $response = $response->withRedirect(getenv("DIR") . "dashboard");
     } else {
       $response = $next($request, $response);
     }

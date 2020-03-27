@@ -102,7 +102,7 @@ class DefaultDatabase extends Connection
   public function createRanking($database, $table, $column, $max, $custom)
   {
     try {
-      $data = $this->db->prepare("SELECT TOP $max $custom, mwo_image, $column as ranking FROM $database.dbo.$table ORDER BY $column DESC");
+      $data = $this->db->prepare("SELECT TOP $max $custom, $column as ranking FROM $database.dbo.$table ORDER BY $column DESC");
       $data->execute();
 
       $rows = $data->fetchAll(PDO::FETCH_ASSOC);
@@ -202,6 +202,74 @@ class DefaultDatabase extends Connection
     try {
       $data = $this->db->prepare("SELECT TOP 1 $custom FROM $database.dbo.$table ORDER BY $orderby");
       $data->execute();
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getCastleSiege()
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM mwo_castlesiege");
+      $data->execute();
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getCastleSiegeManual($name)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM Guild WHERE G_Name = :name");
+      $data->execute(array(':name' => $name));
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getTotalMembersGuild($name)
+  {
+    try {
+      $data = $this->db->prepare("SELECT count(*) FROM GuildMember WHERE G_Name = :name");
+      $data->execute(array(':name' => $name));
+
+      return $data->fetchColumn();
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getCastleSiegeAuto()
+  {
+    try {
+      $data = $this->db->prepare("SELECT cs.CASTLE_OCCUPY AS CASTLE_OCCUPY, cs.SIEGE_START_DATE AS SIEGE_START_DATE, cs.SIEGE_END_DATE AS SIEGE_END_DATE, cs.OWNER_GUILD AS G_Name, g.G_Master AS G_Master, g.G_Mark AS G_Mark, g.G_Score AS G_Score,(SELECT count(1) FROM GuildMember WHERE G_Name = cs.OWNER_GUILD) AS TotalMembers, c.mwo_image AS mwo_image FROM MuCastle_DATA cs LEFT JOIN Guild g ON g.G_Name = cs.OWNER_GUILD LEFT JOIN Character c on c.Name = g.G_Master");
+      $data->execute();
+
+      $row = $data->fetch(PDO::FETCH_ASSOC);
+
+      return $row;
+    } catch (PDOException $e) {
+      return $e->getMessage();
+    }
+  }
+
+  public function getImageCharacter($name)
+  {
+    try {
+      $data = $this->db->prepare("SELECT * FROM Character WHERE Name = :name");
+      $data->execute(array(':name' => $name));
 
       $row = $data->fetch(PDO::FETCH_ASSOC);
 

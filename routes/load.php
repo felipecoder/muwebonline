@@ -42,6 +42,7 @@ include 'forget.php';
 include 'home.php';
 //include 'items.php';
 include 'login.php';
+include 'logos.php';
 include 'logout.php';
 include 'newpassword.php';
 include 'news.php';

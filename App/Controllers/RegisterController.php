@@ -60,7 +60,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     }
 
     $recaptcharesponse = $post['g-recaptcha-response'];
@@ -74,7 +74,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     }
 
     //Variables
@@ -98,7 +98,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     } elseif ($email != $reemail) {
       $return = array(
         'error'   => true,
@@ -107,7 +107,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     } elseif (strlen($password) < 4 or strlen($password) > 10) {
       $return = array(
         'error'   => true,
@@ -116,7 +116,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     } elseif (strlen($repassword) < 4 or strlen($repassword) > 10) {
       $return = array(
         'error'   => true,
@@ -125,7 +125,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     } elseif ($password != $repassword) {
       $return = array(
         'error'   => true,
@@ -134,7 +134,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     } elseif ($data->checkUsername($username)) {
       $return = array(
         'error'   => true,
@@ -143,7 +143,7 @@ class RegisterController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/register");
+      return $response->withRedirect(getenv("DIR") . "register");
     } elseif ($config_register[5]['value'] == 'false') {
       if ($data->checkUsername($username)) {
         $return = array(
@@ -153,7 +153,7 @@ class RegisterController
         );
 
         $messages->addMessage('response', $return);
-        return $response->withRedirect("/register");
+        return $response->withRedirect(getenv("DIR") . "register");
       } else {
         $register = $data->register($post, $username);
         if ($register == 'OK') {
@@ -242,7 +242,7 @@ class RegisterController
 
         $messages->addMessage('response', $return);
 
-        return $response->withRedirect("/register");
+        return $response->withRedirect(getenv("DIR") . "register");
       }
     }
   }

@@ -547,14 +547,16 @@ class AdminDatabase extends Connection
 	public function insertRanking($post)
 	{
 		try {
-			$data = $this->db->prepare("INSERT INTO mwo_rankings ([name], [database], [table], [column], [link], [max]) VALUES (:name, :database, :table, :column, :link, :max)");
+			$data = $this->db->prepare("INSERT INTO mwo_rankings ([name], [database], [table], [column], [custom], [link], [max], [type]) VALUES (:name, :database, :table, :column, :custom, :link, :max, :type)");
 			$data->execute(array(
 				':name'     => $post['name'],
 				':database' => $post['database'],
 				':table'    => $post['table'],
 				':column'   => $post['column'],
-				':max'   		=> $post['max'],
+				':custom'   => $post['custom'],
+				':max'      => $post['max'],
 				':link'     => $post['link'],
+				':type'     => $post['type'],
 			));
 
 			return 'OK';
@@ -566,14 +568,16 @@ class AdminDatabase extends Connection
 	public function editRanking($post, $ID)
 	{
 		try {
-			$data = $this->db->prepare("UPDATE mwo_rankings SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [max] = :max, [link] = :link WHERE ID = :ID");
+			$data = $this->db->prepare("UPDATE mwo_rankings SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [custom] = :custom, [max] = :max, [link] = :link, [type] = :type WHERE ID = :ID");
 			$data->execute(array(
 				':name'     => $post['name'],
 				':database' => $post['database'],
 				':table'    => $post['table'],
 				':column'   => $post['column'],
-				':max'   		=> $post['max'],
+				':custom'   => $post['custom'],
+				':max'      => $post['max'],
 				':link'     => $post['link'],
+				':type'     => $post['type'],
 				':ID'       => $ID,
 			));
 
@@ -626,14 +630,15 @@ class AdminDatabase extends Connection
 	public function insertRankingHome($post)
 	{
 		try {
-			$data = $this->db->prepare("INSERT INTO mwo_rankings_home ([name], [database], [table], [column], [custom], [max]) VALUES (:name, :database, :table, :column, :custom, :max)");
+			$data = $this->db->prepare("INSERT INTO mwo_rankings_home ([name], [database], [table], [column], [custom], [max], [type]) VALUES (:name, :database, :table, :column, :custom, :max, :type)");
 			$data->execute(array(
 				':name'     => $post['name'],
 				':database' => $post['database'],
 				':table'    => $post['table'],
 				':column'   => $post['column'],
-				':max'   		=> $post['max'],
+				':max'      => $post['max'],
 				':custom'   => (empty($post['custom'])) ? NULL : $post['custom'],
+				':type'     => $post['type'],
 			));
 
 			return 'OK';
@@ -645,14 +650,15 @@ class AdminDatabase extends Connection
 	public function editRankingHome($post, $ID)
 	{
 		try {
-			$data = $this->db->prepare("UPDATE mwo_rankings_home SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [max] = :max, [custom] = :custom WHERE ID = :ID");
+			$data = $this->db->prepare("UPDATE mwo_rankings_home SET [name] = :name, [database] = :database, [table] = :table, [column] = :column, [max] = :max, [custom] = :custom, [type] = :type WHERE ID = :ID");
 			$data->execute(array(
 				':name'     => $post['name'],
 				':database' => $post['database'],
 				':table'    => $post['table'],
 				':column'   => $post['column'],
-				':max'   		=> $post['max'],
+				':max'      => $post['max'],
 				':custom'   => (empty($post['custom'])) ? NULL : $post['custom'],
+				':type'     => $post['type'],
 				':ID'       => $ID,
 			));
 
@@ -702,14 +708,14 @@ class AdminDatabase extends Connection
 		}
 	}
 
-	public function insertNew($post)
+	public function insertNew($post, $image)
 	{
 		try {
 			$data = $this->db->prepare("INSERT INTO mwo_news ([title], [content], [image], [tag]) VALUES (:title, :content, :image, :tag)");
 			$data->execute(array(
 				':title'   => $post['title'],
 				':content' => $post['content'],
-				':image'   => (empty($post['image'])) ? NULL : $post['image'],
+				':image'   => $image,
 				':tag'     => (empty($post['tag'])) ? NULL : $post['tag'],
 			));
 
@@ -719,14 +725,15 @@ class AdminDatabase extends Connection
 		}
 	}
 
-	public function editNew($post, $ID)
+	public function editNew($post, $image, $ID)
 	{
+		$new_data = $this->getNewInfo($ID);
 		try {
 			$data = $this->db->prepare("UPDATE mwo_news SET [title] = :title, [content] = :content, [image] = :image, [tag] = :tag WHERE ID = :ID");
 			$data->execute(array(
 				':title'   => $post['title'],
 				':content' => $post['content'],
-				':image'   => (empty($post['image'])) ? NULL : $post['image'],
+				':image'   => (empty($image)) ? $new_data['image'] : $image,
 				':tag'     => (empty($post['tag'])) ? NULL : $post['tag'],
 				':ID'      => $ID,
 			));
@@ -1154,7 +1161,7 @@ class AdminDatabase extends Connection
 		}
 	}
 
-	public function insertSlide($post)
+	public function insertSlide($post, $image)
 	{
 		try {
 			$data = $this->db->prepare("INSERT INTO mwo_slides (name, label, link, image, status) VALUES (:name, :label, :link, :image, :status)");
@@ -1162,7 +1169,7 @@ class AdminDatabase extends Connection
 				':name'   => $post['name'],
 				':label'  => (empty($post['label'])) ? NULL : $post['label'],
 				':link'   => $post['link'],
-				':image'  => $post['image'],
+				':image'  => $image,
 				':status' => $post['status'],
 			));
 
@@ -1172,15 +1179,16 @@ class AdminDatabase extends Connection
 		}
 	}
 
-	public function editSlide($post, $ID)
+	public function editSlide($post, $image, $ID)
 	{
+		$slide_data = $this->getSlideInfo($ID);
 		try {
 			$data = $this->db->prepare("UPDATE mwo_slides SET name = :name, label = :label, link = :link, image = :image, status = :status WHERE ID = :ID");
 			$data->execute(array(
 				':name'   => $post['name'],
 				':label'  => (empty($post['label'])) ? NULL : $post['label'],
 				':link'   => $post['link'],
-				':image'  => $post['image'],
+				':image'  => (empty($image)) ? $slide_data['image'] : $image,
 				':status' => $post['status'],
 				':ID'     => $ID,
 			));
@@ -2086,6 +2094,37 @@ class AdminDatabase extends Connection
 		try {
 			$data = $this->db->prepare("DELETE FROM mwo_webshop_items WHERE ID = :ID");
 			$data->execute(array(':ID' => $ID));
+
+			return 'OK';
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function getCastleSiege()
+	{
+		try {
+			$data = $this->db->prepare("SELECT * FROM mwo_castlesiege");
+			$data->execute();
+
+			$row = $data->fetch(PDO::FETCH_ASSOC);
+
+			return $row;
+		} catch (PDOException $e) {
+			return $e->getMessage();
+		}
+	}
+
+	public function editCastleSiege($post)
+	{
+		try {
+			$data = $this->db->prepare("UPDATE mwo_castlesiege SET [active] = :active, [mode] = :mode, [confrontation] = :confrontation, [guild] = :guild");
+			$data->execute(array(
+				':active'        => $post['active'],
+				':mode'          => $post['mode'],
+				':confrontation' => $post['confrontation'],
+				':guild'         => $post['guild']
+			));
 
 			return 'OK';
 		} catch (PDOException $e) {

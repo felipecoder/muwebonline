@@ -10,6 +10,7 @@ use App\Views\ViewMessages;
 use MWOItems\Items;
 use MWOPay\MWOPay;
 use Slim\Http\Response;
+use Slim\Http\UploadedFile;
 use VisualAppeal\AutoUpdate;
 
 class AdminController
@@ -69,7 +70,7 @@ class AdminController
 		$login       = $data->login($model);
 		$password    = $model->getPassword();
 		$ipaddress   = $model->getIpaddress();
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if (empty($login)) {
 			$return = array(
@@ -88,7 +89,7 @@ class AdminController
 
 			$logger->addLoggerWarning("Error Login", $values);
 
-			return $response->withRedirect("/{$patch_admin}/login");
+			return $response->withRedirect("{$patch_admin}/login");
 			exit();
 		} elseif (!password_verify($password, $login['password'])) {
 			$return = array(
@@ -107,7 +108,7 @@ class AdminController
 
 			$logger->addLoggerWarning("Error Login", $values);
 
-			return $response->withRedirect("/{$patch_admin}/login");
+			return $response->withRedirect("{$patch_admin}/login");
 			exit();
 		} elseif ($ipaddress != $login['ipaddress'] && getenv('USE_IP_LOGIN') == 'true') {
 			$return = array(
@@ -126,7 +127,7 @@ class AdminController
 
 			$logger->addLoggerWarning("Error Login", $values);
 
-			return $response->withRedirect("/{$patch_admin}/login");
+			return $response->withRedirect("{$patch_admin}/login");
 			exit();
 		} else {
 			$_SESSION['loggedinadmin'] = true;
@@ -149,18 +150,18 @@ class AdminController
 
 			$logger->addLoggerInfo("Login", $values);
 
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
 
 	public function getLogout(Response $response)
 	{
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		unset($_SESSION['loggedinadmin'], $_SESSION['usernameadmin'], $_SESSION['accessadmin']);
 
-		return $response->withRedirect("/{$patch_admin}/logout");
+		return $response->withRedirect("{$patch_admin}/logout");
 	}
 
 	public function getAccessPanel(AdminModel $model, ViewAdmin $view, Response $response, $page, $id = NULL)
@@ -188,11 +189,11 @@ class AdminController
 			return $view->getRender($array, 'accesspanel', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$account_data = $data->getAccessPanelInfo($id);
 
 			if (empty($account_data)) {
-				return $response->withRedirect("/{$patch_admin}/accesspanel/list");
+				return $response->withRedirect("{$patch_admin}/accesspanel/list");
 				exit();
 			}
 
@@ -205,11 +206,11 @@ class AdminController
 			return $view->getRender($array, 'accesspanel', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$account_data = $data->getAccessPanelInfo($id);
 
 			if (empty($account_data)) {
-				return $response->withRedirect("/{$patch_admin}/accesspanel/list");
+				return $response->withRedirect("{$patch_admin}/accesspanel/list");
 				exit();
 			}
 
@@ -222,8 +223,8 @@ class AdminController
 			return $view->getRender($array, 'accesspanel', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -236,7 +237,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page == 'create') {
 			if (empty($post['username']) or empty($post['password']) or empty($post['access']) or empty($post['ipaddress'])) {
@@ -247,7 +248,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspanel/" . $page);
+				return $response->withRedirect("{$patch_admin}/accesspanel/" . $page);
 				exit();
 			}
 		}
@@ -261,7 +262,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspanel/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/accesspanel/edit/" . $id);
 				exit();
 			}
 		}
@@ -300,7 +301,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accesspanel/list");
+			return $response->withRedirect("{$patch_admin}/accesspanel/list");
 		} elseif ($page == 'edit') {
 			$account_data = $data->getAccessPanelInfo($id);
 
@@ -312,7 +313,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspanel/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/accesspanel/edit/" . $id);
 				exit();
 			}
 
@@ -349,7 +350,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accesspanel/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/accesspanel/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$account_data = $data->getAccessPanelInfo($id);
 
@@ -361,7 +362,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspanel/delete/" . $id);
+				return $response->withRedirect("{$patch_admin}/accesspanel/delete/" . $id);
 				exit();
 			}
 
@@ -398,7 +399,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accesspanel/list");
+			return $response->withRedirect("{$patch_admin}/accesspanel/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -407,7 +408,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -430,11 +431,11 @@ class AdminController
 			return $view->getRender($array, 'accounts', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$account_data = $data->getAccountInfo($id);
 
 			if (empty($account_data)) {
-				return $response->withRedirect("/{$patch_admin}/accounts/list");
+				return $response->withRedirect("{$patch_admin}/accounts/list");
 				exit();
 			}
 
@@ -447,11 +448,11 @@ class AdminController
 			return $view->getRender($array, 'accounts', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$account_data = $data->getAccountInfo($id);
 
 			if (empty($account_data)) {
-				return $response->withRedirect("/{$patch_admin}/accounts/list");
+				return $response->withRedirect("{$patch_admin}/accounts/list");
 				exit();
 			}
 
@@ -464,8 +465,8 @@ class AdminController
 			return $view->getRender($array, 'accounts', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -478,7 +479,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page == 'edit') {
 			if (empty($post['memb_name']) or empty($post['memb__pwd']) or empty($post['mail_addr']) or empty($post['mwo_credits'])) {
@@ -489,7 +490,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accounts/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/accounts/edit/" . $id);
 				exit();
 			}
 			$account_data = $data->getAccountInfo($id);
@@ -502,7 +503,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accounts/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/accounts/edit/" . $id);
 				exit();
 			}
 
@@ -539,7 +540,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accounts/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/accounts/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$account_data = $data->getAccountInfo($id);
 
@@ -553,7 +554,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accounts/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/accounts/edit/" . $id);
 				exit();
 			}
 
@@ -731,7 +732,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accounts/list");
+			return $response->withRedirect("{$patch_admin}/accounts/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -740,7 +741,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -785,7 +786,7 @@ class AdminController
 			return $view->getRender($array, 'characters', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin     = getenv('DIRADMIN');
+			$patch_admin     = getenv('DIR') . getenv('DIRADMIN');
 			$character_data  = $data->getCharacterInfo($character);
 			$config_class    = $data->getConfig('classcodes');
 			$config_class    = json_decode($config_class, true);
@@ -795,7 +796,7 @@ class AdminController
 			$config_muserver = json_decode($config_muserver, true);
 
 			if (empty($character_data)) {
-				return $response->withRedirect("/{$patch_admin}/characters/list");
+				return $response->withRedirect("{$patch_admin}/characters/list");
 				exit();
 			}
 
@@ -841,11 +842,11 @@ class AdminController
 			return $view->getRender($array, 'characters', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin     = getenv('DIRADMIN');
+			$patch_admin     = getenv('DIR') . getenv('DIRADMIN');
 			$character_data  = $data->getCharacterInfo($character);
 
 			if (empty($character_data)) {
-				return $response->withRedirect("/{$patch_admin}/characters/list");
+				return $response->withRedirect("{$patch_admin}/characters/list");
 				exit();
 			}
 
@@ -858,8 +859,8 @@ class AdminController
 			return $view->getRender($array, 'characters', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -963,7 +964,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin    = getenv('DIRADMIN');
+		$patch_admin    = getenv('DIR') . getenv('DIRADMIN');
 		$config_columns = $data->getConfig('columns');
 		$config_columns = json_decode($config_columns, true);
 
@@ -976,7 +977,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/characters/edit/" . $character);
+				return $response->withRedirect("{$patch_admin}/characters/edit/" . $character);
 				exit();
 			}
 			$character_data  = $data->getCharacterInfo($character);
@@ -989,7 +990,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/characters/edit/" . $character);
+				return $response->withRedirect("{$patch_admin}/characters/edit/" . $character);
 				exit();
 			}
 
@@ -1026,7 +1027,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/characters/edit/" . $character);
+			return $response->withRedirect("{$patch_admin}/characters/edit/" . $character);
 		} elseif ($page == 'delete') {
 			$character_data  = $data->getCharacterInfo($character);
 
@@ -1038,7 +1039,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/characters/edit/" . $character);
+				return $response->withRedirect("{$patch_admin}/characters/edit/" . $character);
 				exit();
 			}
 
@@ -1135,7 +1136,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/characters/list");
+			return $response->withRedirect("{$patch_admin}/characters/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -1144,7 +1145,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1178,12 +1179,12 @@ class AdminController
 			return $view->getRender($array, 'menus', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$menu_data   = $data->getMenuInfo($id);
 			$menus       = $data->getMenusParentID(0);
 
 			if (empty($menu_data)) {
-				return $response->withRedirect("/{$patch_admin}/menus/list");
+				return $response->withRedirect("{$patch_admin}/menus/list");
 				exit();
 			}
 
@@ -1197,12 +1198,12 @@ class AdminController
 			return $view->getRender($array, 'menus', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$menu_data   = $data->getMenuInfo($id);
 			$menus       = $data->getMenusParentID(0);
 
 			if (empty($menu_data)) {
-				return $response->withRedirect("/{$patch_admin}/menus/list");
+				return $response->withRedirect("{$patch_admin}/menus/list");
 				exit();
 			}
 
@@ -1216,8 +1217,8 @@ class AdminController
 			return $view->getRender($array, 'menus', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1230,7 +1231,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
 			if (empty($post['name']) or empty($post['link'])) {
@@ -1241,7 +1242,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/menus/create");
+				return $response->withRedirect("{$patch_admin}/menus/create");
 				exit();
 			}
 		}
@@ -1280,7 +1281,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/menus/list");
+			return $response->withRedirect("{$patch_admin}/menus/list");
 		} elseif ($page == 'edit') {
 			$menu_data = $data->getMenuInfo($id);
 
@@ -1292,7 +1293,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/menus/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/menus/edit/" . $id);
 				exit();
 			}
 
@@ -1329,7 +1330,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/menus/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/menus/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$menu_data = $data->getMenuInfo($id);
 
@@ -1341,7 +1342,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/menus/list");
+				return $response->withRedirect("{$patch_admin}/menus/list");
 				exit();
 			}
 
@@ -1378,7 +1379,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/menus/list");
+			return $response->withRedirect("{$patch_admin}/menus/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -1387,7 +1388,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1410,11 +1411,11 @@ class AdminController
 			return $view->getRender($array, 'configs', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$config_data = $data->getConfigInfo($id);
 
 			if (empty($config_data)) {
-				return $response->withRedirect("/{$patch_admin}/configs/list");
+				return $response->withRedirect("{$patch_admin}/configs/list");
 				exit();
 			}
 
@@ -1434,8 +1435,8 @@ class AdminController
 			return $view->getRender($array, 'configs', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1448,7 +1449,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page == 'edit') {
 			$config_data = $data->getConfigInfo($id);
@@ -1461,7 +1462,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/configs/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/configs/edit/" . $id);
 				exit();
 			}
 
@@ -1509,7 +1510,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/configs/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/configs/edit/" . $id);
 		} else {
 			$return = array(
 				'error'   => true,
@@ -1518,7 +1519,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1548,11 +1549,11 @@ class AdminController
 			return $view->getRender($array, 'rankings', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$ranking_data = $data->getRankingInfo($id);
 
 			if (empty($ranking_data)) {
-				return $response->withRedirect("/{$patch_admin}/rankings/list");
+				return $response->withRedirect("{$patch_admin}/rankings/list");
 				exit();
 			}
 
@@ -1565,11 +1566,11 @@ class AdminController
 			return $view->getRender($array, 'rankings', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$ranking_data = $data->getRankingInfo($id);
 
 			if (empty($ranking_data)) {
-				return $response->withRedirect("/{$patch_admin}/rankings/list");
+				return $response->withRedirect("{$patch_admin}/rankings/list");
 				exit();
 			}
 
@@ -1582,8 +1583,8 @@ class AdminController
 			return $view->getRender($array, 'rankings', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1596,10 +1597,10 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
-			if (empty($post['name']) or empty($post['database']) or empty($post['table']) or empty($post['column']) or empty($post['max']) or empty($post['link'])) {
+			if (empty($post['name']) or empty($post['database']) or empty($post['table']) or empty($post['column']) or empty($post['custom']) or empty($post['max']) or empty($post['link']) or empty($post['type'])) {
 				$return = array(
 					'error'   => true,
 					'success' => false,
@@ -1607,7 +1608,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/rankings/" . $page);
+				return $response->withRedirect("{$patch_admin}/rankings/" . $page);
 				exit();
 			}
 		}
@@ -1646,7 +1647,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/rankings/list");
+			return $response->withRedirect("{$patch_admin}/rankings/list");
 		} elseif ($page == 'edit') {
 			$ranking_data = $data->getRankingInfo($id);
 
@@ -1658,7 +1659,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/rankings/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/rankings/edit/" . $id);
 				exit();
 			}
 
@@ -1695,7 +1696,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/rankings/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/rankings/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$ranking_data = $data->getRankingInfo($id);
 
@@ -1707,7 +1708,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/rankings/list");
+				return $response->withRedirect("{$patch_admin}/rankings/list");
 				exit();
 			}
 
@@ -1744,7 +1745,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/rankings/list");
+			return $response->withRedirect("{$patch_admin}/rankings/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -1753,7 +1754,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1783,11 +1784,11 @@ class AdminController
 			return $view->getRender($array, 'rankings-home', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$ranking_data = $data->getRankingHomeInfo($id);
 
 			if (empty($ranking_data)) {
-				return $response->withRedirect("/{$patch_admin}/rankings-home/list");
+				return $response->withRedirect("{$patch_admin}/rankings-home/list");
 				exit();
 			}
 
@@ -1800,11 +1801,11 @@ class AdminController
 			return $view->getRender($array, 'rankings-home', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$ranking_data = $data->getRankingHomeInfo($id);
 
 			if (empty($ranking_data)) {
-				return $response->withRedirect("/{$patch_admin}/rankings-home/list");
+				return $response->withRedirect("{$patch_admin}/rankings-home/list");
 				exit();
 			}
 
@@ -1817,8 +1818,8 @@ class AdminController
 			return $view->getRender($array, 'rankings-home', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -1831,10 +1832,10 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
-			if (empty($post['name']) or empty($post['database']) or empty($post['table']) or empty($post['column']) or empty($post['max'])) {
+			if (empty($post['name']) or empty($post['database']) or empty($post['table']) or empty($post['column']) or empty($post['max']) or empty($post['type'])) {
 				$return = array(
 					'error'   => true,
 					'success' => false,
@@ -1842,7 +1843,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/rankings-home/" . $page);
+				return $response->withRedirect("{$patch_admin}/rankings-home/" . $page);
 				exit();
 			}
 		}
@@ -1881,7 +1882,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/rankings-home/list");
+			return $response->withRedirect("{$patch_admin}/rankings-home/list");
 		} elseif ($page == 'edit') {
 			$ranking_data = $data->getRankingHomeInfo($id);
 
@@ -1893,7 +1894,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/rankings-home/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/rankings-home/edit/" . $id);
 				exit();
 			}
 
@@ -1930,7 +1931,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/rankings-home/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/rankings-home/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$ranking_data = $data->getRankingHomeInfo($id);
 
@@ -1942,7 +1943,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/rankings-home/list");
+				return $response->withRedirect("{$patch_admin}/rankings-home/list");
 				exit();
 			}
 
@@ -1979,7 +1980,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/rankings-home/list");
+			return $response->withRedirect("{$patch_admin}/rankings-home/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -1988,7 +1989,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2018,11 +2019,11 @@ class AdminController
 			return $view->getRender($array, 'news', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$new_data    = $data->getNewInfo($id);
 
 			if (empty($new_data)) {
-				return $response->withRedirect("/{$patch_admin}/news/list");
+				return $response->withRedirect("{$patch_admin}/news/list");
 				exit();
 			}
 
@@ -2035,11 +2036,11 @@ class AdminController
 			return $view->getRender($array, 'news', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$new_data    = $data->getNewInfo($id);
 
 			if (empty($new_data)) {
-				return $response->withRedirect("/{$patch_admin}/news/list");
+				return $response->withRedirect("{$patch_admin}/news/list");
 				exit();
 			}
 
@@ -2052,13 +2053,13 @@ class AdminController
 			return $view->getRender($array, 'news', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
 
-	public function postNews(AdminModel $model, ViewAdmin $view, Response $response, $page, $post, $id = NULL)
+	public function postNews(AdminModel $model, ViewAdmin $view, Response $response, $page, $post, $files, $id = NULL)
 	{
 		//Classes
 		$data     = new AdminDatabase();
@@ -2066,7 +2067,9 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
+		$patch_upload = getenv('DIRIMG');
+		$patch_images = getenv('DIRECTORY_ROOT') . $patch_upload . "news";
 
 		if ($page != 'delete') {
 			if (empty($post['title']) or empty($post['content'])) {
@@ -2077,13 +2080,39 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/news/" . $page);
+				return $response->withRedirect("{$patch_admin}/news/" . $page);
 				exit();
 			}
 		}
 
 		if ($page == 'create') {
-			$register = $data->insertNew($post);
+			if (empty($files['mwo_image'])) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Preencha todos os campos'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("{$patch_admin}/news/create");
+				exit();
+			}
+
+			$image = $files['mwo_image'];
+			if ($image->getError() === UPLOAD_ERR_OK) {
+				$imagename = $this->moveUploadedFile($patch_images, $image, strtolower(preg_replace('/\s*/', '', $post['title'])));
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Error upload de imagem tente novamente'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("{$patch_admin}/news/create");
+				exit();
+			}
+			$register = $data->insertNew($post, $imagename);
 			if ($register == 'OK') {
 				$return = array(
 					'error'   => false,
@@ -2116,7 +2145,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/news/list");
+			return $response->withRedirect("{$patch_admin}/news/list");
 		} elseif ($page == 'edit') {
 			$new_data = $data->getNewInfo($id);
 
@@ -2128,11 +2157,30 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/news/list");
+				return $response->withRedirect("{$patch_admin}/news/list");
 				exit();
 			}
 
-			$edit = $data->editNew($post, $id);
+			if (!empty($files['mwo_image']->file)) {
+				$image = $files['mwo_image'];
+				if ($image->getError() === UPLOAD_ERR_OK) {
+					$imagename = $this->moveUploadedFile($patch_images, $image, strtolower(preg_replace('/\s*/', '', $post['title'])));
+				} else {
+					$return = array(
+						'error'   => true,
+						'success' => false,
+						'message' => 'Error upload de imagem tente novamente'
+					);
+
+					$messages->addMessage('response', $return);
+					return $response->withRedirect("{$patch_admin}/news/edit" . $id);
+					exit();
+				}
+			} else {
+				$imagename = NULL;
+			}
+
+			$edit = $data->editNew($post, $imagename, $id);
 			if ($edit == 'OK') {
 				$return = array(
 					'error'   => false,
@@ -2145,6 +2193,14 @@ class AdminController
 					'ipaddress' => $model->getIpaddress(),
 					'message'   => 'Editou uma notícia'
 				);
+
+				if (!empty($files['mwo_image']->file)) {
+
+					$image = $patch_images . "/" . $new_data['image'];
+					if (file_exists($image)) {
+						unlink($image);
+					}
+				}
 
 				$logger->addLoggerInfo("News", $values);
 			} else {
@@ -2165,7 +2221,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/news/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/news/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$new_data = $data->getNewInfo($id);
 
@@ -2177,7 +2233,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/news/list");
+				return $response->withRedirect("{$patch_admin}/news/list");
 				exit();
 			}
 
@@ -2195,6 +2251,11 @@ class AdminController
 					'message'   => 'Deletou uma notícia'
 				);
 
+				$image = $patch_images . "/" . $new_data['image'];
+				if (file_exists($image)) {
+					unlink($image);
+				}
+
 				$logger->addLoggerInfo("News", $values);
 			} else {
 				$return = array(
@@ -2214,7 +2275,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/news/list");
+			return $response->withRedirect("{$patch_admin}/news/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -2223,7 +2284,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2253,11 +2314,11 @@ class AdminController
 			return $view->getRender($array, 'pages', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$page_data   = $data->getPageInfo($id);
 
 			if (empty($page_data)) {
-				return $response->withRedirect("/{$patch_admin}/pages/list");
+				return $response->withRedirect("{$patch_admin}/pages/list");
 				exit();
 			}
 
@@ -2270,11 +2331,11 @@ class AdminController
 			return $view->getRender($array, 'pages', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$page_data   = $data->getPageInfo($id);
 
 			if (empty($page_data)) {
-				return $response->withRedirect("/{$patch_admin}/pages/list");
+				return $response->withRedirect("{$patch_admin}/pages/list");
 				exit();
 			}
 
@@ -2287,8 +2348,8 @@ class AdminController
 			return $view->getRender($array, 'pages', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2301,7 +2362,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
 			if (empty($post['title']) or empty($post['link']) or empty($post['content'])) {
@@ -2312,7 +2373,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/pages/" . $page);
+				return $response->withRedirect("{$patch_admin}/pages/" . $page);
 				exit();
 			}
 		}
@@ -2351,7 +2412,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/pages/list");
+			return $response->withRedirect("{$patch_admin}/pages/list");
 		} elseif ($page == 'edit') {
 			$page_data   = $data->getPageInfo($id);
 
@@ -2363,7 +2424,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/pages/list");
+				return $response->withRedirect("{$patch_admin}/pages/list");
 				exit();
 			}
 
@@ -2400,7 +2461,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/pages/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/pages/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$page_data   = $data->getPageInfo($id);
 
@@ -2412,7 +2473,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/pages/list");
+				return $response->withRedirect("{$patch_admin}/pages/list");
 				exit();
 			}
 
@@ -2449,7 +2510,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/pages/list");
+			return $response->withRedirect("{$patch_admin}/pages/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -2458,7 +2519,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2488,11 +2549,11 @@ class AdminController
 			return $view->getRender($array, 'events', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$event_data = $data->getEventInfo($id);
 
 			if (empty($event_data)) {
-				return $response->withRedirect("/{$patch_admin}/events/list");
+				return $response->withRedirect("{$patch_admin}/events/list");
 				exit();
 			}
 
@@ -2505,11 +2566,11 @@ class AdminController
 			return $view->getRender($array, 'events', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin  = getenv('DIRADMIN');
+			$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 			$event_data = $data->getEventInfo($id);
 
 			if (empty($event_data)) {
-				return $response->withRedirect("/{$patch_admin}/events/list");
+				return $response->withRedirect("{$patch_admin}/events/list");
 				exit();
 			}
 
@@ -2522,8 +2583,8 @@ class AdminController
 			return $view->getRender($array, 'events', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2536,7 +2597,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
 			if (empty($post['name']) or empty($post['time'])) {
@@ -2547,7 +2608,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/events/" . $page);
+				return $response->withRedirect("{$patch_admin}/events/" . $page);
 				exit();
 			}
 		}
@@ -2586,7 +2647,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/events/list");
+			return $response->withRedirect("{$patch_admin}/events/list");
 		} elseif ($page == 'edit') {
 			$event_data = $data->getEventInfo($id);
 
@@ -2598,7 +2659,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/events/list");
+				return $response->withRedirect("{$patch_admin}/events/list");
 				exit();
 			}
 
@@ -2635,7 +2696,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/events/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/events/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$event_data = $data->getEventInfo($id);
 
@@ -2647,7 +2708,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/events/list");
+				return $response->withRedirect("{$patch_admin}/events/list");
 				exit();
 			}
 
@@ -2684,7 +2745,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/events/list");
+			return $response->withRedirect("{$patch_admin}/events/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -2693,7 +2754,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2723,11 +2784,11 @@ class AdminController
 			return $view->getRender($array, 'coins', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$coin_data   = $data->getCoinInfo($id);
 
 			if (empty($coin_data)) {
-				return $response->withRedirect("/{$patch_admin}/coins/list");
+				return $response->withRedirect("{$patch_admin}/coins/list");
 				exit();
 			}
 
@@ -2740,11 +2801,11 @@ class AdminController
 			return $view->getRender($array, 'coins', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$coin_data   = $data->getCoinInfo($id);
 
 			if (empty($coin_data)) {
-				return $response->withRedirect("/{$patch_admin}/coins/list");
+				return $response->withRedirect("{$patch_admin}/coins/list");
 				exit();
 			}
 
@@ -2757,8 +2818,8 @@ class AdminController
 			return $view->getRender($array, 'coins', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2771,7 +2832,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
 			if (empty($post['name']) or empty($post['database']) or empty($post['table']) or empty($post['column']) or empty($post['price'])) {
@@ -2782,7 +2843,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/coins/" . $page);
+				return $response->withRedirect("{$patch_admin}/coins/" . $page);
 				exit();
 			}
 		}
@@ -2821,7 +2882,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/coins/list");
+			return $response->withRedirect("{$patch_admin}/coins/list");
 		} elseif ($page == 'edit') {
 			$coin_data   = $data->getCoinInfo($id);
 
@@ -2833,7 +2894,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/coins/list");
+				return $response->withRedirect("{$patch_admin}/coins/list");
 				exit();
 			}
 
@@ -2870,7 +2931,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/coins/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/coins/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$coin_data   = $data->getCoinInfo($id);
 
@@ -2882,7 +2943,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/coins/list");
+				return $response->withRedirect("{$patch_admin}/coins/list");
 				exit();
 			}
 
@@ -2919,7 +2980,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/coins/list");
+			return $response->withRedirect("{$patch_admin}/coins/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -2928,7 +2989,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -2958,11 +3019,11 @@ class AdminController
 			return $view->getRender($array, 'vips', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$vip_data    = $data->getVipInfo($id);
 
 			if (empty($vip_data)) {
-				return $response->withRedirect("/{$patch_admin}/vips/list");
+				return $response->withRedirect("{$patch_admin}/vips/list");
 				exit();
 			}
 
@@ -2975,11 +3036,11 @@ class AdminController
 			return $view->getRender($array, 'vips', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$vip_data    = $data->getVipInfo($id);
 
 			if (empty($vip_data)) {
-				return $response->withRedirect("/{$patch_admin}/vips/list");
+				return $response->withRedirect("{$patch_admin}/vips/list");
 				exit();
 			}
 
@@ -2992,8 +3053,8 @@ class AdminController
 			return $view->getRender($array, 'vips', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -3006,7 +3067,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
 			if (empty($post['name']) or empty($post['database']) or empty($post['table']) or empty($post['column_level']) or empty($post['column_days']) or empty($post['level']) or empty($post['prices']) or empty($post['days'])) {
@@ -3017,7 +3078,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/vips/" . $page);
+				return $response->withRedirect("{$patch_admin}/vips/" . $page);
 				exit();
 			}
 		}
@@ -3056,7 +3117,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/vips/list");
+			return $response->withRedirect("{$patch_admin}/vips/list");
 		} elseif ($page == 'edit') {
 			$vip_data = $data->getVipInfo($id);
 
@@ -3068,7 +3129,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/vips/list");
+				return $response->withRedirect("{$patch_admin}/vips/list");
 				exit();
 			}
 
@@ -3105,7 +3166,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/vips/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/vips/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$vip_data = $data->getVipInfo($id);
 
@@ -3117,11 +3178,11 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/vips/list");
+				return $response->withRedirect("{$patch_admin}/vips/list");
 				exit();
 			}
 
-			$delete = $data->deleteVip($id);
+			$delete = $data->deleteVips($id);
 			if ($delete == 'OK') {
 				$return = array(
 					'error'   => false,
@@ -3154,7 +3215,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/vips/list");
+			return $response->withRedirect("{$patch_admin}/vips/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -3163,7 +3224,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -3264,11 +3325,11 @@ class AdminController
 			return $view->getRender($array, 'accesspages', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin     = getenv('DIRADMIN');
+			$patch_admin     = getenv('DIR') . getenv('DIRADMIN');
 			$accesspage_data = $data->getAccessPageInfo($id);
 
 			if (empty($accesspage_data)) {
-				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				return $response->withRedirect("{$patch_admin}/accesspages/list");
 				exit();
 			}
 
@@ -3281,11 +3342,11 @@ class AdminController
 			return $view->getRender($array, 'accesspages', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin     = getenv('DIRADMIN');
+			$patch_admin     = getenv('DIR') . getenv('DIRADMIN');
 			$accesspage_data = $data->getAccessPageInfo($id);
 
 			if (empty($accesspage_data)) {
-				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				return $response->withRedirect("{$patch_admin}/accesspages/list");
 				exit();
 			}
 
@@ -3298,8 +3359,8 @@ class AdminController
 			return $view->getRender($array, 'accesspages', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -3312,7 +3373,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page != 'delete') {
 			if (empty($post['name'])) {
@@ -3323,7 +3384,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspages/" . $page);
+				return $response->withRedirect("{$patch_admin}/accesspages/" . $page);
 				exit();
 			}
 		}
@@ -3362,7 +3423,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accesspages/list");
+			return $response->withRedirect("{$patch_admin}/accesspages/list");
 		} elseif ($page == 'edit') {
 			$accesspage_data = $data->getAccessPageInfo($id);
 
@@ -3374,7 +3435,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				return $response->withRedirect("{$patch_admin}/accesspages/list");
 				exit();
 			}
 
@@ -3411,7 +3472,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accesspages/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/accesspages/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$accesspage_data = $data->getAccessPageInfo($id);
 
@@ -3423,7 +3484,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/accesspages/list");
+				return $response->withRedirect("{$patch_admin}/accesspages/list");
 				exit();
 			}
 
@@ -3460,7 +3521,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/accesspages/list");
+			return $response->withRedirect("{$patch_admin}/accesspages/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -3469,7 +3530,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -3499,11 +3560,11 @@ class AdminController
 			return $view->getRender($array, 'slides', $response);
 		} elseif ($page == 'edit') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$slide_data   = $data->getSlideInfo($id);
 
 			if (empty($slide_data)) {
-				return $response->withRedirect("/{$patch_admin}/slides/list");
+				return $response->withRedirect("{$patch_admin}/slides/list");
 				exit();
 			}
 
@@ -3516,11 +3577,11 @@ class AdminController
 			return $view->getRender($array, 'slides', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$slide_data   = $data->getSlideInfo($id);
 
 			if (empty($slide_data)) {
-				return $response->withRedirect("/{$patch_admin}/slides/list");
+				return $response->withRedirect("{$patch_admin}/slides/list");
 				exit();
 			}
 
@@ -3533,13 +3594,13 @@ class AdminController
 			return $view->getRender($array, 'slides', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
 
-	public function postSlides(AdminModel $model, ViewAdmin $view, Response $response, $page, $post, $id = NULL)
+	public function postSlides(AdminModel $model, ViewAdmin $view, Response $response, $page, $post, $files, $id = NULL)
 	{
 		//Classes
 		$data     = new AdminDatabase();
@@ -3547,10 +3608,12 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+		$patch_upload = getenv('DIRIMG');
+		$patch_images = getenv('DIRECTORY_ROOT') . $patch_upload . "slides";
 
 		if ($page != 'delete') {
-			if (empty($post['name']) or empty($post['link']) or empty($post['image'])) {
+			if (empty($post['name']) or empty($post['link'])) {
 				$return = array(
 					'error'   => true,
 					'success' => false,
@@ -3558,13 +3621,40 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/slides/create");
+				return $response->withRedirect("{$patch_admin}/slides/create");
 				exit();
 			}
 		}
 
 		if ($page == 'create') {
-			$register = $data->insertSlide($post);
+			if (empty($files['mwo_image'])) {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Preencha todos os campos'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("{$patch_admin}/slides/create");
+				exit();
+			}
+
+			$image = $files['mwo_image'];
+			if ($image->getError() === UPLOAD_ERR_OK) {
+				$imagename = $this->moveUploadedFile($patch_images, $image, strtolower(preg_replace('/\s*/', '', $post['name'])));
+			} else {
+				$return = array(
+					'error'   => true,
+					'success' => false,
+					'message' => 'Error upload de imagem tente novamente'
+				);
+
+				$messages->addMessage('response', $return);
+				return $response->withRedirect("{$patch_admin}/slides/create");
+				exit();
+			}
+
+			$register = $data->insertSlide($post, $imagename);
 			if ($register == 'OK') {
 				$return = array(
 					'error'   => false,
@@ -3597,7 +3687,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/slides/list");
+			return $response->withRedirect("{$patch_admin}/slides/list");
 		} elseif ($page == 'edit') {
 			$slide_data = $data->getSlideInfo($id);
 
@@ -3609,11 +3699,30 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/slides/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/slides/edit/" . $id);
 				exit();
 			}
 
-			$edit = $data->editSlide($post, $id);
+			if (!empty($files['mwo_image']->file)) {
+				$image = $files['mwo_image'];
+				if ($image->getError() === UPLOAD_ERR_OK) {
+					$imagename = $this->moveUploadedFile($patch_images, $image, strtolower(preg_replace('/\s*/', '', $post['name'])));
+				} else {
+					$return = array(
+						'error'   => true,
+						'success' => false,
+						'message' => 'Error upload de imagem tente novamente'
+					);
+
+					$messages->addMessage('response', $return);
+					return $response->withRedirect("{$patch_admin}/slides/edit" . $id);
+					exit();
+				}
+			} else {
+				$imagename = NULL;
+			}
+
+			$edit = $data->editSlide($post, $imagename, $id);
 			if ($edit == 'OK') {
 				$return = array(
 					'error'   => false,
@@ -3626,6 +3735,14 @@ class AdminController
 					'ipaddress' => $model->getIpaddress(),
 					'message'   => 'Editou um slide'
 				);
+
+				if (!empty($files['mwo_image']->file)) {
+
+					$image = $patch_images . "/" . $slide_data['image'];
+					if (file_exists($image)) {
+						unlink($image);
+					}
+				}
 
 				$logger->addLoggerInfo("Slides", $values);
 			} else {
@@ -3646,7 +3763,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/slides/edit/" . $id);
+			return $response->withRedirect("{$patch_admin}/slides/edit/" . $id);
 		} elseif ($page == 'delete') {
 			$slide_data = $data->getSlideInfo($id);
 
@@ -3658,7 +3775,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/slides/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/slides/edit/" . $id);
 				exit();
 			}
 
@@ -3676,6 +3793,11 @@ class AdminController
 					'message'   => 'Deletou um slide'
 				);
 
+				$image = $patch_images . "/" . $slide_data['image'];
+				if (file_exists($image)) {
+					unlink($image);
+				}
+
 				$logger->addLoggerInfo("Slides", $values);
 			} else {
 				$return = array(
@@ -3695,7 +3817,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/slides/list");
+			return $response->withRedirect("{$patch_admin}/slides/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -3704,7 +3826,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -3733,7 +3855,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($post['mode'] == 'manual') {
 			if (empty($post['database']) or empty($post['table']) or empty($post['character'])) {
@@ -3744,7 +3866,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/kingofmu");
+				return $response->withRedirect("{$patch_admin}/kingofmu");
 				exit();
 			}
 		} else {
@@ -3756,7 +3878,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/kingofmu");
+				return $response->withRedirect("{$patch_admin}/kingofmu");
 				exit();
 			}
 		}
@@ -3794,7 +3916,7 @@ class AdminController
 
 		$messages->addMessage('response', $return);
 
-		return $response->withRedirect("/{$patch_admin}/kingofmu");
+		return $response->withRedirect("{$patch_admin}/kingofmu");
 	}
 
 	public function getTransactions(AdminModel $model, ViewAdmin $view, Response $response, $page = NULL, $id = NULL)
@@ -3808,7 +3930,7 @@ class AdminController
 		$email            = $config_apimwopay[0]['value'];
 		$token            = $config_apimwopay[1]['value'];
 		$mwopay           = new MWOPay($email, $token);
-		$patch_admin      = getenv('DIRADMIN');
+		$patch_admin      = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page == 'all') {
 			$arrayjson = array(
@@ -3834,7 +3956,7 @@ class AdminController
 			return $view->getRender($array, 'transactions', $response);
 		} elseif ($page == 'info') {
 			if (empty($id)) {
-				return $response->withRedirect("/{$patch_admin}/transactions/all");
+				return $response->withRedirect("{$patch_admin}/transactions/all");
 				exit();
 			}
 
@@ -3928,10 +4050,10 @@ class AdminController
 			return $view->getRender($array, 'withdrawals', $response);
 		} elseif ($page == 'info') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 			if (empty($id)) {
-				return $response->withRedirect("/{$patch_admin}/withdrawals/list");
+				return $response->withRedirect("{$patch_admin}/withdrawals/list");
 				exit();
 			}
 
@@ -3958,8 +4080,8 @@ class AdminController
 			return $view->getRender($array, 'withdrawals', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -3972,7 +4094,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin      = getenv('DIRADMIN');
+		$patch_admin      = getenv('DIR') . getenv('DIRADMIN');
 		$config_apimwopay = $data->getConfig('apimwopay');
 		$config_apimwopay = json_decode($config_apimwopay, true);
 		$email            = $config_apimwopay[0]['value'];
@@ -3987,7 +4109,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/withdrawals/create");
+			return $response->withRedirect("{$patch_admin}/withdrawals/create");
 			exit();
 		}
 
@@ -4038,7 +4160,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/withdrawals/list");
+			return $response->withRedirect("{$patch_admin}/withdrawals/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -4047,7 +4169,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -4070,12 +4192,12 @@ class AdminController
 			return $view->getRender($array, 'tickets', $response);
 		} elseif ($page == 'answers') {
 			//Variables
-			$patch_admin   = getenv('DIRADMIN');
+			$patch_admin   = getenv('DIR') . getenv('DIRADMIN');
 			$ticket_data   = $data->getTicketInfo($id);
 			$ticket_answer = $data->getTicketAnswer($id);
 
 			if (empty($ticket_data)) {
-				return $response->withRedirect("/{$patch_admin}/tickets/list");
+				return $response->withRedirect("{$patch_admin}/tickets/list");
 				exit();
 			}
 
@@ -4089,11 +4211,11 @@ class AdminController
 			return $view->getRender($array, 'tickets', $response);
 		} elseif ($page == 'delete') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$ticket_data = $data->getTicketInfo($id);
 
 			if (empty($ticket_data)) {
-				return $response->withRedirect("/{$patch_admin}/tickets/list");
+				return $response->withRedirect("{$patch_admin}/tickets/list");
 				exit();
 			}
 
@@ -4106,8 +4228,8 @@ class AdminController
 			return $view->getRender($array, 'tickets', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -4120,7 +4242,9 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
+		$patch_upload = getenv('DIRIMG');
+		$patch_images = getenv('DIRECTORY_ROOT') . $patch_upload . "tickets";
 
 		if ($page != 'delete') {
 			if (empty($post['message'])) {
@@ -4131,7 +4255,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/tickets/answers/" . $id);
+				return $response->withRedirect("{$patch_admin}/tickets/answers/" . $id);
 				exit();
 			}
 		}
@@ -4154,7 +4278,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/tickets/list");
+				return $response->withRedirect("{$patch_admin}/tickets/list");
 				exit();
 			}
 			if ($action_answer == 'create') {
@@ -4191,7 +4315,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/tickets/answers/" . $id);
+				return $response->withRedirect("{$patch_admin}/tickets/answers/" . $id);
 			} elseif ($action_answer == 'edit') {
 				$edit = $data->editTicketAnswer($post, $_SESSION['usernameadmin'], $id);
 				if ($edit == 'OK') {
@@ -4226,7 +4350,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/tickets/answers/" . $id);
+				return $response->withRedirect("{$patch_admin}/tickets/answers/" . $id);
 			}
 		} elseif ($page == 'delete') {
 			$ticket_data = $data->getTicketInfo($id);
@@ -4238,7 +4362,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/tickets/list");
+				return $response->withRedirect("{$patch_admin}/tickets/list");
 				exit();
 			}
 
@@ -4277,6 +4401,11 @@ class AdminController
 
 					$logger->addLoggerWarning("Tickets", $values);
 				}
+
+				$image = $patch_images . "/" . $ticket_data['image'];
+				if (file_exists($image)) {
+					unlink($image);
+				}
 			} else {
 				$return = array(
 					'error'   => true,
@@ -4295,7 +4424,7 @@ class AdminController
 
 			$messages->addMessage('response', $return);
 
-			return $response->withRedirect("/{$patch_admin}/tickets/list");
+			return $response->withRedirect("{$patch_admin}/tickets/list");
 		} else {
 			$return = array(
 				'error'   => true,
@@ -4304,7 +4433,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -4328,10 +4457,10 @@ class AdminController
 			return $view->getRender($array, 'logs', $response);
 		} elseif ($page == 'view') {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 			$filename    = 'logs/' . $name;
 			if (!file_exists($filename)) {
-				return $response->withRedirect("/{$patch_admin}/logs/list");
+				return $response->withRedirect("{$patch_admin}/logs/list");
 				exit();
 			}
 
@@ -4351,8 +4480,8 @@ class AdminController
 			return $view->getRender($array, 'logs', $response);
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -4365,7 +4494,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 
 		if ($page == 'delete') {
 			$filename = 'logs/' . $name;
@@ -4377,7 +4506,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/logs/list");
+				return $response->withRedirect("{$patch_admin}/logs/list");
 				exit();
 			} else {
 				if (unlink($filename)) {
@@ -4388,7 +4517,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/logs/list");
+					return $response->withRedirect("{$patch_admin}/logs/list");
 					exit();
 				} else {
 					$return = array(
@@ -4398,7 +4527,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/logs/list");
+					return $response->withRedirect("{$patch_admin}/logs/list");
 					exit();
 				}
 			}
@@ -4410,7 +4539,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			//return $response->withRedirect("/{$patch_admin}/");
+			//return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -4448,11 +4577,11 @@ class AdminController
 				return $view->getRender($array, 'items/ancients', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin  = getenv('DIRADMIN');
+				$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 				$ancient_data = $data->getItemAncientInfo($id);
 
 				if (empty($ancient_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/ancients/list");
+					return $response->withRedirect("{$patch_admin}/items/ancients/list");
 					exit();
 				}
 
@@ -4465,11 +4594,11 @@ class AdminController
 				return $view->getRender($array, 'items/ancients', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin  = getenv('DIRADMIN');
+				$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 				$ancient_data = $data->getItemAncientInfo($id);
 
 				if (empty($ancient_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/ancients/list");
+					return $response->withRedirect("{$patch_admin}/items/ancients/list");
 					exit();
 				}
 
@@ -4482,8 +4611,8 @@ class AdminController
 				return $view->getRender($array, 'items/ancients', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'harmonys') {
@@ -4514,11 +4643,11 @@ class AdminController
 				return $view->getRender($array, 'items/harmonys', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin  = getenv('DIRADMIN');
+				$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 				$harmony_data = $data->getItemHamornyInfo($id);
 
 				if (empty($harmony_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+					return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 					exit();
 				}
 
@@ -4531,11 +4660,11 @@ class AdminController
 				return $view->getRender($array, 'items/harmonys', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin  = getenv('DIRADMIN');
+				$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 				$harmony_data = $data->getItemHamornyInfo($id);
 
 				if (empty($harmony_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+					return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 					exit();
 				}
 
@@ -4548,8 +4677,8 @@ class AdminController
 				return $view->getRender($array, 'items/harmonys', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'options') {
@@ -4580,11 +4709,11 @@ class AdminController
 				return $view->getRender($array, 'items/options', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$option_data = $data->getItemOptionInfo($id);
 
 				if (empty($option_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/options/list");
+					return $response->withRedirect("{$patch_admin}/items/options/list");
 					exit();
 				}
 
@@ -4597,11 +4726,11 @@ class AdminController
 				return $view->getRender($array, 'items/options', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$option_data = $data->getItemOptionInfo($id);
 
 				if (empty($option_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/options/list");
+					return $response->withRedirect("{$patch_admin}/items/options/list");
 					exit();
 				}
 
@@ -4614,8 +4743,8 @@ class AdminController
 				return $view->getRender($array, 'items/options', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'sockets') {
@@ -4646,11 +4775,11 @@ class AdminController
 				return $view->getRender($array, 'items/sockets', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$socket_data = $data->getItemSocketInfo($id);
 
 				if (empty($socket_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/sockets/list");
+					return $response->withRedirect("{$patch_admin}/items/sockets/list");
 					exit();
 				}
 
@@ -4663,11 +4792,11 @@ class AdminController
 				return $view->getRender($array, 'items/sockets', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$socket_data = $data->getItemSocketInfo($id);
 
 				if (empty($socket_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/sockets/list");
+					return $response->withRedirect("{$patch_admin}/items/sockets/list");
 					exit();
 				}
 
@@ -4680,8 +4809,8 @@ class AdminController
 				return $view->getRender($array, 'items/sockets', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'refines') {
@@ -4712,11 +4841,11 @@ class AdminController
 				return $view->getRender($array, 'items/refines', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$refine_data = $data->getItemRefineInfo($id);
 
 				if (empty($refine_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/refines/list");
+					return $response->withRedirect("{$patch_admin}/items/refines/list");
 					exit();
 				}
 
@@ -4729,11 +4858,11 @@ class AdminController
 				return $view->getRender($array, 'items/refines', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$refine_data = $data->getItemRefineInfo($id);
 
 				if (empty($refine_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/refines/list");
+					return $response->withRedirect("{$patch_admin}/items/refines/list");
 					exit();
 				}
 
@@ -4746,8 +4875,8 @@ class AdminController
 				return $view->getRender($array, 'items/refines', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'skills') {
@@ -4778,11 +4907,11 @@ class AdminController
 				return $view->getRender($array, 'items/skills', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$skill_data  = $data->getItemSkillInfo($id);
 
 				if (empty($skill_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/skills/list");
+					return $response->withRedirect("{$patch_admin}/items/skills/list");
 					exit();
 				}
 
@@ -4795,11 +4924,11 @@ class AdminController
 				return $view->getRender($array, 'items/skills', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$skill_data  = $data->getItemSkillInfo($id);
 
 				if (empty($skill_data)) {
-					return $response->withRedirect("/{$patch_admin}/items/skills/list");
+					return $response->withRedirect("{$patch_admin}/items/skills/list");
 					exit();
 				}
 
@@ -4812,14 +4941,14 @@ class AdminController
 				return $view->getRender($array, 'items/skills', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -4832,7 +4961,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 		$connection = array(
 			"MSSQL_DRIVER" => getenv('MSSQL_DRIVER'),
 			"MSSQL_HOST"   => getenv('MSSQL_HOST'),
@@ -4871,7 +5000,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/ancients/list");
+					return $response->withRedirect("{$patch_admin}/items/ancients/list");
 					exit();
 				}
 			}
@@ -4888,7 +5017,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/ancients/generate");
+					return $response->withRedirect("{$patch_admin}/items/ancients/generate");
 					exit();
 				}
 
@@ -4903,7 +5032,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/ancients/generate");
+					return $response->withRedirect("{$patch_admin}/items/ancients/generate");
 					exit();
 				}
 
@@ -4950,7 +5079,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/ancients/list");
+				return $response->withRedirect("{$patch_admin}/items/ancients/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemAncient($post);
 				if ($register == 'OK') {
@@ -4985,7 +5114,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/ancients/list");
+				return $response->withRedirect("{$patch_admin}/items/ancients/list");
 			} elseif ($page == 'edit') {
 				$ancient_data = $data->getItemAncientInfo($id);
 
@@ -4997,7 +5126,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/ancients/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/ancients/edit/" . $id);
 					exit();
 				}
 
@@ -5034,7 +5163,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/ancients/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/ancients/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$ancient_data = $data->getItemAncientInfo($id);
 
@@ -5046,7 +5175,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/ancients/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/ancients/delete/" . $id);
 					exit();
 				}
 
@@ -5083,7 +5212,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/ancients/list");
+				return $response->withRedirect("{$patch_admin}/items/ancients/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -5092,7 +5221,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'harmonys') {
@@ -5105,7 +5234,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+					return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 					exit();
 				}
 			}
@@ -5122,7 +5251,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/generate");
+					return $response->withRedirect("{$patch_admin}/items/harmonys/generate");
 					exit();
 				}
 
@@ -5137,7 +5266,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/generate");
+					return $response->withRedirect("{$patch_admin}/items/harmonys/generate");
 					exit();
 				}
 
@@ -5184,7 +5313,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+				return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemHamorny($post);
 				if ($register == 'OK') {
@@ -5219,7 +5348,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+				return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 			} elseif ($page == 'edit') {
 				$harmony_data = $data->getItemHamornyInfo($id);
 
@@ -5231,7 +5360,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/harmonys/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/harmonys/edit/" . $id);
 					exit();
 				}
 
@@ -5268,7 +5397,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/harmonys/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/harmonys/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$harmony_data = $data->getItemHamornyInfo($id);
 
@@ -5280,7 +5409,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/harmonys/delete/" . $id);
 					exit();
 				}
 
@@ -5317,7 +5446,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+				return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -5326,7 +5455,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'options') {
@@ -5339,7 +5468,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/harmonys/list");
+					return $response->withRedirect("{$patch_admin}/items/harmonys/list");
 					exit();
 				}
 			}
@@ -5356,7 +5485,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/options/generate");
+					return $response->withRedirect("{$patch_admin}/items/options/generate");
 					exit();
 				}
 
@@ -5371,7 +5500,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/options/generate");
+					return $response->withRedirect("{$patch_admin}/items/options/generate");
 					exit();
 				}
 
@@ -5418,7 +5547,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/list");
+				return $response->withRedirect("{$patch_admin}/items/options/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemOption($post);
 				if ($register == 'OK') {
@@ -5453,7 +5582,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/list");
+				return $response->withRedirect("{$patch_admin}/items/options/list");
 			} elseif ($page == 'edit') {
 				$option_data = $data->getItemOptionInfo($id);
 
@@ -5465,7 +5594,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/options/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/options/edit/" . $id);
 					exit();
 				}
 
@@ -5502,7 +5631,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/options/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$option_data = $data->getItemOptionInfo($id);
 
@@ -5514,7 +5643,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/options/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/options/delete/" . $id);
 					exit();
 				}
 
@@ -5551,7 +5680,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/list");
+				return $response->withRedirect("{$patch_admin}/items/options/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -5560,7 +5689,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'sockets') {
@@ -5573,7 +5702,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/sockets/list");
+					return $response->withRedirect("{$patch_admin}/items/sockets/list");
 					exit();
 				}
 			}
@@ -5590,7 +5719,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/sockets/generate");
+					return $response->withRedirect("{$patch_admin}/items/sockets/generate");
 					exit();
 				}
 
@@ -5605,7 +5734,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/sockets/generate");
+					return $response->withRedirect("{$patch_admin}/items/sockets/generate");
 					exit();
 				}
 
@@ -5652,7 +5781,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/sockets/list");
+				return $response->withRedirect("{$patch_admin}/items/sockets/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemSocket($post);
 				if ($register == 'OK') {
@@ -5687,7 +5816,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/sockets/list");
+				return $response->withRedirect("{$patch_admin}/items/sockets/list");
 			} elseif ($page == 'edit') {
 				$socket_data = $data->getItemSocketInfo($id);
 
@@ -5699,7 +5828,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/sockets/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/sockets/edit/" . $id);
 					exit();
 				}
 
@@ -5736,7 +5865,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/sockets/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/sockets/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$socket_data = $data->getItemSocketInfo($id);
 
@@ -5748,7 +5877,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/sockets/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/sockets/delete/" . $id);
 					exit();
 				}
 
@@ -5785,7 +5914,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/sockets/list");
+				return $response->withRedirect("{$patch_admin}/items/sockets/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -5794,7 +5923,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'refines') {
@@ -5807,7 +5936,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/refines/list");
+					return $response->withRedirect("{$patch_admin}/items/refines/list");
 					exit();
 				}
 			}
@@ -5824,7 +5953,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/refines/generate");
+					return $response->withRedirect("{$patch_admin}/items/refines/generate");
 					exit();
 				}
 
@@ -5839,7 +5968,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/refines/generate");
+					return $response->withRedirect("{$patch_admin}/items/refines/generate");
 					exit();
 				}
 
@@ -5886,7 +6015,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/refines/list");
+				return $response->withRedirect("{$patch_admin}/items/refines/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemRefine($post);
 				if ($register == 'OK') {
@@ -5921,7 +6050,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/refines/list");
+				return $response->withRedirect("{$patch_admin}/items/refines/list");
 			} elseif ($page == 'edit') {
 				$refine_data = $data->getItemRefineInfo($id);
 
@@ -5933,7 +6062,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/refines/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/refines/edit/" . $id);
 					exit();
 				}
 
@@ -5970,7 +6099,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/refines/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/refines/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$refine_data = $data->getItemRefineInfo($id);
 
@@ -5982,7 +6111,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/refines/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/refines/delete/" . $id);
 					exit();
 				}
 
@@ -6019,7 +6148,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/refines/list");
+				return $response->withRedirect("{$patch_admin}/items/refines/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -6028,7 +6157,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'skills') {
@@ -6041,7 +6170,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/skills/list");
+					return $response->withRedirect("{$patch_admin}/items/skills/list");
 					exit();
 				}
 			}
@@ -6058,7 +6187,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/skills/generate");
+					return $response->withRedirect("{$patch_admin}/items/skills/generate");
 					exit();
 				}
 
@@ -6105,7 +6234,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/skills/list");
+				return $response->withRedirect("{$patch_admin}/items/skills/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemSkill($post);
 				if ($register == 'OK') {
@@ -6140,7 +6269,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/skills/list");
+				return $response->withRedirect("{$patch_admin}/items/skills/list");
 			} elseif ($page == 'edit') {
 				$skill_data = $data->getItemSkillInfo($id);
 
@@ -6152,7 +6281,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/skills/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/skills/edit/" . $id);
 					exit();
 				}
 
@@ -6189,7 +6318,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/skills/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/skills/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$skill_data = $data->getItemSkillInfo($id);
 
@@ -6201,7 +6330,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/skills/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/skills/delete/" . $id);
 					exit();
 				}
 
@@ -6238,7 +6367,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/skills/list");
+				return $response->withRedirect("{$patch_admin}/items/skills/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -6247,7 +6376,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} else {
@@ -6258,7 +6387,7 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -6294,13 +6423,13 @@ class AdminController
 				return $view->getRender($array, 'webshops/all', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin  = getenv('DIRADMIN');
+				$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 				$webshops     = $data->getWebShopsParentID(0);
 				$coins        = $data->getCoins();
 				$webshop_data = $data->getWebShopInfo($id);
 
 				if (empty($webshop_data)) {
-					return $response->withRedirect("/{$patch_admin}/webshops/all/list");
+					return $response->withRedirect("{$patch_admin}/webshops/all/list");
 					exit();
 				}
 
@@ -6315,11 +6444,11 @@ class AdminController
 				return $view->getRender($array, 'webshops/all', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin  = getenv('DIRADMIN');
+				$patch_admin  = getenv('DIR') . getenv('DIRADMIN');
 				$webshop_data = $data->getWebShopInfo($id);
 
 				if (empty($webshop_data)) {
-					return $response->withRedirect("/{$patch_admin}/webshops/all/list");
+					return $response->withRedirect("{$patch_admin}/webshops/all/list");
 					exit();
 				}
 
@@ -6332,8 +6461,8 @@ class AdminController
 				return $view->getRender($array, 'webshops/all', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'categories') {
@@ -6362,13 +6491,13 @@ class AdminController
 				return $view->getRender($array, 'webshops/categories', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin    = getenv('DIRADMIN');
+				$patch_admin    = getenv('DIR') . getenv('DIRADMIN');
 				$categories     = $data->getCategoriesWebShopsParentID(0);
 				$webshops       = $data->getWebShops();
 				$categorie_data = $data->getCategorieWebShopInfo($id);
 
 				if (empty($categorie_data)) {
-					return $response->withRedirect("/{$patch_admin}/webshops/categories/list");
+					return $response->withRedirect("{$patch_admin}/webshops/categories/list");
 					exit();
 				}
 
@@ -6383,11 +6512,11 @@ class AdminController
 				return $view->getRender($array, 'webshops/categories', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin    = getenv('DIRADMIN');
+				$patch_admin    = getenv('DIR') . getenv('DIRADMIN');
 				$categorie_data = $data->getCategorieWebShopInfo($id);
 
 				if (empty($categorie_data)) {
-					return $response->withRedirect("/{$patch_admin}/webshops/categories/list");
+					return $response->withRedirect("{$patch_admin}/webshops/categories/list");
 					exit();
 				}
 
@@ -6400,8 +6529,8 @@ class AdminController
 				return $view->getRender($array, 'webshops/categories', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'items') {
@@ -6451,12 +6580,12 @@ class AdminController
 				return $view->getRender($array, 'webshops/items', $response);
 			} elseif ($page == 'edit') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$item_data   = $data->getItemWebShopInfo($id);
 				$categories  = $data->getCategoriesWebShops();
 
 				if (empty($item_data)) {
-					return $response->withRedirect("/{$patch_admin}/webshops/items/list");
+					return $response->withRedirect("{$patch_admin}/webshops/items/list");
 					exit();
 				}
 
@@ -6470,11 +6599,11 @@ class AdminController
 				return $view->getRender($array, 'webshops/items', $response);
 			} elseif ($page == 'delete') {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 				$item_data   = $data->getItemWebShopInfo($id);
 
 				if (empty($item_data)) {
-					return $response->withRedirect("/{$patch_admin}/webshops/items/list");
+					return $response->withRedirect("{$patch_admin}/webshops/items/list");
 					exit();
 				}
 
@@ -6487,14 +6616,14 @@ class AdminController
 				return $view->getRender($array, 'webshops/items', $response);
 			} else {
 				//Variables
-				$patch_admin = getenv('DIRADMIN');
-				return $response->withRedirect("/{$patch_admin}/");
+				$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} else {
 			//Variables
-			$patch_admin = getenv('DIRADMIN');
-			return $response->withRedirect("/{$patch_admin}/");
+			$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
 	}
@@ -6507,7 +6636,7 @@ class AdminController
 		$messages = new ViewMessages();
 
 		//Variables
-		$patch_admin = getenv('DIRADMIN');
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
 		$connection = array(
 			"MSSQL_DRIVER" => getenv('MSSQL_DRIVER'),
 			"MSSQL_HOST"   => getenv('MSSQL_HOST'),
@@ -6529,7 +6658,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/all/list");
+					return $response->withRedirect("{$patch_admin}/webshops/all/list");
 					exit();
 				}
 			}
@@ -6568,7 +6697,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/all/list");
+				return $response->withRedirect("{$patch_admin}/webshops/all/list");
 			} elseif ($page == 'edit') {
 				$webshop_data = $data->getWebShopInfo($id);
 
@@ -6580,7 +6709,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/all/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}/webshops/all/edit/" . $id);
 					exit();
 				}
 
@@ -6617,7 +6746,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/all/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/webshops/all/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$webshop_data = $data->getWebShopInfo($id);
 
@@ -6629,7 +6758,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/all/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/webshops/all/delete/" . $id);
 					exit();
 				}
 
@@ -6666,7 +6795,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/all/list");
+				return $response->withRedirect("{$patch_admin}/webshops/all/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -6675,7 +6804,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'categories') {
@@ -6688,7 +6817,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/categories/list");
+					return $response->withRedirect("{$patch_admin}/webshops/categories/list");
 					exit();
 				}
 			}
@@ -6727,7 +6856,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/categories/list");
+				return $response->withRedirect("{$patch_admin}/webshops/categories/list");
 			} elseif ($page == 'edit') {
 				$category_data = $data->getCategorieWebShopInfo($id);
 
@@ -6739,7 +6868,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/categories/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}/webshops/categories/edit/" . $id);
 					exit();
 				}
 
@@ -6776,7 +6905,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/categories/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/webshops/categories/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$category_data = $data->getCategorieWebShopInfo($id);
 
@@ -6788,7 +6917,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/categories/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/webshops/categories/delete/" . $id);
 					exit();
 				}
 
@@ -6825,7 +6954,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/categories/list");
+				return $response->withRedirect("{$patch_admin}/webshops/categories/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -6834,7 +6963,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} elseif ($action == 'items') {
@@ -6847,7 +6976,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/all/list");
+					return $response->withRedirect("{$patch_admin}/webshops/all/list");
 					exit();
 				}
 			}
@@ -6864,7 +6993,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/webshops/all/generate");
+					return $response->withRedirect("{$patch_admin}/webshops/all/generate");
 					exit();
 				}
 
@@ -6959,7 +7088,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/webshops/items/list");
+				return $response->withRedirect("{$patch_admin}/webshops/items/list");
 			} elseif ($page == 'create') {
 				$register = $data->insertItemOption($post);
 				if ($register == 'OK') {
@@ -6994,7 +7123,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/list");
+				return $response->withRedirect("{$patch_admin}/items/options/list");
 			} elseif ($page == 'edit') {
 				$option_data = $data->getItemOptionInfo($id);
 
@@ -7006,7 +7135,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}items/options/edit/" . $id);
+					return $response->withRedirect("{$patch_admin}items/options/edit/" . $id);
 					exit();
 				}
 
@@ -7043,7 +7172,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/edit/" . $id);
+				return $response->withRedirect("{$patch_admin}/items/options/edit/" . $id);
 			} elseif ($page == 'delete') {
 				$option_data = $data->getItemOptionInfo($id);
 
@@ -7055,7 +7184,7 @@ class AdminController
 					);
 
 					$messages->addMessage('response', $return);
-					return $response->withRedirect("/{$patch_admin}/items/options/delete/" . $id);
+					return $response->withRedirect("{$patch_admin}/items/options/delete/" . $id);
 					exit();
 				}
 
@@ -7092,7 +7221,7 @@ class AdminController
 
 				$messages->addMessage('response', $return);
 
-				return $response->withRedirect("/{$patch_admin}/items/options/list");
+				return $response->withRedirect("{$patch_admin}/items/options/list");
 			} else {
 				$return = array(
 					'error'   => true,
@@ -7101,7 +7230,7 @@ class AdminController
 				);
 
 				$messages->addMessage('response', $return);
-				return $response->withRedirect("/{$patch_admin}/");
+				return $response->withRedirect("{$patch_admin}/");
 				exit();
 			}
 		} else {
@@ -7112,9 +7241,83 @@ class AdminController
 			);
 
 			$messages->addMessage('response', $return);
-			return $response->withRedirect("/{$patch_admin}/");
+			return $response->withRedirect("{$patch_admin}/");
 			exit();
 		}
+	}
+
+	public function getCastleSiege(AdminModel $model, ViewAdmin $view, Response $response)
+	{
+		//Classes
+		$data = new AdminDatabase();
+
+		//Variables
+		$castlesiege = $data->getCastleSiege();
+
+		$array = array(
+			'title_page'  => 'Editar Castle Siege',
+			'castlesiege' => $castlesiege,
+		);
+
+		return $view->getRender($array, 'castlesiege', $response);
+	}
+
+	public function postCastleSiege(AdminModel $model, ViewAdmin $view, Response $response, $post)
+	{
+		//Classes
+		$data     = new AdminDatabase();
+		$logger   = new ViewLogger('admin');
+		$messages = new ViewMessages();
+
+		//Variables
+		$patch_admin = getenv('DIR') . getenv('DIRADMIN');
+
+		if (empty($post['active']) or empty($post['mode']) or empty($post['confrontation']) or empty($post['guild'])) {
+			$return = array(
+				'error'   => true,
+				'success' => false,
+				'message' => 'Preencha todos os campos'
+			);
+
+			$messages->addMessage('response', $return);
+			return $response->withRedirect("{$patch_admin}/castlesiege");
+			exit();
+		}
+
+		$edit = $data->editCastleSiege($post);
+		if ($edit == 'OK') {
+			$return = array(
+				'error'   => false,
+				'success' => true,
+				'message' => 'Editado com sucesso'
+			);
+
+			$values = array(
+				'username'  => $_SESSION['usernameadmin'],
+				'ipaddress' => $model->getIpaddress(),
+				'message'   => 'Editou o castle siege'
+			);
+
+			$logger->addLoggerInfo("CastleSiege", $values);
+		} else {
+			$return = array(
+				'error'   => true,
+				'success' => false,
+				'message' => $edit
+			);
+
+			$values = array(
+				'username'  => $_SESSION['usernameadmin'],
+				'ipaddress' => $model->getIpaddress(),
+				'message'   => $edit
+			);
+
+			$logger->addLoggerWarning("CastleSiege", $values);
+		}
+
+		$messages->addMessage('response', $return);
+
+		return $response->withRedirect("{$patch_admin}/castlesiege");
 	}
 
 	private function generate_url($string)
@@ -7122,5 +7325,16 @@ class AdminController
 		$key = array("+", "%27", "-",);
 		$replace = array("_", "", "");
 		return strtolower(str_replace($key, $replace, urlencode(utf8_encode($string))));
+	}
+
+	public function moveUploadedFile($directory, UploadedFile $uploadedFile, $name)
+	{
+		$extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+		$basename = bin2hex(rand());
+		$filename = sprintf('%s-%s.%0.8s', $name, $basename, $extension);
+
+		$uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+		return $filename;
 	}
 }

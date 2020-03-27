@@ -18,10 +18,10 @@ class NewsController
     $new_data = $data->getNewInfo($id);
 
     if (empty($id)) {
-      return $response->withRedirect("/");
+      return $response->withRedirect(getenv("DIR"));
       exit();
     } elseif (empty($new_data)) {
-      return $response->withRedirect("/");
+      return $response->withRedirect(getenv("DIR"));
       exit();
     }
 

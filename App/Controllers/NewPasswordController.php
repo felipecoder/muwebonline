@@ -42,7 +42,7 @@ class NewPasswordController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     } elseif (empty($post['password']) or empty($post['repassword'])) {
       $return = array(
@@ -53,7 +53,7 @@ class NewPasswordController
 
       $messages->addMessage('response', $return);
 
-      return $response->withRedirect("/newpassword/{$username}/{$token}");
+      return $response->withRedirect(getenv("DIR") . "newpassword/{$username}/{$token}");
       exit();
     } elseif (strlen($post['password']) < 4 or strlen($post['password']) > 10) {
       $return = array(
@@ -63,7 +63,7 @@ class NewPasswordController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/newpassword/{$username}/{$token}");
+      return $response->withRedirect(getenv("DIR") . "newpassword/{$username}/{$token}");
     } elseif (strlen($post['repassword']) < 4 or strlen($post['repassword']) > 10) {
       $return = array(
         'error'   => true,
@@ -72,7 +72,7 @@ class NewPasswordController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/newpassword/{$username}/{$token}");
+      return $response->withRedirect(getenv("DIR") . "newpassword/{$username}/{$token}");
     } elseif ($post['password'] != $post['repassword']) {
       $return = array(
         'error'   => true,
@@ -81,7 +81,7 @@ class NewPasswordController
       );
 
       $messages->addMessage('response', $return);
-      return $response->withRedirect("/newpassword/{$username}/{$token}");
+      return $response->withRedirect(getenv("DIR") . "newpassword/{$username}/{$token}");
     }
 
     $getuser = $data->getUser($username, $token);
@@ -95,7 +95,7 @@ class NewPasswordController
 
       $messages->addMessage('response', $return);
 
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     }
 
@@ -122,7 +122,7 @@ class NewPasswordController
 
       $logger->addLoggerInfo("NewPassword", $values);
 
-      return $response->withRedirect("/login");
+      return $response->withRedirect(getenv("DIR") . "login");
       exit();
     } else {
       $return = array(
@@ -139,7 +139,7 @@ class NewPasswordController
 
       $logger->addLoggerWarning("Error NewPassword", $values);
 
-      return $response->withRedirect("/newpassword/{$username}/{$token}");
+      return $response->withRedirect(getenv("DIR") . "newpassword/{$username}/{$token}");
       exit();
     }
   }

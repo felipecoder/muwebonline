@@ -8,7 +8,7 @@ use App\Views\View;
 
 $app->group("/dashboard", function ($app) {
   //Index Redirect
-  $app->redirect("", "/dashboard/home", 301);
+  $app->redirect("", getenv("DIR") . "dashboard/home", 301);
 
   //Home
   $app->get("/home", function ($request, $response, $args) {
@@ -101,11 +101,12 @@ $app->group("/dashboard", function ($app) {
 
     if ($request->isPost()) {
       $data      = $_POST;
+      $files     = $request->getUploadedFiles();
       $ipaddress = $request->getServerParam('REMOTE_ADDR');
 
       $model->setIpaddress($ipaddress);
 
-      return $crontroller->postTickets($model, $response, $data, $args['page']);
+      return $crontroller->postTickets($model, $response, $data, $files, $args['page']);
     } else {
       return $crontroller->getTickets($model, $view, $response, $page, $id);
     }
